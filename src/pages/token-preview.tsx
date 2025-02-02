@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Lock, Search, TrendingUp, Globe, Twitter, ExternalLink, InfoIcon, RefreshCcw, X } from 'lucide-react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Lock, Search, TrendingUp, Globe, Twitter, ExternalLink, InfoIcon, RefreshCcw, X, Check, ClipboardCopy } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { TokenPreviewCard } from '@/components/TokenPreview/TokenPreviewCard';
 import { TokenMetrics } from '@/components/TokenPreview/TokenMetrics';
@@ -20,6 +20,12 @@ export default function TokenPreviewPage() {
   const router = useRouter();
   const wallet = useWallet();
   const [error, setError] = useState<string | null>(null);
+  const [isConnecting, setIsConnecting] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [leaderboardSearch, setLeaderboardSearch] = useState('');
+  const [copiedAddress, setCopiedAddress] = useState<string | null>(null);
+  const [selectedToken, setSelectedToken] = useState<Token | null>(null);
+  const [showPreview, setShowPreview] = useState(false);
 
   useEffect(() => {
     // Check if we're on the client side
@@ -34,76 +40,63 @@ export default function TokenPreviewPage() {
 
   const handleCopyAddress = (address: string) => {
     navigator.clipboard.writeText(address);
+    setCopiedAddress(address);
     setTimeout(() => setCopiedAddress(null), 2000);
   };
 
-  const handleWalletConnect = async () => {
+  const handleConnectWallet = async () => {
     try {
-      setError(null);
-
+      setIsConnecting(true);
       if (!wallet.connected) {
-        await wallet.select('Sui Wallet');
-        await wallet.connect();
+        await wallet.select('Suiet');
         
         // Add a small delay to ensure wallet state is updated
         await new Promise(resolve => setTimeout(resolve, 500));
         
-        if (wallet.connected && wallet.address) {
-          console.log('Wallet connected successfully:', wallet.address);
+        if (wallet.connected) {
           router.push('/dashboard');
-        } else {
-          throw new Error('Failed to connect wallet. Please try again.');
         }
       }
-    } catch (err: any) {
-      console.error('Wallet connection error:', err);
-      if (err.message.includes('No wallet selected')) {
-        setError('Please install Sui Wallet extension first');
-      } else {
-        setError(err.message || 'Failed to connect wallet. Please try again.');
-      }
+    } catch (error) {
+      console.error('Error connecting wallet:', error);
+    } finally {
+      setIsConnecting(false);
     }
   };
 
   const topTokens = mockTokens;
 
   // Filter tokens for the main search
-  const [searchQuery, setSearchQuery] = useState('');
-  const filteredTokens = topTokens.filter(token =>
-    token.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    token.address.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredTokens = useMemo(() => {
+    if (!searchQuery) return [];
+    return mockTokens.filter(token =>
+      token.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      token.symbol.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      token.address.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [searchQuery]);
 
-  // Filter tokens for the leaderboard separately
-  const [leaderboardSearch, setLeaderboardSearch] = useState('');
-  const leaderboardTokens = topTokens
-    .filter(token =>
+  // Filter tokens for the leaderboard
+  const leaderboardTokens = useMemo(() => {
+    if (!leaderboardSearch) return mockTokens;
+    return mockTokens.filter(token =>
       token.name.toLowerCase().includes(leaderboardSearch.toLowerCase()) ||
+      token.symbol.toLowerCase().includes(leaderboardSearch.toLowerCase()) ||
       token.address.toLowerCase().includes(leaderboardSearch.toLowerCase())
     );
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchQuery(value);
-    if (!value) {
-      setShowPreview(false);
-      setSelectedToken(null);
-    }
-  };
-
-  const handleClearSearch = () => {
-    setSearchQuery('');
-    setShowPreview(false);
-    setSelectedToken(null);
-  };
+  }, [leaderboardSearch]);
 
   const handleAnalyzeToken = (token: Token) => {
     setSearchQuery(token.address);
+    setSelectedToken(token);
+    setShowPreview(true);
   };
 
-  const [copiedAddress, setCopiedAddress] = useState<string | null>(null);
-  const [showPreview, setShowPreview] = useState(false);
-  const [selectedToken, setSelectedToken] = useState<Token | null>(null);
+  const handleSearchClear = () => {
+    setSearchQuery('');
+    setSelectedToken(null);
+    setShowPreview(false);
+  };
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -118,55 +111,57 @@ export default function TokenPreviewPage() {
           <p className="text-gray-400 mb-4">
             Because transparency isn't optional...
           </p>
+
           <p className="text-purple-500 text-2xl font-semibold mb-8">
             ITS EVERYTHING.
           </p>
+        </div>
 
-          {/* Search Section */}
-          <div className="mb-12">
-            <div className="max-w-3xl mx-auto">
-              <div className="flex gap-2 mb-4">
-                <div className="relative flex-1">
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={handleSearchChange}
-                    placeholder="Enter token name or address..."
-                    className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg pl-10 pr-12 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                  />
-                  <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                    <Search className="h-5 w-5 text-gray-400" />
-                  </div>
-                  <div className="absolute inset-y-0 right-3 flex items-center">
-                    {searchQuery && (
-                      <button
-                        onClick={handleClearSearch}
-                        className="p-1.5 hover:bg-gray-700 rounded-md transition-colors"
-                        title="Clear search"
-                      >
-                        <X className="h-5 w-5 text-gray-400 hover:text-purple-400" />
-                      </button>
-                    )}
-                  </div>
+        {/* Search Section */}
+        <div className="mb-12">
+          <div className="max-w-3xl mx-auto">
+            <div className="flex gap-2 mb-4">
+              <div className="relative flex-1">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Enter token name or address..."
+                  className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg pl-10 pr-12 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                />
+                <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                  <Search className="h-5 w-5 text-gray-400" />
                 </div>
-                <button
-                  className="flex items-center gap-2 px-6 py-3 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
-                  onClick={() => {
-                    if (searchQuery && filteredTokens.length > 0) {
-                      setSelectedToken(filteredTokens[0]);
-                      setShowPreview(true);
-                    }
-                  }}
-                  disabled={!searchQuery || filteredTokens.length === 0}
-                >
-                  <TrendingUp className="h-5 w-5" />
-                  Analyze token
-                </button>
+                <div className="absolute inset-y-0 right-3 flex items-center">
+                  {searchQuery && (
+                    <button
+                      onClick={handleSearchClear}
+                      className="p-1.5 hover:bg-gray-700 rounded-md transition-colors"
+                      title="Clear search"
+                    >
+                      <X className="h-5 w-5 text-gray-400 hover:text-purple-400" />
+                    </button>
+                  )}
+                </div>
               </div>
-              {error && (
-                <p className="text-red-500 text-sm mt-2">{error}</p>
-              )}
-              {!error && !wallet.connected && (
+              <button
+                className="flex items-center gap-2 px-6 py-3 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={() => {
+                  if (searchQuery && filteredTokens.length > 0) {
+                    handleAnalyzeToken(filteredTokens[0]);
+                  }
+                }}
+                disabled={!searchQuery || filteredTokens.length === 0}
+              >
+                <TrendingUp className="h-5 w-5" />
+                Analyze token
+              </button>
+            </div>
+            {error && (
+              <p className="text-red-500 text-sm mt-2">{error}</p>
+            )}
+            {!error && !wallet.connected && (
+              <div className="text-center mt-4">
                 <a 
                   href="https://chrome.google.com/webstore/detail/sui-wallet/opcgpfmipidbgpenhmajoajpbobppdil"
                   target="_blank"
@@ -175,23 +170,57 @@ export default function TokenPreviewPage() {
                 >
                   Don't have Sui Wallet? Install here
                 </a>
-              )}
-            </div>
+              </div>
+            )}
           </div>
+        </div>
 
-          {/* Token Preview Section */}
-          {showPreview && selectedToken && (
-            <div className="mb-8">
-              <div className="bg-gray-900 border border-gray-800 rounded-lg p-6">
-                <TokenPreviewCard token={selectedToken} />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-                  <TokenMetrics token={selectedToken} />
-                  <TokenActions token={selectedToken} />
+        {/* Token Preview Section */}
+        {showPreview && selectedToken && (
+          <div className="mb-8">
+            <div className="bg-gray-900 border border-gray-800 rounded-lg p-6">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-4">
+                  {selectedToken.icon && (
+                    <img 
+                      src={selectedToken.icon} 
+                      alt={selectedToken.name} 
+                      className="w-12 h-12 rounded-full"
+                    />
+                  )}
+                  <div>
+                    <h2 className="text-2xl font-bold">{selectedToken.name}</h2>
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-400">{selectedToken.symbol}</span>
+                      <span className="text-gray-400">•</span>
+                      <span className="text-gray-400 font-mono">{selectedToken.address.slice(0, 8)}...{selectedToken.address.slice(-6)}</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-2xl font-bold">${selectedToken.price}</div>
+                  <div className={`text-sm ${(selectedToken.priceChange24h || 0) >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                    {(selectedToken.priceChange24h || 0) >= 0 ? '+' : ''}{selectedToken.priceChange24h || 0}%
+                  </div>
                 </div>
               </div>
+              <p className="text-gray-400 mb-6">{selectedToken.description}</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <TokenMetrics metrics={{
+                  holders: selectedToken.holders || 0,
+                  volume: selectedToken.volume24h || 0,
+                  marketCap: selectedToken.marketCap || 0,
+                  liquidity: (selectedToken.marketCap || 0) * 0.1,
+                  priceChange24h: selectedToken.priceChange24h || 0
+                }} />
+                <TokenActions token={selectedToken} />
+              </div>
             </div>
-          )}
+          </div>
+        )}
 
+        {/* Token Table Section */}
+        <div className="grid grid-cols-1 gap-8">
           {/* Top Tokens Table */}
           <div className="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden mb-8">
             <div className="p-6">
@@ -208,203 +237,227 @@ export default function TokenPreviewPage() {
                   <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
                     <Search className="h-5 w-5 text-gray-400" />
                   </div>
-                  <div className="absolute inset-y-0 right-3 flex items-center">
-                    {leaderboardSearch && (
-                      <button
-                        onClick={() => setLeaderboardSearch('')}
-                        className="p-1.5 hover:bg-gray-700 rounded-md transition-colors"
-                        title="Clear search"
-                      >
-                        <X className="h-5 w-5 text-gray-400 hover:text-purple-400" />
-                      </button>
-                    )}
-                  </div>
+                  {leaderboardSearch && (
+                    <button
+                      onClick={() => setLeaderboardSearch('')}
+                      className="absolute inset-y-0 right-3 p-1.5 hover:bg-gray-700 rounded-md transition-colors"
+                      title="Clear search"
+                    >
+                      <X className="h-5 w-5 text-gray-400 hover:text-purple-400" />
+                    </button>
+                  )}
                 </div>
               </div>
-              <div className="flex flex-col md:flex-row gap-6">
-                {/* Token Leaderboard */}
-                <div className="w-full bg-gray-900 rounded-lg p-6">
-                  <div className="mb-6">
-                    <div className="relative">
-                      <input
-                        type="text"
-                        placeholder="Search leaderboard..."
-                        value={leaderboardSearch}
-                        onChange={(e) => setLeaderboardSearch(e.target.value)}
-                        className="w-full px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-lg pl-10 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                      />
-                      <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                        <Search className="h-5 w-5 text-gray-400" />
-                      </div>
-                    </div>
-                  </div>
 
-                  <div className="overflow-x-auto">
-                    <table className="w-full">
-                      <thead>
-                        <tr className="text-left text-gray-400 text-sm">
-                          <th className="pb-4 font-medium">Token</th>
-                          <th className="pb-4 font-medium">Price</th>
-                          <th className="pb-4 font-medium">24h Change</th>
-                          <th className="pb-4 font-medium">Market Cap</th>
-                          <th className="pb-4 font-medium">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {leaderboardTokens.map((token, index) => (
-                          <tr key={token.address} className="border-t border-gray-800">
-                            <td className="py-4">
-                              <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center">
-                                  {token.symbol.charAt(0)}
-                                </div>
-                                <div>
-                                  <div className="font-medium text-white">{token.name}</div>
-                                  <div className="text-sm text-gray-400">{token.symbol}</div>
-                                </div>
+              <div className="overflow-hidden">
+                <div className="max-h-[400px] overflow-y-auto">
+                  <table className="w-full">
+                    <thead className="sticky top-0 bg-gray-900 z-10">
+                      <tr className="text-left text-gray-400 text-sm">
+                        <th className="pb-4 font-medium">Token</th>
+                        <th className="pb-4 font-medium">Address</th>
+                        <th className="pb-4 font-medium">Analysis Calls</th>
+                        <th className="pb-4 font-medium">Links</th>
+                        <th className="pb-4 font-medium">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-800">
+                      {leaderboardTokens.map((token) => (
+                        <tr key={token.address} className="border-t border-gray-800">
+                          <td className="py-4">
+                            <div className="flex items-center gap-3">
+                              {token.icon && (
+                                <img 
+                                  src={token.icon} 
+                                  alt={token.name} 
+                                  className="w-8 h-8 rounded-full"
+                                />
+                              )}
+                              <div>
+                                <div className="font-medium text-white">{token.name}</div>
+                                <div className="text-sm text-gray-400">{token.symbol}</div>
                               </div>
-                            </td>
-                            <td className="py-4">
-                              <div className="text-white">${token.price.toLocaleString()}</div>
-                            </td>
-                            <td className="py-4">
-                              <div className={token.priceChange24h >= 0 ? 'text-green-500' : 'text-red-500'}>
-                                {token.priceChange24h >= 0 ? '+' : ''}{token.priceChange24h}%
-                              </div>
-                            </td>
-                            <td className="py-4">
-                              <div className="text-white">${token.marketCap.toLocaleString()}</div>
-                            </td>
-                            <td className="py-4">
+                            </div>
+                          </td>
+                          <td className="py-4">
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm text-gray-400 font-mono">
+                                {token.address.slice(0, 8)}...{token.address.slice(-6)}
+                              </span>
                               <button
-                                onClick={() => {
-                                  setSelectedToken(token);
-                                  setShowPreview(true);
-                                  setSearchQuery(token.address);
-                                }}
-                                className="px-3 py-1.5 text-sm bg-purple-500 hover:bg-purple-600 text-white rounded transition-colors"
+                                onClick={() => handleCopyAddress(token.address)}
+                                className="w-6 h-6 flex items-center justify-center rounded-full hover:bg-gray-700 transition-colors"
                               >
-                                Analyze
+                                {copiedAddress === token.address ? (
+                                  <Check size={14} className="text-green-400" />
+                                ) : (
+                                  <ClipboardCopy size={14} className="text-purple-400 hover:text-purple-300" />
+                                )}
                               </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                            </div>
+                          </td>
+                          <td className="py-4">
+                            <div className="text-white">{token.holders?.toLocaleString() || 0}</div>
+                          </td>
+                          <td className="py-4">
+                            <div className="flex items-center gap-2">
+                              {token.links?.website && (
+                                <a
+                                  href={token.links.website}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="p-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors"
+                                >
+                                  <Globe size={16} className="text-gray-300" />
+                                </a>
+                              )}
+                              {token.links?.twitter && (
+                                <a
+                                  href={token.links.twitter}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="p-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors"
+                                >
+                                  <Twitter size={16} className="text-gray-300" />
+                                </a>
+                              )}
+                              {token.links?.explorer && (
+                                <a
+                                  href={token.links.explorer}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="p-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors"
+                                >
+                                  <ExternalLink size={16} className="text-gray-300" />
+                                </a>
+                              )}
+                            </div>
+                          </td>
+                          <td className="py-4">
+                            <button
+                              onClick={() => handleAnalyzeToken(token)}
+                              className="px-3 py-1.5 text-sm bg-purple-500 hover:bg-purple-600 text-white rounded transition-colors"
+                            >
+                              Analyze
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
-          {/* SUI Ecosystem Section - Always Visible */}
-          <div className="bg-gray-900 border border-gray-800 rounded-lg p-6">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold mb-4">Powered by SUI Network</h2>
-              <p className="text-gray-400 max-w-2xl mx-auto">
-                SUI is a next-generation smart contract platform with high throughput, low latency, and an asset-oriented programming model powered by the Move programming language
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {/* Official SUI Resources */}
-              <div className="bg-gray-800/50 p-4 rounded-lg">
-                <h3 className="text-lg font-semibold mb-3 text-purple-400">Official Resources</h3>
-                <ul className="space-y-2">
-                  <li>
-                    <a href="https://sui.io" target="_blank" rel="noopener noreferrer" 
-                      className="text-gray-300 hover:text-purple-400 flex items-center gap-2 transition-colors">
-                      <span className="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
-                      SUI Official Website
-                    </a>
-                  </li>
-                  <li>
-                    <a href="https://docs.sui.io" target="_blank" rel="noopener noreferrer"
-                      className="text-gray-300 hover:text-purple-400 flex items-center gap-2 transition-colors">
-                      <span className="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
-                      Documentation
-                    </a>
-                  </li>
-                  <li>
-                    <a href="https://explorer.sui.io" target="_blank" rel="noopener noreferrer"
-                      className="text-gray-300 hover:text-purple-400 flex items-center gap-2 transition-colors">
-                      <span className="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
-                      Explorer
-                    </a>
-                  </li>
-                </ul>
-              </div>
-
-              {/* DeFi Projects */}
-              <div className="bg-gray-800/50 p-4 rounded-lg">
-                <h3 className="text-lg font-semibold mb-3 text-purple-400">Popular DeFi</h3>
-                <ul className="space-y-2">
-                  <li>
-                    <a href="https://app.suiswap.com" target="_blank" rel="noopener noreferrer"
-                      className="text-gray-300 hover:text-purple-400 flex items-center gap-2 transition-colors">
-                      <span className="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
-                      SuiSwap DEX
-                    </a>
-                  </li>
-                  <li>
-                    <a href="https://app.scallop.io" target="_blank" rel="noopener noreferrer"
-                      className="text-gray-300 hover:text-purple-400 flex items-center gap-2 transition-colors">
-                      <span className="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
-                      Scallop Lending
-                    </a>
-                  </li>
-                  <li>
-                    <a href="https://aftermath.finance" target="_blank" rel="noopener noreferrer"
-                      className="text-gray-300 hover:text-purple-400 flex items-center gap-2 transition-colors">
-                      <span className="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
-                      Aftermath Finance
-                    </a>
-                  </li>
-                </ul>
-              </div>
-
-              {/* Tools & Infrastructure */}
-              <div className="bg-gray-800/50 p-4 rounded-lg">
-                <h3 className="text-lg font-semibold mb-3 text-purple-400">Tools & Infrastructure</h3>
-                <ul className="space-y-2">
-                  <li>
-                    <a href="https://suipad.com" target="_blank" rel="noopener noreferrer"
-                      className="text-gray-300 hover:text-purple-400 flex items-center gap-2 transition-colors">
-                      <span className="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
-                      SuiPad Launchpad
-                    </a>
-                  </li>
-                  <li>
-                    <a href="https://suivision.xyz" target="_blank" rel="noopener noreferrer"
-                      className="text-gray-300 hover:text-purple-400 flex items-center gap-2 transition-colors">
-                      <span className="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
-                      SuiVision Analytics
-                    </a>
-                  </li>
-                  <li>
-                    <a href="https://www.movebit.xyz" target="_blank" rel="noopener noreferrer"
-                      className="text-gray-300 hover:text-purple-400 flex items-center gap-2 transition-colors">
-                      <span className="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
-                      MoveBit Security
-                    </a>
-                  </li>
-                </ul>
-              </div>
+        {/* SUI Ecosystem Section */}
+        <div className="bg-gray-900 border border-gray-800 rounded-lg p-6">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold mb-4">Powered by SUI Network</h2>
+            <p className="text-gray-400 max-w-2xl mx-auto">
+              SUI is a next-generation smart contract platform with high throughput, low latency, and an asset-oriented programming model powered by the Move programming language
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Official SUI Resources */}
+            <div className="bg-gray-800/50 p-4 rounded-lg">
+              <h3 className="text-lg font-semibold mb-3 text-purple-400">Official Resources</h3>
+              <ul className="space-y-2">
+                <li>
+                  <a href="https://sui.io" target="_blank" rel="noopener noreferrer" 
+                    className="text-gray-300 hover:text-purple-400 flex items-center gap-2 transition-colors">
+                    <span className="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
+                    SUI Official Website
+                  </a>
+                </li>
+                <li>
+                  <a href="https://docs.sui.io" target="_blank" rel="noopener noreferrer"
+                    className="text-gray-300 hover:text-purple-400 flex items-center gap-2 transition-colors">
+                    <span className="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
+                    Documentation
+                  </a>
+                </li>
+                <li>
+                  <a href="https://explorer.sui.io" target="_blank" rel="noopener noreferrer"
+                    className="text-gray-300 hover:text-purple-400 flex items-center gap-2 transition-colors">
+                    <span className="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
+                    Explorer
+                  </a>
+                </li>
+              </ul>
             </div>
 
-            <div className="text-center mt-8">
-              <a 
-                href="https://discord.gg/sui" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors"
-              >
-                Join SUI Community
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M7 17l9.2-9.2M17 17V7H7"/>
-                </svg>
-              </a>
+            {/* DeFi Projects */}
+            <div className="bg-gray-800/50 p-4 rounded-lg">
+              <h3 className="text-lg font-semibold mb-3 text-purple-400">Popular DeFi</h3>
+              <ul className="space-y-2">
+                <li>
+                  <a href="https://app.suiswap.com" target="_blank" rel="noopener noreferrer"
+                    className="text-gray-300 hover:text-purple-400 flex items-center gap-2 transition-colors">
+                    <span className="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
+                    SuiSwap DEX
+                  </a>
+                </li>
+                <li>
+                  <a href="https://app.scallop.io" target="_blank" rel="noopener noreferrer"
+                    className="text-gray-300 hover:text-purple-400 flex items-center gap-2 transition-colors">
+                    <span className="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
+                    Scallop Lending
+                  </a>
+                </li>
+                <li>
+                  <a href="https://aftermath.finance" target="_blank" rel="noopener noreferrer"
+                    className="text-gray-300 hover:text-purple-400 flex items-center gap-2 transition-colors">
+                    <span className="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
+                    Aftermath Finance
+                  </a>
+                </li>
+              </ul>
             </div>
+
+            {/* Tools & Infrastructure */}
+            <div className="bg-gray-800/50 p-4 rounded-lg">
+              <h3 className="text-lg font-semibold mb-3 text-purple-400">Tools & Infrastructure</h3>
+              <ul className="space-y-2">
+                <li>
+                  <a href="https://suipad.com" target="_blank" rel="noopener noreferrer"
+                    className="text-gray-300 hover:text-purple-400 flex items-center gap-2 transition-colors">
+                    <span className="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
+                    SuiPad Launchpad
+                  </a>
+                </li>
+                <li>
+                  <a href="https://suivision.xyz" target="_blank" rel="noopener noreferrer"
+                    className="text-gray-300 hover:text-purple-400 flex items-center gap-2 transition-colors">
+                    <span className="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
+                    SuiVision Analytics
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.movebit.xyz" target="_blank" rel="noopener noreferrer"
+                    className="text-gray-300 hover:text-purple-400 flex items-center gap-2 transition-colors">
+                    <span className="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
+                    MoveBit Security
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="text-center mt-8">
+            <a 
+              href="https://discord.gg/sui" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors"
+            >
+              Join SUI Community
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M7 17l9.2-9.2M17 17V7H7"/>
+              </svg>
+            </a>
           </div>
         </div>
       </div>

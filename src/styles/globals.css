@@ -8,6 +8,20 @@
   --background-end-rgb: 0, 0, 0;
 }
 
+/* Wallet Kit Dark Mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --wkit-accent-hs: 271, 91%; /* Purple to match our theme */
+    --wkit-on-accent-rgb: 255, 255, 255;
+    --wkit-bg-rgb: 17, 17, 17; /* Darker background */
+    --wkit-on-bg-rgb: 241, 241, 241;
+    --wkit-border-radius: 0.75rem;
+    --wkit-font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont;
+    --wkit-font-family-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas;
+    --wkit-modal-backdrop-filter: blur(8px);
+  }
+}
+
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(

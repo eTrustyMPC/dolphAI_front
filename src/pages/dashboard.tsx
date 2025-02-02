@@ -11,18 +11,19 @@ import {
   Star,
   ArrowUpRight,
   Search,
-  Loader
+  Loader,
+  ClipboardCopy,
+  Globe,
+  Twitter,
+  ExternalLink
 } from 'lucide-react';
 import { mockTokens } from '@/data/mockTokens';
 import type { Token } from '@/components/TokenPreview/types';
 import { Navbar } from '@/components/Navbar';
 
-console.log('Dashboard: Starting to load dynamic components');
-
 // Dynamic imports
 const TokenPreviewCard = dynamic(
   () => {
-    console.log('Dashboard: Loading TokenPreviewCard');
     return import('@/components/TokenPreview/TokenPreviewCard').then(mod => ({ default: mod.TokenPreviewCard }));
   },
   { 
@@ -37,7 +38,6 @@ const TokenPreviewCard = dynamic(
 
 const TokenMetrics = dynamic(
   () => {
-    console.log('Dashboard: Loading TokenMetrics');
     return import('@/components/TokenPreview/TokenMetrics').then(mod => ({ default: mod.TokenMetrics }));
   },
   { 
@@ -52,7 +52,6 @@ const TokenMetrics = dynamic(
 
 const TokenActions = dynamic(
   () => {
-    console.log('Dashboard: Loading TokenActions');
     return import('@/components/TokenPreview/TokenActions').then(mod => ({ default: mod.TokenActions }));
   },
   { 
@@ -73,7 +72,6 @@ interface WalletStats {
 }
 
 export default function DashboardPage() {
-  console.log('Dashboard: Component mounting');
   
   const router = useRouter();
   const wallet = useWallet();
@@ -90,36 +88,23 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log('Dashboard: useEffect running', {
-      isClient: typeof window !== 'undefined',
-      walletConnected: wallet.connected,
-      walletAddress: wallet.address,
-      isLoading: customWallet.isLoading,
-      isInitialized: customWallet.isInitialized
-    });
 
     if (!customWallet.isInitialized || customWallet.isLoading) {
-      console.log('Dashboard: Still initializing wallet context');
       return;
     }
 
     // Check if we're on the client side
     if (typeof window === 'undefined') {
-      console.log('Dashboard: Server-side rendering, skipping effect');
       return;
     }
 
     // Check wallet connection
     const wasConnected = localStorage.getItem('walletConnected');
-    console.log('Dashboard: Wallet connection status', { wasConnected });
     
     if (!wasConnected || !wallet.connected || !wallet.address) {
-      console.log('Dashboard: No wallet connection, redirecting to token-preview');
       router.push('/token-preview');
       return;
     }
-
-    console.log('Dashboard: Wallet connected:', wallet.address);
 
     // Initialize data
     const initializeData = async () => {
@@ -132,7 +117,7 @@ export default function DashboardPage() {
         // Set stats
         setStats({
           totalTokens: mockTokens.length,
-          totalValue: mockTokens.reduce((acc, token) => acc + token.marketCap, 0),
+          totalValue: mockTokens.reduce((acc, token) => acc + (token.marketCap || 0), 0),
           tokensWatching: 5,
           recentActivity: 8
         });
@@ -162,7 +147,6 @@ export default function DashboardPage() {
   }
 
   const handleTokenClick = (token: Token) => {
-    console.log('Dashboard: Token clicked', token);
     router.push(`/token/${token.address}`);
   };
 
@@ -170,7 +154,6 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-gray-950 text-white">
       <Navbar />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-8">
-        {console.log('Dashboard: Rendering header')}
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-2xl font-bold mb-2">Welcome back!</h1>
@@ -185,7 +168,6 @@ export default function DashboardPage() {
           </button>
         </div>
 
-        {console.log('Dashboard: Rendering stats grid', { stats })}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-gray-900 p-6 rounded-lg">
             <div className="flex items-center gap-3 mb-4">
@@ -228,7 +210,6 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {console.log('Dashboard: Rendering watchlist and recent activity')}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Watchlist */}
           <div className="bg-gray-900 rounded-lg p-6">
@@ -237,15 +218,14 @@ export default function DashboardPage() {
               <button className="text-purple-400 hover:text-purple-300">View All</button>
             </div>
             <div className="space-y-4">
-              {console.log('Dashboard: Rendering watchlist tokens:', watchlist)}
               {watchlist.map((token) => (
                 <div key={token.address} className="space-y-4">
                   <TokenPreviewCard token={token} />
                   <TokenActions 
                     token={token}
-                    onShare={() => console.log('Share clicked for', token.name)}
-                    onFavorite={() => console.log('Favorite clicked for', token.name)}
-                    onReport={() => console.log('Report clicked for', token.name)}
+                    onShare={() => {}}
+                    onFavorite={() => {}}
+                    onReport={() => {}}
                   />
                 </div>
               ))}
@@ -255,19 +235,75 @@ export default function DashboardPage() {
           {/* Recent Activity */}
           <div className="bg-gray-900 rounded-lg p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold">Recent Activity</h2>
+              <h2 className="text-xl font-bold">Most Analyzed Tokens</h2>
               <button className="text-purple-400 hover:text-purple-300">View All</button>
             </div>
             <div className="space-y-4">
-              {console.log('Dashboard: Rendering recent tokens:', recentTokens)}
               {recentTokens.map((token) => (
-                <div key={token.address} className="space-y-4">
-                  <TokenPreviewCard token={token} />
-                  <TokenMetrics metrics={{
-                    liquidity: token.marketCap * 0.1,
-                    volume: token.volume24h,
-                    priceChange24h: token.priceChange24h
-                  }} />
+                <div key={token.address} className="bg-gray-800 p-4 rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      {token.icon && (
+                        <img 
+                          src={token.icon} 
+                          alt={token.name} 
+                          className="w-8 h-8 rounded-full"
+                        />
+                      )}
+                      <div>
+                        <h3 className="font-medium">{token.name}</h3>
+                        <div className="flex items-center gap-2">
+                          <p className="text-sm text-gray-400 font-mono">{token.address.slice(0, 8)}...{token.address.slice(-6)}</p>
+                          <button 
+                            onClick={() => {
+                              navigator.clipboard.writeText(token.address);
+                            }}
+                            className="text-purple-400 hover:text-purple-300"
+                          >
+                            <ClipboardCopy size={14} />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-6">
+                      <div>
+                        <p className="text-sm text-gray-400">Analysis Calls</p>
+                        <p className="text-lg font-medium">{token.holders}</p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {token.links?.website && (
+                          <a 
+                            href={token.links.website}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors"
+                          >
+                            <Globe size={16} className="text-gray-300" />
+                          </a>
+                        )}
+                        {token.links?.twitter && (
+                          <a 
+                            href={token.links.twitter}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors"
+                          >
+                            <Twitter size={16} className="text-gray-300" />
+                          </a>
+                        )}
+                        {token.links?.explorer && (
+                          <a 
+                            href={token.links.explorer}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors"
+                          >
+                            <ExternalLink size={16} className="text-gray-300" />
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>

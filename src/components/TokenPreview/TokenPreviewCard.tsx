@@ -48,13 +48,6 @@ export const TokenPreviewCard: React.FC<TokenPreviewCardProps> = ({ token = null
       {token.description && (
         <p className="text-gray-400 mb-4">{token.description}</p>
       )}
-      <div className="flex justify-center">
-        <button
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-        >
-          Analyze token
-        </button>
-      </div>
     </div>
   );
 };

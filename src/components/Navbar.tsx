@@ -29,7 +29,7 @@ export function Navbar() {
             {wallet.connected ? (
               <div className="flex items-center gap-2">
                 <span className="text-gray-400 font-mono text-sm">
-                  {formatAddress(wallet.address)}
+                  {wallet.address ? formatAddress(wallet.address) : '...'}
                 </span>
                 <button
                   onClick={() => customWallet.disconnect()}

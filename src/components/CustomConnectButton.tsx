@@ -8,11 +8,11 @@ interface CustomConnectButtonProps {
 
 export function CustomConnectButton({ onSuccess, onError }: CustomConnectButtonProps) {
   return (
-    <div className="inline-block">
+    <div className="inline-block wkit-dark">
       <ConnectButton
         onConnectSuccess={onSuccess}
         onConnectError={onError}
-        className="!bg-black"
+        className="!bg-transparent"
       >
         <div className="flex items-center gap-2 px-6 py-2.5 bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
           <Wallet className="h-5 w-5" />
