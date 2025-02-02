@@ -13,7 +13,7 @@ export const TokenMetrics: React.FC<TokenMetricsProps> = ({ token = {} }) => {
   const { holders = 0, volume24h = 0, marketCap = 0 } = token;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-6 bg-gray-900 rounded-lg">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-6 bg-gray-900 rounded-lg" data-testid="metrics-grid">
       <div className="flex items-center gap-3">
         <Users className="text-purple-500" size={24} />
         <div>

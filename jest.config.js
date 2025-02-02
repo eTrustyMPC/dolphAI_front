@@ -9,33 +9,16 @@ const customJestConfig = {
   testEnvironment: 'jest-environment-jsdom',
   moduleDirectories: ['node_modules', '<rootDir>/'],
   moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1'
+    '^@/(.*)$': '<rootDir>/src/$1',
+    '^lucide-react$': '<rootDir>/node_modules/lucide-react/dist/cjs/lucide-react.js'
   },
   transform: {
     '^.+\\.(js|jsx|ts|tsx|mjs)$': ['babel-jest', { presets: ['next/babel'] }]
   },
   transformIgnorePatterns: [
     'node_modules/(?!(lucide-react)/)'
-  ]
+  ],
+  testMatch: ['**/__tests__/**/*.test.[jt]s?(x)']
 }
 
-module.exports = createJestConfig(customJestConfig)module.exports = {
-    preset: 'ts-jest',
-    testEnvironment: 'jsdom',
-    setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
-    moduleNameMapper: {
-      '^@/(.*)$': '<rootDir>/src/$1'
-    },
-    transform: {
-      '^.+\\.(ts|tsx)$': [
-        'ts-jest', {
-          tsconfig: 'tsconfig.json',
-          isolatedModules: true
-        }
-      ]
-    },
-    transformIgnorePatterns: [
-      '/node_modules/(?!(@testing-library|jest-dom|react-dom)/)'
-    ],
-    moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node']
-  }
+module.exports = createJestConfig(customJestConfig)
