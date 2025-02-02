@@ -9,3 +9,13 @@ export interface Token {
     explorer: string;
   };
 }
+
+declare global {
+  interface Window {
+    suiWallet?: {
+      connect: () => Promise<void>;
+    };
+  }
+}
+
+export {};

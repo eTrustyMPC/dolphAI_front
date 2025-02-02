@@ -3,11 +3,25 @@ import { Lock, Search, TrendingUp, Globe, Twitter, ExternalLink, InfoIcon, Refre
 import { TokenPreviewCard, TokenMetrics, TokenActions } from '@/components/TokenPreview';
 import { useTokenData } from '@/hooks/useTokenData';
 
+interface Token {
+  name: string;
+  address: string;
+  requestCount: number;
+  holders: number;
+  volume24h: number;
+  marketCap: number;
+  links: {
+    website: string;
+    twitter: string;
+    explorer: string;
+  };
+}
+
 const TokenPreviewPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [leaderboardSearch, setLeaderboardSearch] = useState('');
   const [showPreview, setShowPreview] = useState(false);
-  const [selectedToken, setSelectedToken] = useState(null);
+  const [selectedToken, setSelectedToken] = useState<Token | null>(null);
   const [isWalletConnecting, setIsWalletConnecting] = useState(false);
   const [copiedAddress, setCopiedAddress] = useState<string | null>(null);
 
@@ -233,7 +247,7 @@ const TokenPreviewPage: React.FC = () => {
     setSelectedToken(null);
   };
 
-  const handleAnalyzeToken = (token: any) => {
+  const handleAnalyzeToken = (token: Token) => {
     setSelectedToken(token);
     setShowPreview(true);
     setSearchQuery(token.address);
