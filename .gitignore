@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Production
+build
+.next
+out
+
+# Environment variables
+.env*.local
+
+# Debug
+*.log
+
+# Local development
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
