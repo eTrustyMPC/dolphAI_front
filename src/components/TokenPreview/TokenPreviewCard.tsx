@@ -7,7 +7,12 @@ interface TokenPreviewCardProps {
 }
 
 export const TokenPreviewCard: React.FC<TokenPreviewCardProps> = ({ token = null }) => {
-  if (!token) return null;
+  console.log('TokenPreviewCard: Rendering with token:', token);
+  
+  if (!token) {
+    console.log('TokenPreviewCard: No token provided, returning null');
+    return null;
+  }
 
   return (
     <div className="bg-gray-900 border border-gray-800 rounded-lg p-6">
@@ -17,39 +22,41 @@ export const TokenPreviewCard: React.FC<TokenPreviewCardProps> = ({ token = null
             {token.icon ? (
               <img 
                 src={token.icon} 
-                alt={token.name || 'Token'}
-                className="w-12 h-12 rounded-full"
+                alt={token.name} 
+                className="w-8 h-8"
               />
             ) : (
-              <div className="text-gray-600 text-2xl">?</div>
+              <span className="text-lg text-gray-400">?</span>
             )}
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-white">{token.name}</h1>
-            <p className="text-gray-400">{token.address}</p>
+            <h3 className="text-lg font-semibold">{token.name}</h3>
+            <p className="text-sm text-gray-400">{token.address}</p>
+            <p className="text-sm text-gray-400">{token.symbol}</p>
           </div>
         </div>
-        <div className="flex items-center gap-2 bg-gray-800/50 px-3 py-1 rounded-full">
-          <TrendingUp className="text-green-500" size={16} />
-          <span className="text-sm font-medium text-green-500">
-            ${token.marketCap?.toLocaleString()}
-          </span>
+        <div className="text-right">
+          <p className="text-lg font-semibold">${token.price}</p>
+          <div className="flex items-center gap-1 text-green-400">
+            <TrendingUp size={16} />
+            <span className="text-sm">
+              {token.priceChange24h ? `+${token.priceChange24h}%` : 'N/A'}
+            </span>
+          </div>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div>
-          <p className="text-sm text-gray-400 mb-1">24h Volume</p>
-          <p className="text-lg font-semibold text-white">${token.volume24h?.toLocaleString()}</p>
-        </div>
-        <div>
-          <p className="text-sm text-gray-400 mb-1">Holders</p>
-          <p className="text-lg font-semibold text-white">{token.holders?.toLocaleString()}</p>
-        </div>
-        <div>
-          <p className="text-sm text-gray-400 mb-1">Requests</p>
-          <p className="text-lg font-semibold text-white">{token.requestCount?.toLocaleString()}</p>
-        </div>
+      {token.description && (
+        <p className="text-gray-400 mb-4">{token.description}</p>
+      )}
+      <div className="flex justify-center">
+        <button
+          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+        >
+          Analyze token
+        </button>
       </div>
     </div>
   );
 };
+
+console.log('TokenPreviewCard: Module loaded');

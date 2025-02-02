@@ -13,6 +13,9 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
+    "@emotion/styled": "^11.14.0",
+    "@mysten/sui.js": "^0.54.1",
+    "@suiet/wallet-kit": "^0.3.3",
     "@types/node": "^20.8.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",

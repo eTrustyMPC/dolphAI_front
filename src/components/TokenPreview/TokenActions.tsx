@@ -1,91 +1,83 @@
 import React from 'react';
-import { Share2, Star, Flag, ExternalLink, Twitter, Globe } from 'lucide-react';
+import { Share2, Star, Flag } from 'lucide-react';
+import { Token } from './types';
 
 interface TokenActionsProps {
-  token?: {
-    links?: {
-      website?: string;
-      twitter?: string;
-      explorer?: string;
-    };
-  };
+  token: Token | null;
   onShare?: () => void;
   onFavorite?: () => void;
   onReport?: () => void;
 }
 
-export const TokenActions: React.FC<TokenActionsProps> = ({ 
-  token = {}, 
-  onShare = () => {}, 
-  onFavorite = () => {}, 
-  onReport = () => {} 
-}) => {
-  const links = token.links || {};
+export const TokenActions: React.FC<TokenActionsProps> = ({ token = null, onShare, onFavorite, onReport }) => {
+  console.log('TokenActions: Rendering with token:', token);
 
   return (
-    <div className="flex gap-4 justify-end">
-      <button
-        onClick={onShare}
-        className="p-2 text-gray-400 hover:text-purple-500 transition-colors"
-        title="Share"
-      >
-        <Share2 size={20} />
-      </button>
-      
-      <button
-        onClick={onFavorite}
-        className="p-2 text-gray-400 hover:text-purple-500 transition-colors"
-        title="Add to favorites"
-      >
-        <Star size={20} />
-      </button>
-      
-      <button
-        onClick={onReport}
-        className="p-2 text-gray-400 hover:text-red-500 transition-colors"
-        title="Report"
-      >
-        <Flag size={20} />
-      </button>
-
-      <div className="bg-gray-900 border border-gray-800 rounded-lg p-6">
-        <h3 className="text-xl font-bold mb-4">Quick Links</h3>
-        <div className="flex gap-4">
-          {links.website && (
+    <div className="bg-gray-900 border border-gray-800 rounded-lg p-4">
+      {token?.links && (
+        <div className="flex items-center justify-between mb-4">
+          {token.links.website && (
             <a
-              href={links.website}
+              href={token.links.website}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-gray-400 hover:text-purple-400 transition-colors"
+              className="p-2 text-gray-400 hover:text-purple-500 transition-colors"
             >
-              <Globe className="h-5 w-5" />
               Website
             </a>
           )}
-          {links.twitter && (
+          {token.links.twitter && (
             <a
-              href={links.twitter}
+              href={token.links.twitter}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-gray-400 hover:text-purple-400 transition-colors"
+              className="p-2 text-gray-400 hover:text-purple-500 transition-colors"
             >
-              <Twitter className="h-5 w-5" />
               Twitter
             </a>
           )}
-          {links.explorer && (
+          {token.links.explorer && (
             <a
-              href={links.explorer}
+              href={token.links.explorer}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-gray-400 hover:text-purple-400 transition-colors"
+              className="p-2 text-gray-400 hover:text-purple-500 transition-colors"
             >
-              <ExternalLink className="h-5 w-5" />
               Explorer
             </a>
           )}
         </div>
+      )}
+      <div className="flex items-center justify-between">
+        <button
+          onClick={onShare}
+          className="p-2 text-gray-400 hover:text-purple-500 transition-colors flex items-center gap-1"
+          title="Share"
+        >
+          <Share2 size={16} />
+          <span className="text-sm">Share</span>
+        </button>
+
+        <button
+          onClick={onFavorite}
+          className="p-2 text-gray-400 hover:text-purple-500 transition-colors flex items-center gap-1"
+          title="Add to favorites"
+        >
+          <Star size={16} />
+          <span className="text-sm">Add to Watchlist</span>
+        </button>
+
+        <button
+          onClick={onReport}
+          className="p-2 text-gray-400 hover:text-red-500 transition-colors flex items-center gap-1"
+          title="Report"
+        >
+          <Flag size={16} />
+          <span className="text-sm">Report</span>
+        </button>
       </div>
     </div>
   );
 };
+
+console.log('TokenActions: Module loaded');

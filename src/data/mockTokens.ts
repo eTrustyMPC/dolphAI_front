@@ -1,57 +1,93 @@
 import { Token } from '@/components/TokenPreview/types';
 
-// Seeded random number generator for consistent values between server and client
-class SeededRandom {
-  private seed: number;
-
-  constructor(seed: number) {
-    this.seed = seed;
+// Generate mock tokens with realistic data
+export const mockTokens: Token[] = [
+  {
+    name: 'SUI',
+    symbol: 'SUI',
+    address: '0x2::sui::SUI',
+    price: 1.25,
+    priceChange24h: 5.2,
+    marketCap: 500000000,
+    volume24h: 15000000,
+    holders: 50000,
+    logo: '/sui-logo.png'
+  },
+  {
+    name: 'CETUS',
+    symbol: 'CETUS',
+    address: '0x1::cetus::CETUS',
+    price: 0.85,
+    priceChange24h: 3.7,
+    marketCap: 250000000,
+    volume24h: 8000000,
+    holders: 25000,
+    logo: '/cetus-logo.png'
+  },
+  {
+    name: 'SUIPAD',
+    symbol: 'SPAD',
+    address: '0x3::suipad::SPAD',
+    price: 0.45,
+    priceChange24h: -2.1,
+    marketCap: 100000000,
+    volume24h: 5000000,
+    holders: 15000,
+    logo: '/suipad-logo.png'
+  },
+  {
+    name: 'TURBOS',
+    symbol: 'TURBOS',
+    address: '0x4::turbos::TURBOS',
+    price: 2.15,
+    priceChange24h: 8.4,
+    marketCap: 750000000,
+    volume24h: 25000000,
+    holders: 75000,
+    logo: '/turbos-logo.png'
+  },
+  {
+    name: 'NAVI',
+    symbol: 'NAVI',
+    address: '0x5::navi::NAVI',
+    price: 0.95,
+    priceChange24h: -1.8,
+    marketCap: 300000000,
+    volume24h: 12000000,
+    holders: 35000,
+    logo: '/navi-logo.png'
+  },
+  {
+    name: 'SUIA',
+    symbol: 'SUIA',
+    address: '0x6::suia::SUIA',
+    price: 1.75,
+    priceChange24h: 6.3,
+    marketCap: 450000000,
+    volume24h: 18000000,
+    holders: 45000,
+    logo: '/suia-logo.png'
+  },
+  {
+    name: 'KRIYA',
+    symbol: 'KRI',
+    address: '0x7::kriya::KRI',
+    price: 0.65,
+    priceChange24h: 4.2,
+    marketCap: 200000000,
+    volume24h: 9000000,
+    holders: 20000,
+    logo: '/kriya-logo.png'
+  },
+  {
+    name: 'BUCKET',
+    symbol: 'BKT',
+    address: '0x8::bucket::BKT',
+    price: 1.05,
+    priceChange24h: -3.5,
+    marketCap: 350000000,
+    volume24h: 14000000,
+    holders: 40000,
+    logo: '/bucket-logo.png'
   }
-
-  // Simple random number generator with seed
-  next(): number {
-    this.seed = (this.seed * 16807) % 2147483647;
-    return (this.seed - 1) / 2147483646;
-  }
-}
-
-const random = new SeededRandom(42); // Using fixed seed for consistency
-
-function generateRandomAddress(index: number): string {
-  const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-  const prefix = 'SUI'; // Add a consistent prefix
-  const suffix = index.toString().padStart(3, '0'); // Add index as suffix
-  const randomPart = Array(39).fill(0).map(() => chars[Math.floor(random.next() * chars.length)]).join('');
-  return prefix + randomPart + suffix;
-}
-
-function generateRandomNumber(min: number, max: number): number {
-  return Math.floor(random.next() * (max - min + 1)) + min;
-}
-
-const tokenNames = [
-  'PEPE', 'DOGE', 'SHIB', 'FLOKI', 'BONE', 'KISHU', 'ELON', 'AKITA',
-  'HOGE', 'SAMO', 'CATE', 'TAMA', 'BABYDOGE', 'MEME', 'WEN', 'WOJAK',
-  'CHAD', 'BASED', 'WAGMI', 'GG', 'FOMO', 'MOON', 'PUMP', 'APE'
 ];
-
-export const mockTokens: Token[] = Array(24).fill(null).map((_, index) => {
-  const marketCap = generateRandomNumber(100000, 10000000);
-  const volume24h = marketCap * (generateRandomNumber(1, 20) / 100); // 1-20% of market cap
-  const holders = generateRandomNumber(100, 10000);
-  const requestCount = generateRandomNumber(1000, 20000);
-  
-  return {
-    name: tokenNames[index],
-    address: generateRandomAddress(index),
-    requestCount,
-    holders,
-    volume24h,
-    marketCap,
-    links: {
-      website: `https://${tokenNames[index].toLowerCase()}.com`,
-      twitter: `https://twitter.com/${tokenNames[index].toLowerCase()}_official`,
-      explorer: `https://explorer.sui.io/token/${tokenNames[index].toLowerCase()}`
-    }
-  };
-});

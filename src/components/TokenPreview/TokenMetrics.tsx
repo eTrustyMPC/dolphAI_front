@@ -1,42 +1,40 @@
 import React from 'react';
-import { BarChart2, Users, DollarSign } from 'lucide-react';
+import { TrendingUp, DollarSign, BarChart3 } from 'lucide-react';
 
 interface TokenMetricsProps {
-  token?: {
+  metrics: {
+    liquidity: number;
+    volume: number;
+    priceChange24h: number;
     holders?: number;
-    volume24h?: number;
     marketCap?: number;
-  };
+  } | null;
 }
 
-export const TokenMetrics: React.FC<TokenMetricsProps> = ({ token = {} }) => {
-  const { holders = 0, volume24h = 0, marketCap = 0 } = token;
+export const TokenMetrics: React.FC<TokenMetricsProps> = ({ metrics }) => {
+  console.log('TokenMetrics: Rendering with metrics:', metrics);
+  
+  if (!metrics) {
+    console.log('TokenMetrics: No metrics provided, returning null');
+    return null;
+  }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-6 bg-gray-900 rounded-lg" data-testid="metrics-grid">
-      <div className="flex items-center gap-3">
-        <Users className="text-purple-500" size={24} />
-        <div>
-          <p className="text-sm text-gray-400">Holders</p>
-          <p className="text-lg font-semibold text-white">{holders.toLocaleString()}</p>
-        </div>
+    <div data-testid="metrics-grid" className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="bg-gray-800/50 p-4 rounded-lg">
+        <h3 className="text-sm text-gray-400 mb-2">Holders</h3>
+        <p className="text-xl font-medium">{metrics.holders?.toLocaleString() || '0'}</p>
       </div>
-      
-      <div className="flex items-center gap-3">
-        <BarChart2 className="text-purple-500" size={24} />
-        <div>
-          <p className="text-sm text-gray-400">24h Volume</p>
-          <p className="text-lg font-semibold text-white">${volume24h.toLocaleString()}</p>
-        </div>
+      <div className="bg-gray-800/50 p-4 rounded-lg">
+        <h3 className="text-sm text-gray-400 mb-2">24h Volume</h3>
+        <p className="text-xl font-medium">${metrics.volume?.toLocaleString() || '0'}</p>
       </div>
-      
-      <div className="flex items-center gap-3">
-        <DollarSign className="text-purple-500" size={24} />
-        <div>
-          <p className="text-sm text-gray-400">Market Cap</p>
-          <p className="text-lg font-semibold text-white">${marketCap.toLocaleString()}</p>
-        </div>
+      <div className="bg-gray-800/50 p-4 rounded-lg">
+        <h3 className="text-sm text-gray-400 mb-2">Market Cap</h3>
+        <p className="text-xl font-medium">${metrics.marketCap?.toLocaleString() || '0'}</p>
       </div>
     </div>
   );
 };
+
+console.log('TokenMetrics: Module loaded');

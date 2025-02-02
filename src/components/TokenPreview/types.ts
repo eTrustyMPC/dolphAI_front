@@ -1,18 +1,13 @@
 export interface Token {
   name: string;
+  symbol: string;
   address: string;
-  requestCount: number;
-  holders: number;
-  volume24h: number;
+  price: number;
+  priceChange24h: number;
   marketCap: number;
-  links: {
-    website: string;
-    twitter: string;
-    explorer: string;
-  };
-  symbol?: string;
-  price?: number;
-  icon?: string;
+  volume24h: number;
+  holders: number;
+  logo?: string;
 }
 
 export interface TokenMetrics {
