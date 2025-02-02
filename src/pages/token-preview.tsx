@@ -5,20 +5,6 @@ import { useTokenData } from '@/hooks/useTokenData';
 import { mockTokens } from '@/data/mockTokens';
 import { Token } from '@/components/TokenPreview/types';
 
-interface Token {
-  name: string;
-  address: string;
-  requestCount: number;
-  holders: number;
-  volume24h: number;
-  marketCap: number;
-  links: {
-    website: string;
-    twitter: string;
-    explorer: string;
-  };
-}
-
 const TokenPreviewPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [leaderboardSearch, setLeaderboardSearch] = useState('');
