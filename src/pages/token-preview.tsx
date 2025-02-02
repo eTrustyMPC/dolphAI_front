@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Lock, Search, TrendingUp, Globe, Twitter, ExternalLink, InfoIcon, RefreshCcw, X } from 'lucide-react';
 import { TokenPreviewCard, TokenMetrics, TokenActions } from '@/components/TokenPreview';
 import { useTokenData } from '@/hooks/useTokenData';
+import { mockTokens } from '@/data/mockTokens';
+import { Token } from '@/components/TokenPreview/types';
 
 interface Token {
   name: string;
@@ -31,177 +33,7 @@ const TokenPreviewPage: React.FC = () => {
     setTimeout(() => setCopiedAddress(null), 2000);
   };
 
-  const topTokens = [
-    { 
-      name: 'BTW',
-      address: 'E2RsfZrsxfN7yHraTRyBL8V3GVHto35KVTpUUsEcpump',
-      requestCount: 15234,
-      holders: 1234,
-      volume24h: 1000000,
-      marketCap: 5000000,
-      links: {
-        website: 'https://btw.com',
-        twitter: 'https://twitter.com/@btw_official',
-        explorer: 'https://explorer.sui.io/btw'
-      }
-    },
-    { 
-      name: 'Fartcoin',
-      address: '9BB6NFEcjBCtNLFko2FqVQBq8HHM13kCyYcdQbgpump',
-      requestCount: 12123,
-      holders: 1234,
-      volume24h: 1000000,
-      marketCap: 5000000,
-      links: {
-        website: 'https://fartcoin.com',
-        twitter: 'https://twitter.com/@fartcoin',
-        explorer: 'https://explorer.sui.io/fart'
-      }
-    },
-    { 
-      name: 'MESH',
-      address: 'FnqXjNmCPEBNMTnveAvwuRsCdtKz7qnjJjGB1EwNpump',
-      requestCount: 10234,
-      holders: 1234,
-      volume24h: 1000000,
-      marketCap: 5000000,
-      links: {
-        website: 'https://mesh.network',
-        twitter: 'https://twitter.com/@mesh_network',
-        explorer: 'https://explorer.sui.io/mesh'
-      }
-    },
-    { 
-      name: 'SUIP',
-      address: 'KLqXjNmCPEBNMTnveAvwuRsCdtKz7qnjJjGB1EwNsuip',
-      requestCount: 9876,
-      holders: 1234,
-      volume24h: 1000000,
-      marketCap: 5000000,
-      links: {
-        website: 'https://suip.network',
-        twitter: 'https://twitter.com/@suip_network',
-        explorer: 'https://explorer.sui.io/suip'
-      }
-    },
-    { 
-      name: 'COCO',
-      address: 'MMqXjNmCPEBNMTnveAvwuRsCdtKz7qnjJjGB1EwNcoco',
-      requestCount: 8765,
-      holders: 1234,
-      volume24h: 1000000,
-      marketCap: 5000000,
-      links: {
-        website: 'https://coco.finance',
-        twitter: 'https://twitter.com/@coco_finance',
-        explorer: 'https://explorer.sui.io/coco'
-      }
-    },
-    { 
-      name: 'WAVE',
-      address: 'NNqXjNmCPEBNMTnveAvwuRsCdtKz7qnjJjGB1EwNwave',
-      requestCount: 7654,
-      holders: 1234,
-      volume24h: 1000000,
-      marketCap: 5000000,
-      links: {
-        website: 'https://wave.protocol',
-        twitter: 'https://twitter.com/@wave_protocol',
-        explorer: 'https://explorer.sui.io/wave'
-      }
-    },
-    { 
-      name: 'SURF',
-      address: 'OOqXjNmCPEBNMTnveAvwuRsCdtKz7qnjJjGB1EwNsurf',
-      requestCount: 6543,
-      holders: 1234,
-      volume24h: 1000000,
-      marketCap: 5000000,
-      links: {
-        website: 'https://surf.finance',
-        twitter: 'https://twitter.com/@surf_finance',
-        explorer: 'https://explorer.sui.io/surf'
-      }
-    },
-    { 
-      name: 'PALM',
-      address: 'PPqXjNmCPEBNMTnveAvwuRsCdtKz7qnjJjGB1EwNpalm',
-      requestCount: 5432,
-      holders: 1234,
-      volume24h: 1000000,
-      marketCap: 5000000,
-      links: {
-        website: 'https://palm.eco',
-        twitter: 'https://twitter.com/@palm_eco',
-        explorer: 'https://explorer.sui.io/palm'
-      }
-    },
-    { 
-      name: 'REEF',
-      address: 'QQqXjNmCPEBNMTnveAvwuRsCdtKz7qnjJjGB1EwNreef',
-      requestCount: 4321,
-      holders: 1234,
-      volume24h: 1000000,
-      marketCap: 5000000,
-      links: {
-        website: 'https://reef.defi',
-        twitter: 'https://twitter.com/@reef_defi',
-        explorer: 'https://explorer.sui.io/reef'
-      }
-    },
-    { 
-      name: 'SHELL',
-      address: 'RRqXjNmCPEBNMTnveAvwuRsCdtKz7qnjJjGB1EwNshel',
-      requestCount: 3210,
-      holders: 1234,
-      volume24h: 1000000,
-      marketCap: 5000000,
-      links: {
-        website: 'https://shell.dao',
-        twitter: 'https://twitter.com/@shell_dao',
-        explorer: 'https://explorer.sui.io/shell'
-      }
-    },
-    { 
-      name: 'CORAL',
-      address: 'SSqXjNmCPEBNMTnveAvwuRsCdtKz7qnjJjGB1EwNcora',
-      requestCount: 3100,
-      holders: 1234,
-      volume24h: 1000000,
-      marketCap: 5000000,
-      links: {
-        website: 'https://coral.exchange',
-        twitter: 'https://twitter.com/@coral_exchange',
-        explorer: 'https://explorer.sui.io/coral'
-      }
-    },
-    { 
-      name: 'PEARL',
-      address: 'TTqXjNmCPEBNMTnveAvwuRsCdtKz7qnjJjGB1EwNpear',
-      requestCount: 2987,
-      holders: 1234,
-      volume24h: 1000000,
-      marketCap: 5000000,
-      links: {
-        website: 'https://pearl.finance',
-        twitter: 'https://twitter.com/@pearl_finance',
-        explorer: 'https://explorer.sui.io/pearl'
-      }
-    },
-    ...Array.from({ length: 38 }, (_, i) => ({
-      name: `TOKEN${i + 13}`,
-      address: `${String.fromCharCode(85 + Math.floor(i/26))}${String.fromCharCode(65 + (i%26))}qXjNmCPEBNMTnveAvwuRsCdtKz7qnjJjGB1EwN${i + 13}`,
-      requestCount: Math.floor(2800 * Math.pow(0.95, i)),
-      holders: 1234,
-      volume24h: 1000000,
-      marketCap: 5000000,
-      links: {
-        website: `https://token${i + 13}.network`,
-        twitter: `https://twitter.com/@token${i + 13}`,
-        explorer: `https://explorer.sui.io/token${i + 13}`
-      }
-    }))
-  ];
+  const topTokens = mockTokens;
 
   // Filter tokens for the main search
   const filteredTokens = topTokens.filter(token =>
@@ -214,8 +46,7 @@ const TokenPreviewPage: React.FC = () => {
     .filter(token =>
       token.name.toLowerCase().includes(leaderboardSearch.toLowerCase()) ||
       token.address.toLowerCase().includes(leaderboardSearch.toLowerCase())
-    )
-    .slice(0, 6); // Limit to 6 tokens
+    );
 
   const handleWalletConnect = async () => {
     setIsWalletConnecting(true);
@@ -443,85 +274,130 @@ const TokenPreviewPage: React.FC = () => {
                   </div>
                 </div>
               </div>
-              <div className="overflow-x-auto">
-                <div className="max-h-[400px] overflow-y-auto">
-                  <table className="min-w-full divide-y divide-gray-800">
-                    <thead>
-                      <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">#</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Token</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Address</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Requests</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Links</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-800">
-                      {leaderboardTokens.map((token, index) => (
-                        <tr key={token.address} className="hover:bg-gray-800/30">
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">#{index + 1}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-white font-medium">{token.name}</td>
-                          <td className="px-4 py-3 text-sm">
-                            <div className="flex items-center space-x-2">
-                              <span className="text-gray-300">{token.address.slice(0, 6)}...{token.address.slice(-4)}</span>
-                              <button
-                                onClick={() => handleCopyAddress(token.address)}
-                                className="p-1.5 hover:bg-gray-700 rounded-md transition-colors"
-                                title="Copy address"
-                              >
-                                {copiedAddress === token.address ? (
-                                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-green-500" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                  </svg>
-                                ) : (
-                                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-400 hover:text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                                  </svg>
-                                )}
-                              </button>
-                            </div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{(token.requestCount || 0).toLocaleString()}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-right">
-                            <div className="flex items-center justify-end gap-3">
-                              <a
-                                href={token.links?.website}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-gray-400 hover:text-purple-400 transition-colors"
-                              >
-                                <Globe className="h-4 w-4" />
-                              </a>
-                              <a
-                                href={token.links?.twitter}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-gray-400 hover:text-purple-400 transition-colors"
-                              >
-                                <Twitter className="h-4 w-4" />
-                              </a>
-                              <a
-                                href={token.links?.explorer}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-gray-400 hover:text-purple-400 transition-colors"
-                              >
-                                <ExternalLink className="h-4 w-4" />
-                              </a>
-                            </div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-right">
-                            <button
-                              onClick={() => handleAnalyzeToken(token)}
-                              className="px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition-colors text-sm font-medium"
-                            >
-                              Analyze
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+              <div className="flex flex-col md:flex-row gap-6">
+                {/* Token Leaderboard */}
+                <div className="w-full bg-gray-900 rounded-lg p-6">
+                  <div className="mb-6">
+                    <h2 className="text-xl font-bold text-white mb-4">Token Leaderboard</h2>
+                    <div className="relative">
+                      <input
+                        type="text"
+                        placeholder="Search tokens..."
+                        value={leaderboardSearch}
+                        onChange={(e) => setLeaderboardSearch(e.target.value)}
+                        className="w-full bg-gray-800 text-white rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      />
+                      <Search className="absolute left-3 top-2.5 text-gray-400" size={20} />
+                    </div>
+                  </div>
+                  
+                  <div className="overflow-x-auto">
+                    <div className="h-[384px] overflow-y-auto scrollbar-custom">
+                      <style jsx global>{`
+                        .scrollbar-custom {
+                          scrollbar-width: thin;
+                          scrollbar-color: #6B46C1 #1F2937;
+                        }
+                        
+                        .scrollbar-custom::-webkit-scrollbar {
+                          width: 8px;
+                        }
+                        
+                        .scrollbar-custom::-webkit-scrollbar-track {
+                          background: #1F2937;
+                          border-radius: 4px;
+                        }
+                        
+                        .scrollbar-custom::-webkit-scrollbar-thumb {
+                          background-color: #6B46C1;
+                          border-radius: 4px;
+                          border: 2px solid #1F2937;
+                        }
+                        
+                        .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+                          background-color: #805AD5;
+                        }
+                      `}</style>
+                      
+                      <table className="min-w-full divide-y divide-gray-800">
+                        <thead>
+                          <tr>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">#</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Token</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Address</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Requests</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Links</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-800">
+                          {leaderboardTokens.map((token, index) => (
+                            <tr key={token.address} className="hover:bg-gray-800/30">
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">#{index + 1}</td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-white font-medium">{token.name}</td>
+                              <td className="px-4 py-3 text-sm">
+                                <div className="flex items-center space-x-2">
+                                  <span className="text-gray-300">{token.address.slice(0, 6)}...{token.address.slice(-4)}</span>
+                                  <button
+                                    onClick={() => handleCopyAddress(token.address)}
+                                    className="p-1.5 hover:bg-gray-700 rounded-md transition-colors"
+                                    title="Copy address"
+                                  >
+                                    {copiedAddress === token.address ? (
+                                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-green-500" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                      </svg>
+                                    ) : (
+                                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-400 hover:text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                      </svg>
+                                    )}
+                                  </button>
+                                </div>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{(token.requestCount || 0).toLocaleString()}</td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-right">
+                                <div className="flex items-center justify-end gap-3">
+                                  <a
+                                    href={token.links?.website}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-gray-400 hover:text-purple-400 transition-colors"
+                                  >
+                                    <Globe className="h-4 w-4" />
+                                  </a>
+                                  <a
+                                    href={token.links?.twitter}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-gray-400 hover:text-purple-400 transition-colors"
+                                  >
+                                    <Twitter className="h-4 w-4" />
+                                  </a>
+                                  <a
+                                    href={token.links?.explorer}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-gray-400 hover:text-purple-400 transition-colors"
+                                  >
+                                    <ExternalLink className="h-4 w-4" />
+                                  </a>
+                                </div>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-right">
+                                <button
+                                  onClick={() => handleAnalyzeToken(token)}
+                                  className="px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition-colors text-sm font-medium"
+                                >
+                                  Analyze
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
