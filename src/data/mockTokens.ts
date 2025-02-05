@@ -14,7 +14,7 @@ export const mockTokens: Token[] = [
     holders: 100000,
     icon: '/sui-logo.png',
     description: 'The native token of the Sui blockchain platform, used for gas fees and staking.',
-    llmSummary: 'Sui (SUI) demonstrates strong network growth with increasing adoption metrics. Recent protocol upgrades and partnerships suggest positive momentum. Key metrics show healthy token distribution and growing TVL, though market volatility remains a factor to watch.',
+    llmSummary: 'Sui (SUI) demonstrates strong network growth with increasing adoption metrics. Recent protocol upgrades and partnerships suggest positive momentum.',
     valueProp: 'Sui is a Layer 1 blockchain that redefines asset ownership and empowers creators and developers with unmatched scalability.',
     dynamics: {
       weeklyActiveUsers: 125000,
@@ -33,11 +33,6 @@ export const mockTokens: Token[] = [
         timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
         message: 'New contract interaction pattern identified',
         type: 'info'
-      },
-      {
-        timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(),
-        message: 'Trading volume increased by 25% in last 24h',
-        type: 'success'
       }
     ],
     recentArticles: [
@@ -54,8 +49,17 @@ export const mockTokens: Token[] = [
       website: 'https://sui.io',
       twitter: 'https://twitter.com/SuiNetwork',
       discord: 'https://discord.gg/sui',
-      contract: 'https://explorer.sui.io/token/sui'
-    }
+      contract: 'https://explorer.sui.io/token/sui',
+      explorer: 'https://explorer.sui.io',
+      telegram: 'https://t.me/sui'
+    },
+    marketCapChange: '0.5%',
+    volumeChange24h: '1.2%',
+    holdersChange: '0.3%',
+    transactions: 1000,
+    transactionsChange: '2.0%',
+    liquidity: 100000,
+    liquidityChange: '1.0%',
   },
   {
     name: 'Scallop',
@@ -69,7 +73,7 @@ export const mockTokens: Token[] = [
     holders: 50000,
     icon: '/scallop-logo.png',
     description: 'The governance token of the Scallop protocol, used for voting and staking.',
-    llmSummary: 'Scallop (SCA) shows promising growth in its DeFi lending protocol, with increasing adoption and TVL. However, the token\'s price has been volatile, and its market capitalization remains relatively low.',
+    llmSummary: 'Scallop (SCA) shows promising growth in its DeFi lending protocol, with increasing adoption and TVL.',
     valueProp: 'Scallop revolutionizes DeFi lending with its unique risk management and liquidation system.',
     dynamics: {
       weeklyActiveUsers: 80000,
@@ -100,8 +104,17 @@ export const mockTokens: Token[] = [
       website: 'https://scallop.io',
       twitter: 'https://twitter.com/ScallopProtocol',
       discord: 'https://discord.gg/scallop',
-      contract: 'https://explorer.sui.io/token/sca'
-    }
+      contract: 'https://explorer.sui.io/token/sca',
+      explorer: 'https://explorer.sui.io',
+      telegram: 'https://t.me/scallop'
+    },
+    marketCapChange: '0.4%',
+    volumeChange24h: '1.0%',
+    holdersChange: '0.2%',
+    transactions: 800,
+    transactionsChange: '1.5%',
+    liquidity: 80000,
+    liquidityChange: '0.8%',
   },
   {
     name: 'Aftermath',
@@ -115,8 +128,8 @@ export const mockTokens: Token[] = [
     holders: 75000,
     icon: '/aftermath-logo.png',
     description: 'The utility token of Aftermath Finance, used for trading and staking.',
-    llmSummary: 'Aftermath (AFT) has seen significant growth in its trading volume and TVL, with a strong focus on institutional-grade perpetual trading. However, the token\'s price remains volatile, and its market capitalization is relatively low.',
-    valueProp: 'Aftermath Finance brings institutional-grade perpetual trading to DeFi with unique liquidity mechanisms.',
+    llmSummary: 'Aftermath (AFT) has seen significant growth in its trading volume and TVL.',
+    valueProp: 'Aftermath Finance brings institutional-grade perpetual trading to DeFi.',
     dynamics: {
       weeklyActiveUsers: 120000,
       weeklyTxCount: 600000,
@@ -146,8 +159,17 @@ export const mockTokens: Token[] = [
       website: 'https://aftermath.finance',
       twitter: 'https://twitter.com/AftermathFi',
       discord: 'https://discord.gg/aftermath',
-      contract: 'https://explorer.sui.io/token/aft'
-    }
+      contract: 'https://explorer.sui.io/token/aft',
+      explorer: 'https://explorer.sui.io',
+      telegram: 'https://t.me/aftermath'
+    },
+    marketCapChange: '0.6%',
+    volumeChange24h: '1.3%',
+    holdersChange: '0.4%',
+    transactions: 1200,
+    transactionsChange: '2.5%',
+    liquidity: 120000,
+    liquidityChange: '1.2%',
   },
   {
     name: 'Suiswap',
@@ -161,8 +183,8 @@ export const mockTokens: Token[] = [
     holders: 40000,
     icon: '/suiswap-logo.png',
     description: 'The governance token of the Suiswap DEX, used for voting and staking.',
-    llmSummary: 'Suiswap (SWAP) has seen steady growth in its trading volume and TVL, with a strong focus on providing a seamless trading experience. However, the token\'s price remains relatively low, and its market capitalization is limited.',
-    valueProp: 'Suiswap provides a seamless trading experience with its innovative liquidity solutions and low fees.',
+    llmSummary: 'Suiswap (SWAP) has seen steady growth in its trading volume and TVL.',
+    valueProp: 'Suiswap provides a seamless trading experience with low fees.',
     dynamics: {
       weeklyActiveUsers: 90000,
       weeklyTxCount: 500000,
@@ -178,7 +200,7 @@ export const mockTokens: Token[] = [
       },
       {
         timestamp: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(),
-        message: 'Trading volume increased by 15% in last 24h',
+        message: 'Trading volume increased by 15%',
         type: 'info'
       }
     ],
@@ -192,8 +214,17 @@ export const mockTokens: Token[] = [
       website: 'https://suiswap.com',
       twitter: 'https://twitter.com/SuiswapDEX',
       discord: 'https://discord.gg/suiswap',
-      contract: 'https://explorer.sui.io/token/swap'
-    }
+      contract: 'https://explorer.sui.io/token/swap',
+      explorer: 'https://explorer.sui.io',
+      telegram: 'https://t.me/suiswap'
+    },
+    marketCapChange: '0.3%',
+    volumeChange24h: '0.9%',
+    holdersChange: '0.2%',
+    transactions: 600,
+    transactionsChange: '1.1%',
+    liquidity: 60000,
+    liquidityChange: '0.7%',
   },
   {
     name: 'Cetus',
@@ -207,8 +238,8 @@ export const mockTokens: Token[] = [
     holders: 60000,
     icon: '/cetus-logo.png',
     description: 'The utility token of the Cetus protocol, used for yield farming and staking.',
-    llmSummary: 'Cetus (CET) has seen significant growth in its yield farming and TVL, with a strong focus on providing high yields. However, the token\'s price remains relatively low, and its market capitalization is limited.',
-    valueProp: 'Cetus provides a unique yield farming experience with its innovative mechanisms and high yields.',
+    llmSummary: 'Cetus (CET) has seen significant growth in its yield farming and TVL.',
+    valueProp: 'Cetus provides innovative yield farming mechanisms.',
     dynamics: {
       weeklyActiveUsers: 100000,
       weeklyTxCount: 550000,
@@ -224,7 +255,7 @@ export const mockTokens: Token[] = [
       },
       {
         timestamp: new Date(Date.now() - 18 * 60 * 60 * 1000).toISOString(),
-        message: 'Trading volume increased by 20% in last 24h',
+        message: 'APY increased across pools',
         type: 'info'
       }
     ],
@@ -238,8 +269,17 @@ export const mockTokens: Token[] = [
       website: 'https://cetus.io',
       twitter: 'https://twitter.com/CetusProtocol',
       discord: 'https://discord.gg/cetus',
-      contract: 'https://explorer.sui.io/token/cet'
-    }
+      contract: 'https://explorer.sui.io/token/cet',
+      explorer: 'https://explorer.sui.io',
+      telegram: 'https://t.me/cetus'
+    },
+    marketCapChange: '0.5%',
+    volumeChange24h: '1.1%',
+    holdersChange: '0.3%',
+    transactions: 900,
+    transactionsChange: '1.8%',
+    liquidity: 90000,
+    liquidityChange: '0.9%',
   },
   {
     name: 'Turbos',
@@ -253,8 +293,8 @@ export const mockTokens: Token[] = [
     holders: 80000,
     icon: '/turbos-logo.png',
     description: 'The governance token of Turbos Finance, used for voting and staking.',
-    llmSummary: 'Turbos (TURBOS) has seen significant growth in its turbocharging mechanisms and TVL, with a strong focus on providing high yields. However, the token\'s price remains relatively high, and its market capitalization is limited.',
-    valueProp: 'Turbos provides a unique turbocharging experience with its innovative mechanisms and high yields.',
+    llmSummary: 'Turbos (TURBOS) has seen significant growth in its turbocharging mechanisms and TVL.',
+    valueProp: 'Turbos provides high-performance DeFi trading with innovative mechanisms.',
     dynamics: {
       weeklyActiveUsers: 110000,
       weeklyTxCount: 600000,
@@ -270,22 +310,31 @@ export const mockTokens: Token[] = [
       },
       {
         timestamp: new Date(Date.now() - 22 * 60 * 60 * 1000).toISOString(),
-        message: 'Trading volume increased by 25% in last 24h',
+        message: 'Platform upgrade completed',
         type: 'info'
       }
     ],
     recentArticles: [
       {
-        title: 'Turbos Introduces New Turbocharging Mechanisms',
-        url: 'https://turbos.finance/blog/new-mechanisms'
+        title: 'Turbos Introduces New Trading Features',
+        url: 'https://turbos.finance/blog/new-features'
       }
     ],
     links: {
       website: 'https://turbos.finance',
       twitter: 'https://twitter.com/TurbosFi',
       discord: 'https://discord.gg/turbos',
-      contract: 'https://explorer.sui.io/token/turbos'
-    }
+      contract: 'https://explorer.sui.io/token/turbos',
+      explorer: 'https://explorer.sui.io',
+      telegram: 'https://t.me/turbos'
+    },
+    marketCapChange: '0.8%',
+    volumeChange24h: '1.5%',
+    holdersChange: '0.5%',
+    transactions: 1500,
+    transactionsChange: '2.8%',
+    liquidity: 150000,
+    liquidityChange: '1.4%',
   },
   {
     name: 'Bucket',
@@ -299,8 +348,8 @@ export const mockTokens: Token[] = [
     holders: 45000,
     icon: '/bucket-logo.png',
     description: 'The utility token of Bucket Protocol, used for bucketing and staking.',
-    llmSummary: 'Bucket (BKT) has seen steady growth in its bucketing mechanisms and TVL, with a strong focus on providing high yields. However, the token\'s price remains relatively low, and its market capitalization is limited.',
-    valueProp: 'Bucket provides a unique bucketing experience with its innovative mechanisms and high yields.',
+    llmSummary: 'Bucket (BKT) has shown steady growth in its liquidity provision mechanisms.',
+    valueProp: 'Bucket Protocol simplifies DeFi liquidity provision.',
     dynamics: {
       weeklyActiveUsers: 90000,
       weeklyTxCount: 450000,
@@ -311,27 +360,36 @@ export const mockTokens: Token[] = [
     recentUpdates: [
       {
         timestamp: new Date(Date.now() - 25 * 60 * 60 * 1000).toISOString(),
-        message: 'New bucketing mechanism launched',
+        message: 'New liquidity pools added',
         type: 'success'
       },
       {
         timestamp: new Date(Date.now() - 28 * 60 * 60 * 1000).toISOString(),
-        message: 'Trading volume increased by 15% in last 24h',
+        message: 'Protocol upgrade completed',
         type: 'info'
       }
     ],
     recentArticles: [
       {
-        title: 'Bucket Introduces New Bucketing Mechanisms',
-        url: 'https://bucket.fi/blog/new-mechanisms'
+        title: 'Bucket Expands Liquidity Options',
+        url: 'https://bucket.fi/blog/expansion'
       }
     ],
     links: {
       website: 'https://bucket.fi',
       twitter: 'https://twitter.com/BucketProtocol',
       discord: 'https://discord.gg/bucket',
-      contract: 'https://explorer.sui.io/token/bkt'
-    }
+      contract: 'https://explorer.sui.io/token/bkt',
+      explorer: 'https://explorer.sui.io',
+      telegram: 'https://t.me/bucket'
+    },
+    marketCapChange: '0.2%',
+    volumeChange24h: '0.8%',
+    holdersChange: '0.1%',
+    transactions: 500,
+    transactionsChange: '1.0%',
+    liquidity: 50000,
+    liquidityChange: '0.6%',
   },
   {
     name: 'Navi',
@@ -345,8 +403,8 @@ export const mockTokens: Token[] = [
     holders: 55000,
     icon: '/navi-logo.png',
     description: 'The governance token of Navi Protocol, used for navigation and staking.',
-    llmSummary: 'Navi (NAVI) has seen significant growth in its navigation mechanisms and TVL, with a strong focus on providing high yields. However, the token\'s price remains relatively low, and its market capitalization is limited.',
-    valueProp: 'Navi provides a unique navigation experience with its innovative mechanisms and high yields.',
+    llmSummary: 'Navi (NAVI) demonstrates strong growth in DeFi navigation solutions.',
+    valueProp: 'Navi Protocol streamlines DeFi navigation and discovery.',
     dynamics: {
       weeklyActiveUsers: 100000,
       weeklyTxCount: 500000,
@@ -357,26 +415,35 @@ export const mockTokens: Token[] = [
     recentUpdates: [
       {
         timestamp: new Date(Date.now() - 30 * 60 * 60 * 1000).toISOString(),
-        message: 'New navigation mechanism launched',
+        message: 'New navigation features released',
         type: 'success'
       },
       {
         timestamp: new Date(Date.now() - 32 * 60 * 60 * 1000).toISOString(),
-        message: 'Trading volume increased by 20% in last 24h',
+        message: 'Community governance launched',
         type: 'info'
       }
     ],
     recentArticles: [
       {
-        title: 'Navi Introduces New Navigation Mechanisms',
-        url: 'https://navi.xyz/blog/new-mechanisms'
+        title: 'Navi Revolutionizes DeFi Navigation',
+        url: 'https://navi.xyz/blog/revolution'
       }
     ],
     links: {
       website: 'https://navi.xyz',
       twitter: 'https://twitter.com/NaviProtocol',
       discord: 'https://discord.gg/navi',
-      contract: 'https://explorer.sui.io/token/navi'
-    }
+      contract: 'https://explorer.sui.io/token/navi',
+      explorer: 'https://explorer.sui.io',
+      telegram: 'https://t.me/navi'
+    },
+    marketCapChange: '0.4%',
+    volumeChange24h: '1.2%',
+    holdersChange: '0.3%',
+    transactions: 700,
+    transactionsChange: '1.6%',
+    liquidity: 70000,
+    liquidityChange: '0.8%',
   }
 ];
