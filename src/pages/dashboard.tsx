@@ -220,7 +220,11 @@ export default function DashboardPage() {
             <div className="space-y-4">
               {watchlist.map((token) => (
                 <div key={token.address} className="space-y-4">
-                  <TokenPreviewCard token={token} />
+                  <TokenPreviewCard 
+                    token={token} 
+                    isDashboard={true}
+                    isWalletConnected={wallet.connected}
+                  />
                   <TokenActions 
                     token={token}
                     onShare={() => {}}
