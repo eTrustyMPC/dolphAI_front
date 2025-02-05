@@ -21,8 +21,15 @@ export interface Token {
   price: string;
   icon?: string;
   priceChange24h?: number;
+  marketCapChange: string;
   marketCap?: number;
   volume24h?: number;
+  volumeChange24h: string;
+  holdersChange: string;
+  transactions: number;
+  transactionsChange: string;
+  liquidity: number;
+  liquidityChange: string;
   totalSupply?: number;
   valueProp?: string;
   dynamics?: TokenDynamics;
@@ -36,6 +43,8 @@ export interface Token {
     twitter?: string;
     discord?: string;
     contract?: string;
+    explorer?: string;
+    telegram?: string;
   };
   holders?: number;
 }
@@ -44,6 +53,7 @@ export interface TokenMetrics {
   holders: number;
   volume: number;
   marketCap: number;
+  marketCapChange: number;
   liquidity: number;
   priceChange24h: number;
 }
