@@ -1,7 +1,7 @@
-import { Token } from '@/components/TokenPreview';
+import { TokenCardData } from '@/components/TokenCard/types';
 
 // Generate mock tokens with realistic data
-export const mockTokens: Token[] = [
+export const mockTokens: TokenCardData[] = [
   {
     name: 'Sui',
     symbol: 'SUI',
@@ -14,6 +14,36 @@ export const mockTokens: Token[] = [
     holders: 100000,
     icon: '/sui-logo.png',
     description: 'The native token of the Sui blockchain platform, used for gas fees and staking.',
+    scores: {
+      onChainActivity: {
+        value: 85,
+        explanation: 'High daily active addresses and transaction count indicate strong network usage'
+      },
+      liquidityAndTrading: {
+        value: 78,
+        explanation: 'Good liquidity depth across major DEXes with healthy trading volume'
+      },
+      whalesAndHolders: {
+        value: 72,
+        explanation: 'Well-distributed token holdings with growing retail participation'
+      }
+    },
+    defiPools: [
+      {
+        projectName: 'Cetus',
+        platformLink: 'https://cetus.zone',
+        pool: 'SUI-USDC',
+        tvl: 25000000,
+        apy: 12.5
+      },
+      {
+        projectName: 'Aftermath',
+        platformLink: 'https://aftermath.finance',
+        pool: 'SUI-USDT',
+        tvl: 18000000,
+        apy: 15.2
+      }
+    ],
     llmSummary: 'Sui (SUI) demonstrates strong network growth with increasing adoption metrics. Recent protocol upgrades and partnerships suggest positive momentum.',
     valueProp: 'Sui is a Layer 1 blockchain that redefines asset ownership and empowers creators and developers with unmatched scalability.',
     dynamics: {
@@ -121,6 +151,20 @@ export const mockTokens: Token[] = [
     symbol: 'AFT',
     address: '0x6::aftermath::AFT',
     price: '2.15',
+    scores: {
+      onChainActivity: {
+        value: 82,
+        explanation: 'Strong daily active addresses and growing transaction volume'
+      },
+      liquidityAndTrading: {
+        value: 75,
+        explanation: 'Deep liquidity pools with consistent trading activity'
+      },
+      whalesAndHolders: {
+        value: 68,
+        explanation: 'Balanced distribution between retail and institutional holders'
+      }
+    },
     priceChange24h: 8.5,
     marketCap: 150000000,
     volume24h: 8000000,
@@ -231,6 +275,20 @@ export const mockTokens: Token[] = [
     symbol: 'CET',
     address: '0x8::cetus::CET',
     price: '0.95',
+    scores: {
+      onChainActivity: {
+        value: 88,
+        explanation: 'High transaction count and active smart contract interactions'
+      },
+      liquidityAndTrading: {
+        value: 85,
+        explanation: 'Market leading liquidity provider with high trading volumes'
+      },
+      whalesAndHolders: {
+        value: 78,
+        explanation: 'Well-distributed token holdings with strong institutional presence'
+      }
+    },
     priceChange24h: 3.2,
     marketCap: 120000000,
     volume24h: 6000000,
@@ -341,6 +399,20 @@ export const mockTokens: Token[] = [
     symbol: 'BKT',
     address: '0x10::bucket::BKT',
     price: '0.75',
+    scores: {
+      onChainActivity: {
+        value: 76,
+        explanation: 'Growing daily active addresses with steady transaction growth'
+      },
+      liquidityAndTrading: {
+        value: 72,
+        explanation: 'Adequate liquidity across major DEXes with moderate volume'
+      },
+      whalesAndHolders: {
+        value: 70,
+        explanation: 'Healthy mix of retail and institutional holders'
+      }
+    },
     priceChange24h: -4.2,
     marketCap: 90000000,
     volume24h: 3000000,

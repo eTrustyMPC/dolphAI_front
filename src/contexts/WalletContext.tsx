@@ -23,16 +23,25 @@ export const CustomWalletProvider = ({ children }: { children: React.ReactNode }
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const wasConnected = localStorage.getItem('walletConnected');
-    console.log('WalletContext: Initial load', { wasConnected });
-    
-    if (wasConnected === 'true' && !wallet.connected) {
-      console.log('WalletContext: Attempting to reconnect wallet');
-      wallet.select('Suiet');
-    }
+    const initializeWallet = async () => {
+      const wasConnected = localStorage.getItem('walletConnected');
+      console.log('WalletContext: Initial load', { wasConnected });
+      
+      if (wasConnected === 'true' && !wallet.connected && wallet.select) {
+        console.log('WalletContext: Attempting to reconnect wallet');
+        try {
+          await wallet.select('Suiet');
+        } catch (error) {
+          console.error('WalletContext: Error reconnecting wallet:', error);
+          localStorage.removeItem('walletConnected');
+        }
+      }
 
-    setIsInitialized(true);
-    setIsLoading(false);
+      setIsInitialized(true);
+      setIsLoading(false);
+    };
+
+    initializeWallet();
   }, [wallet]);
 
   useEffect(() => {
@@ -57,9 +66,14 @@ export const CustomWalletProvider = ({ children }: { children: React.ReactNode }
     try {
       console.log('WalletContext: Connecting wallet');
       setIsLoading(true);
-      await wallet.select('Suiet');
+      if (wallet.select) {
+        await wallet.select('Suiet');
+      } else {
+        throw new Error('Wallet select method not available');
+      }
     } catch (error) {
       console.error('WalletContext: Error connecting wallet:', error);
+      localStorage.removeItem('walletConnected');
     } finally {
       setIsLoading(false);
     }
