@@ -1,19 +1,14 @@
-import type { NextPage } from 'next';
-import dynamic from 'next/dynamic';
-import { MainLayout } from '../components/Layout/MainLayout';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
-// Dynamically import AgentDashboard with no SSR to avoid hydration issues
-const AgentDashboard = dynamic(
-  () => import('../components/Agent/AgentDashboard').then(mod => mod.AgentDashboard),
-  { ssr: false }
-);
+const HomePage = () => {
+  const router = useRouter();
 
-const Home: NextPage = () => {
-  return (
-    <MainLayout>
-      <AgentDashboard />
-    </MainLayout>
-  );
+  useEffect(() => {
+    router.replace('/dashboard');
+  }, [router]);
+
+  return null;
 };
 
-export default Home;
+export default HomePage;

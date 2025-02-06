@@ -1,15 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Lock, Search, TrendingUp, Globe, Twitter, ExternalLink, InfoIcon, RefreshCcw, X, Check, ClipboardCopy } from 'lucide-react';
+import { Search, TrendingUp, Globe, Twitter, ExternalLink, X, Check, ClipboardCopy } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { TokenPreviewCard } from '@/components/TokenPreview/TokenPreviewCard';
-import { TokenMetrics } from '@/components/TokenPreview/TokenMetrics';
-import { TokenActions } from '@/components/TokenPreview/TokenActions';
-import { useTokenData } from '@/hooks/useTokenData';
 import { mockTokens } from '@/data/mockTokens';
 import { Token } from '@/components/TokenPreview/types';
 import { useRouter } from 'next/router';
 import { useWallet } from '@suiet/wallet-kit';
-import { Navbar } from '@/components/Navbar';
+import Navbar from '@/components/Navbar';
 import Image from 'next/image';
 
 const ConnectButton = dynamic(
@@ -43,25 +40,6 @@ export default function TokenPreviewPage() {
     navigator.clipboard.writeText(address);
     // Show toast or notification
   };
-
-  const handleConnectWallet = async () => {
-    try {
-      setIsConnecting(true);
-      setError(null);
-      
-      if (!connected) {
-        await select('Suiet');
-      }
-    } catch (error) {
-      console.error('Failed to connect wallet:', error);
-      setError('Failed to connect wallet. Please try again.');
-      localStorage.removeItem('walletConnected');
-    } finally {
-      setIsConnecting(false);
-    }
-  };
-
-  const topTokens = mockTokens;
 
   // Filter tokens for the main search
   const filteredTokens = useMemo(() => {
@@ -119,8 +97,8 @@ export default function TokenPreviewPage() {
           </p>
         </div>
 
-        {/* Search Section */}
-        <div className="mb-12">
+{/* Search Section */}
+<div className="mb-12">
           <div className="max-w-3xl mx-auto">
             <div className="flex gap-2 mb-4">
               <div className="relative flex-1">

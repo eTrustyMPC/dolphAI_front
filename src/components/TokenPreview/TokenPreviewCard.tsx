@@ -1,5 +1,5 @@
 import React from 'react';
-import { TrendingUp, Globe, Twitter, MessageSquare, FileText, ExternalLink, Clock, AlertCircle, CheckCircle, Info, Newspaper, Users, Activity, PieChart, ArrowUpRight, ArrowDownRight, Wallet, ChevronDown, ChevronRight, X } from 'lucide-react';
+import { TrendingUp, Globe, Twitter, MessageSquare, FileText, ExternalLink, Clock, AlertCircle, CheckCircle, Info, Newspaper, Users, Activity, PieChart, ArrowUpRight, ArrowDownRight, Wallet, ChevronDown, ChevronRight, X, Star } from 'lucide-react';
 import { Token, TokenUpdate } from './types';
 import { CustomConnectButton } from '../CustomConnectButton';
 
@@ -10,6 +10,10 @@ interface TokenPreviewCardProps {
   onConnectSuccess?: () => void;
   onConnectError?: (error: Error) => void;
   onClose?: () => void;
+  onAnalyze?: () => void;
+  disableAnalyze?: boolean;
+  isWatched?: boolean;
+  onToggleWatch?: () => void;
 }
 
 const UpdateIcon = ({ type }: { type: TokenUpdate['type'] }) => {
@@ -43,6 +47,10 @@ export const TokenPreviewCard: React.FC<TokenPreviewCardProps> = ({
   onConnectSuccess,
   onConnectError,
   onClose,
+  onAnalyze,
+  disableAnalyze = false,
+  isWatched = false,
+  onToggleWatch,
 }) => {
   const [isExpanded, setIsExpanded] = React.useState(true);
 
@@ -88,13 +96,34 @@ export const TokenPreviewCard: React.FC<TokenPreviewCardProps> = ({
               <div className="flex items-center gap-2">
                 <h2 className="text-xl font-bold">{token.name}</h2>
                 <span className="text-sm font-medium text-gray-400">{token.symbol}</span>
+                {onToggleWatch && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onToggleWatch();
+                    }}
+                    className="p-1 hover:bg-gray-800 rounded-lg transition-colors"
+                    title={isWatched ? 'Remove from watchlist' : 'Add to watchlist'}
+                  >
+                    <Star className={`h-4 w-4 ${isWatched ? 'text-yellow-500 fill-yellow-500' : 'text-gray-400'}`} />
+                  </button>
+                )}
               </div>
               <p className="text-sm text-gray-400">{token.description}</p>
             </div>
           </div>
         </div>
 
-        <div className="flex items-center">
+        <div className="flex items-center gap-4">
+          {onAnalyze && !disableAnalyze && (
+            <button
+              onClick={onAnalyze}
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-500 hover:bg-purple-600 text-white rounded-lg text-sm font-medium transition-colors"
+            >
+              <TrendingUp className="w-4 h-4" />
+              Analyze
+            </button>
+          )}
           <div className="flex items-center gap-2 border-r border-gray-800 pr-3 mr-3">
             {token.links.website && (
               <a 

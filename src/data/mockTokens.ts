@@ -19,6 +19,36 @@ const generateScores = (activity: number, liquidity: number, whales: number): To
 // Generate mock tokens with realistic data
 export const mockTokens: TokenCardData[] = [
   {
+    name: 'Cetus',
+    symbol: 'CETUS',
+    address: '0x1::cetus::CETUS',
+    price: '3.45',
+    scores: generateScores(92, 88, 85),
+    priceChange24h: 12.5,
+    marketCap: 300000000,
+    volume24h: 20000000,
+    totalSupply: 1500000000,
+    holders: 120000,
+    icon: 'https://raw.githubusercontent.com/hippospace/aptos-coin-list/main/icons/CETUS.svg',
+    description: 'Leading AMM DEX on Sui Network with concentrated liquidity.',
+    llmSummary: 'Cetus shows exceptional growth in DEX market share.',
+    valueProp: 'Premier DEX with innovative features and deep liquidity pools.',
+    marketCapChange: '2.5%',
+    volumeChange24h: '3.2%',
+    holdersChange: '1.1%',
+    transactions: 2500,
+    transactionsChange: '4.0%',
+    liquidity: 250000,
+    liquidityChange: '2.8%',
+    links: {
+      website: 'https://www.cetus.zone',
+      twitter: 'https://twitter.com/CetusProtocol',
+      discord: 'https://discord.gg/cetus',
+      telegram: 'https://t.me/CetusProtocol',
+      explorer: 'https://explorer.sui.io'
+    }
+  },
+  {
     name: 'Sui',
     symbol: 'SUI',
     address: '0x2::sui::SUI',

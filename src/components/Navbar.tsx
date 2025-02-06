@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { CustomConnectButton } from './CustomConnectButton';
 
-export function Navbar() {
+export default function Navbar() {
   const wallet = useWallet();
   const customWallet = useCustomWallet();
   const router = useRouter();

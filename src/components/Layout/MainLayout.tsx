@@ -1,5 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
+import Navbar from '../Navbar';
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -15,7 +16,8 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       </Head>
       
       <div className="min-h-screen bg-[#0A0C10]">
-        <main className="min-h-screen">
+        <Navbar />
+        <main className="min-h-screen pt-14">
           {children}
         </main>
       </div>

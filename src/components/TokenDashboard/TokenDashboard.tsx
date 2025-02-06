@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import { useWallet } from '@suiet/wallet-kit';
 import { TokenDashboardData } from './types';
 import { Globe, Twitter, MessageSquare, FileText, ExternalLink, Clock, Search, LineChart, Activity, X } from 'lucide-react';
 import { TokenMetrics } from '../TokenPreview/TokenMetrics';
@@ -35,12 +36,57 @@ export const TokenDashboard: React.FC<TokenDashboardProps> = ({
   previewTokenAddress,
   onAnalyze 
 }) => {
+  const wallet = useWallet();
   const [activeTab, setActiveTab] = useState<'swap' | 'staking' | 'lending' | 'perps'>('swap');
   const [searchInput, setSearchInput] = useState('');
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showFullAnalysis, setShowFullAnalysis] = useState(false);
   const [isAnalysisActive, setIsAnalysisActive] = useState(false);
   const [leaderboardSearch, setLeaderboardSearch] = useState('');
+
+  // Initial state - Not connected
+  if (!wallet.connected) {
+    return (
+      <div className="container mx-auto px-4 py-32">
+        <div className="max-w-2xl mx-auto text-center">
+          <h1 className="text-4xl font-bold mb-6">DolphAI Project</h1>
+          <p className="text-gray-400 mb-8">Connect your wallet to start analyzing tokens</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Connected but no analysis yet
+  if (!showFullAnalysis && !isAnalysisActive) {
+    return (
+      <div className="container mx-auto px-4 py-16">
+        <div className="max-w-2xl mx-auto">
+          <div className="bg-gray-900 rounded-lg p-6">
+            <h2 className="text-2xl font-bold mb-4">Analyze Token</h2>
+            <div className="flex gap-4">
+              <input
+                type="text"
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                placeholder="Enter token address"
+                className="flex-1 bg-gray-800 rounded-lg px-4 py-2 text-white placeholder-gray-500"
+              />
+              <button
+                onClick={() => {
+                  setShowConfirmation(true);
+                  setShowFullAnalysis(true);
+                }}
+                disabled={!searchInput}
+                className="px-6 py-2 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-700 rounded-lg font-medium transition-colors"
+              >
+                Analyze
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   useEffect(() => {
     if (previewTokenAddress) {

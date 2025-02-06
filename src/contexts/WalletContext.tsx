@@ -1,8 +1,8 @@
-import { createContext, useContext, useEffect, useState } from 'react';
-import { useWallet } from '@suiet/wallet-kit';
+import { createContext, useContext } from 'react';
 import { useRouter } from 'next/router';
+import { useWalletInit } from '@/hooks/useWalletInit';
 
-interface CustomWalletContextType {
+export interface CustomWalletContextType {
   isInitialized: boolean;
   isLoading: boolean;
   connect: () => Promise<void>;
@@ -17,62 +17,16 @@ const CustomWalletContext = createContext<CustomWalletContextType>({
 });
 
 export const CustomWalletProvider = ({ children }: { children: React.ReactNode }) => {
-  const wallet = useWallet();
   const router = useRouter();
-  const [isInitialized, setIsInitialized] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const initializeWallet = async () => {
-      const wasConnected = localStorage.getItem('walletConnected');
-      console.log('WalletContext: Initial load', { wasConnected });
-      
-      if (wasConnected === 'true' && !wallet.connected && wallet.select) {
-        console.log('WalletContext: Attempting to reconnect wallet');
-        try {
-          await wallet.select('Suiet');
-        } catch (error) {
-          console.error('WalletContext: Error reconnecting wallet:', error);
-          localStorage.removeItem('walletConnected');
-        }
-      }
-
-      setIsInitialized(true);
-      setIsLoading(false);
-    };
-
-    initializeWallet();
-  }, [wallet]);
-
-  useEffect(() => {
-    console.log('WalletContext: Wallet connection changed', { connected: wallet.connected });
-    if (wallet.connected) {
-      localStorage.setItem('walletConnected', 'true');
-      // Only redirect if we're not already on the dashboard
-      if (router.pathname !== '/dashboard') {
-        console.log('WalletContext: Redirecting to dashboard');
-        router.push('/dashboard');
-      }
-    } else {
-      localStorage.removeItem('walletConnected');
-      if (router.pathname === '/dashboard') {
-        console.log('WalletContext: Redirecting to token-preview');
-        router.push('/token-preview');
-      }
-    }
-  }, [wallet.connected, router]);
+  const { wallet, isInitialized, isLoading, setIsLoading, setIsInitialized } = useWalletInit();
 
   const connect = async () => {
+    if (isLoading || !wallet.select) return;
     try {
-      console.log('WalletContext: Connecting wallet');
       setIsLoading(true);
-      if (wallet.select) {
-        await wallet.select('Suiet');
-      } else {
-        throw new Error('Wallet select method not available');
-      }
+      await wallet.select('Suiet');
     } catch (error) {
-      console.error('WalletContext: Error connecting wallet:', error);
+      console.error('Error connecting wallet:', error);
       localStorage.removeItem('walletConnected');
     } finally {
       setIsLoading(false);
@@ -80,14 +34,15 @@ export const CustomWalletProvider = ({ children }: { children: React.ReactNode }
   };
 
   const disconnect = async () => {
+    if (isLoading) return;
     try {
-      console.log('WalletContext: Disconnecting wallet');
       setIsLoading(true);
       await wallet.disconnect();
       localStorage.removeItem('walletConnected');
+      setIsInitialized(false);
       router.push('/token-preview');
     } catch (error) {
-      console.error('WalletContext: Error disconnecting wallet:', error);
+      console.error('Error disconnecting wallet:', error);
     } finally {
       setIsLoading(false);
     }
@@ -114,3 +69,5 @@ export const useCustomWallet = () => {
   }
   return context;
 };
+
+export default CustomWalletProvider;
