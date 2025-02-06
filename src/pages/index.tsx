@@ -1,12 +1,19 @@
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
+import type { NextPage } from 'next';
+import dynamic from 'next/dynamic';
+import { MainLayout } from '../components/Layout/MainLayout';
 
-export default function Home() {
-  const router = useRouter();
+// Dynamically import AgentDashboard with no SSR to avoid hydration issues
+const AgentDashboard = dynamic(
+  () => import('../components/Agent/AgentDashboard').then(mod => mod.AgentDashboard),
+  { ssr: false }
+);
 
-  useEffect(() => {
-    router.replace('/token-preview');
-  }, [router]);
+const Home: NextPage = () => {
+  return (
+    <MainLayout>
+      <AgentDashboard />
+    </MainLayout>
+  );
+};
 
-  return null;
-}
+export default Home;

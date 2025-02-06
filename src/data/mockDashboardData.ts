@@ -7,10 +7,39 @@ export const mockDashboardData: TokenDashboardData = {
   price: '1.25',
   priceChange24h: 5.2,
   marketCap: 500000000,
+  marketCapChange: '+15.2%',
   volume24h: 15000000,
+  volumeChange24h: '+8.5%',
   totalSupply: 10000000000,
   holders: 100000,
+  holdersChange: '+2.3%',
+  transactions: 250000,
+  transactionsChange: '+5.8%',
+  liquidity: 75000000,
+  liquidityChange: '+3.2%',
   icon: '/sui-logo.png',
+  links: {
+    website: 'https://sui.io',
+    twitter: 'https://twitter.com/SuiNetwork',
+    telegram: 'https://t.me/sui_network',
+    discord: 'https://discord.gg/sui',
+    contract: 'https://explorer.sui.io/token/0x2::sui::SUI',
+    explorer: 'https://explorer.sui.io'
+  },
+  
+  // Required by TokenDashboardData
+  metrics: {
+    securityScore: 85,
+    communityScore: 78,
+    liquidityScore: 82
+  },
+  
+  onChainMetrics: {
+    transfers24h: 125000,
+    activeWallets24h: 45000,
+    volume24h: 15000000,
+    txCount24h: 250000
+  },
   description: 'The native token of the Sui blockchain platform, used for gas fees and staking.',
   llmSummary: 'Sui (SUI) demonstrates strong network growth with increasing adoption metrics. Recent protocol upgrades and partnerships suggest positive momentum.',
   valueProp: 'Sui is a Layer 1 blockchain that redefines asset ownership and empowers creators and developers with unmatched scalability.',
@@ -19,6 +48,7 @@ export const mockDashboardData: TokenDashboardData = {
   analysisHistory: [
     {
       date: '2025-02-05',
+      type: 'Deep Dive',
       tokenName: 'Ethereum',
       tokenSymbol: 'ETH',
       tokenAddress: '0x2::eth::ETH',
@@ -26,6 +56,7 @@ export const mockDashboardData: TokenDashboardData = {
     },
     {
       date: '2025-02-03',
+      type: 'Basic Analysis',
       tokenName: 'Bitcoin',
       tokenSymbol: 'BTC',
       tokenAddress: '0x2::btc::BTC',
@@ -33,6 +64,7 @@ export const mockDashboardData: TokenDashboardData = {
     },
     {
       date: '2025-02-01',
+      type: 'Deep Dive',
       tokenName: 'Solana',
       tokenSymbol: 'SOL',
       tokenAddress: '0x2::sol::SOL',
@@ -40,6 +72,7 @@ export const mockDashboardData: TokenDashboardData = {
     },
     {
       date: '2025-01-30',
+      type: 'Basic Analysis',
       tokenName: 'Cardano',
       tokenSymbol: 'ADA',
       tokenAddress: '0x2::ada::ADA',
@@ -47,6 +80,7 @@ export const mockDashboardData: TokenDashboardData = {
     },
     {
       date: '2025-01-28',
+      type: 'Deep Dive',
       tokenName: 'Avalanche',
       tokenSymbol: 'AVAX',
       tokenAddress: '0x2::avax::AVAX',
@@ -152,13 +186,6 @@ export const mockDashboardData: TokenDashboardData = {
     }
   ],
 
-  // Links
-  links: {
-    website: 'https://sui.io',
-    twitter: 'https://twitter.com/SuiNetwork',
-    discord: 'https://discord.gg/sui',
-    contract: 'https://explorer.sui.io/token/0x2::sui::SUI'
-  },
 
   // Market Dynamics
   dynamics: {

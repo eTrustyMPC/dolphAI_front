@@ -39,10 +39,30 @@ export interface TokenMetrics {
   // Add other metrics as needed
 }
 
+export interface OnChainMetrics {
+  transfers24h: number;
+  activeWallets24h: number;
+  volume24h: number;
+  txCount24h: number;
+}
+
+export interface TokenScore {
+  value: number;
+  explanation: string;
+}
+
+export interface TokenScores {
+  onChainActivity: TokenScore;
+  liquidityAndTrading: TokenScore;
+  whalesAndHolders: TokenScore;
+}
+
 export interface TokenDashboardData extends Token {
   metrics: TokenMetrics;
+  onChainMetrics: OnChainMetrics;
   analysisHistory: AnalysisHistory[];
   stakingPools: StakingPool[];
   lendingProtocols: LendingProtocol[];
   news: NewsItem[];
+  scores: TokenScores;
 }

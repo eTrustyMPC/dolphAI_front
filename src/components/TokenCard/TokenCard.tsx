@@ -1,6 +1,6 @@
 import React from 'react';
 import { Info, ExternalLink } from 'lucide-react';
-import { TokenCardData, TokenScore } from './types';
+import { TokenCardData, TokenScore, DefiPoolInfo } from './types';
 import { TokenMetrics } from '../TokenPreview/TokenMetrics';
 import { Tooltip } from '../ui/Tooltip'; // Assuming you have a Tooltip component
 
@@ -28,7 +28,7 @@ const ScoreCard: React.FC<{ title: string; score: TokenScore; comingSoon?: boole
   </div>
 );
 
-const DefiPoolCard: React.FC<{ pool: TokenCardData['defiPools'][0] }> = ({ pool }) => (
+const DefiPoolCard: React.FC<{ pool: DefiPoolInfo }> = ({ pool }) => (
   <div className="bg-gray-800/50 p-4 rounded-lg">
     <div className="flex items-center justify-between mb-2">
       <h3 className="text-sm text-gray-400">{pool.projectName}</h3>

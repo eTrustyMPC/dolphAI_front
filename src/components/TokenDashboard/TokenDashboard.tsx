@@ -191,7 +191,7 @@ export const TokenDashboard: React.FC<TokenDashboardProps> = ({
                   </div>
                   <div>
                     <div className="text-sm text-gray-400">Transfers (24h)</div>
-                    <div className="text-lg font-medium">{data.transfers24h}</div>
+                    <div className="text-lg font-medium">{data.onChainMetrics.transfers24h}</div>
                   </div>
                 </div>
               </div>

@@ -29,6 +29,12 @@ export interface Token {
   transactions: number;
   transactionsChange: string;
   liquidity: number;
+  website?: string;
+  twitter?: string;
+  telegram?: string;
+  discord?: string;
+  github?: string;
+  whitepaper?: string;
   liquidityChange: string;
   totalSupply?: number;
   valueProp?: string;
