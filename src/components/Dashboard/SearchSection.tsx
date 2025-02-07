@@ -8,9 +8,7 @@ interface SearchSectionProps {
   handleSearchClear: () => void;
   handleAnalyzeToken: (token: Token) => void;
   filteredTokens: Token[];
-  showPreview: boolean;
   setSelectedToken: (token: Token | null) => void;
-  setShowPreview: (show: boolean) => void;
   wallet: { isInitialized: boolean };
 }
 
@@ -20,13 +18,11 @@ export const SearchSection: React.FC<SearchSectionProps> = ({
   handleSearchClear,
   handleAnalyzeToken,
   filteredTokens,
-  showPreview,
   setSelectedToken,
-  setShowPreview,
   wallet,
 }) => {
   return (
-    <div className="mb-12 max-w-3xl mx-auto">
+    <div>
       <div className="flex gap-2 mb-4">
         <div className="relative flex-1">
           <input
@@ -53,23 +49,23 @@ export const SearchSection: React.FC<SearchSectionProps> = ({
           onClick={() => {
             if (searchQuery && filteredTokens.length > 0) {
               setSelectedToken(filteredTokens[0]);
-              setShowPreview(true);
+              handleAnalyzeToken(filteredTokens[0]);
             }
           }}
           disabled={!searchQuery || filteredTokens.length === 0}
         >
           <TrendingUp className="h-5 w-5" />
-          Preview token
+          Analyze token
         </button>
       </div>
-      {searchQuery && filteredTokens.length > 0 && !showPreview && (
+      {searchQuery && filteredTokens.length > 0 && (
         <div className="absolute left-0 right-0 top-full mt-2 bg-gray-900 border border-gray-700 rounded-lg shadow-lg overflow-hidden z-50">
           {filteredTokens.map((token) => (
             <button
               key={token.address}
               onClick={() => {
                 setSelectedToken(token);
-                setShowPreview(true);
+                handleAnalyzeToken(token);
               }}
               className="w-full px-4 py-3 hover:bg-gray-800 transition-colors flex items-center justify-between gap-4"
             >

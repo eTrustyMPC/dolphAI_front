@@ -91,8 +91,8 @@ export const mockDashboardData: TokenDashboardData = {
   // Staking Pools
   stakingPools: [
     {
-      project: 'Cetus',
-      projectUrl: 'https://cetus.zone',
+      project: 'Bluefin',
+      projectUrl: 'https://bluefin.io',
       pool: 'SUI-USDC',
       tvl: 25000000,
       apy: 12.5

@@ -213,7 +213,10 @@ const AgentDashboard: React.FC = () => {
           {/* Token Actions and News Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
             <TokenActions onActionClick={handleTokenAction} />
-            <NewsSection news={tokenData.news} />
+            <NewsSection 
+              token={tokenData ? { name: tokenData.name, address: tokenData.address, symbol: tokenData.symbol } : null}
+              news={tokenData.news}
+            />
           </div>
         </>
       )}

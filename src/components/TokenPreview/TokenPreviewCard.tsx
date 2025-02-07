@@ -267,18 +267,6 @@ export const TokenPreviewCard: React.FC<TokenPreviewCardProps> = ({
                   </a>
 
                   <a 
-                    href="https://www.cetus.zone" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 px-2 py-1 bg-gray-800/50 rounded hover:bg-gray-700/50 transition-colors group"
-                  >
-                    <div className="p-1 bg-purple-500/10 rounded">
-                      <Activity className="h-3 w-3 text-purple-400" />
-                    </div>
-                    <span className="text-xs font-medium group-hover:text-purple-400 transition-colors">Cetus</span>
-                  </a>
-
-                  <a 
                     href="https://app.naviprotocol.io" 
                     target="_blank" 
                     rel="noopener noreferrer"

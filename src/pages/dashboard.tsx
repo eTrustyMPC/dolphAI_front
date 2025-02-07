@@ -11,9 +11,6 @@ import { TokenCardData, TokenScores } from '@/components/TokenCard/types';
 import { TokenPreviewCard } from '@/components/TokenPreview/TokenPreviewCard';
 import { WatchlistPanel } from '@/components/Watchlist/WatchlistPanel';
 import { AgentCards } from '@/components/Analysis/AgentCards';
-import { SearchSection } from '@/components/Dashboard/SearchSection';
-import { TokenAnalysisSection } from '@/components/Dashboard/TokenAnalysisSection';
-import { PreviewSection } from '@/components/Dashboard/PreviewSection';
 import { TokenTableSection } from '@/components/Dashboard/TokenTableSection';
 
 const TokenDashboard = dynamic<any>(
@@ -38,7 +35,6 @@ export default function DashboardPage() {
   const [error, setError] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [selectedToken, setSelectedToken] = useState<Token | null>(null);
-  const [showPreview, setShowPreview] = useState(false);
   const [isWatchlistOpen, setIsWatchlistOpen] = useState(true);
   const [watchedTokens, setWatchedTokens] = useState<TokenCardData[]>([]);
   const [leaderboardSearch, setLeaderboardSearch] = useState('');
@@ -141,15 +137,17 @@ export default function DashboardPage() {
   const handleSearchClear = () => {
     setSearchQuery('');
     setSelectedToken(null);
-    setShowPreview(false);
     setError(null);
   };
 
   const handleAnalyzeToken = (token: Token) => {
     setSearchQuery(token.address);
     setSelectedToken(token);
-    setShowPreview(true);
     setIsAnalyzing(true);
+  };
+
+  const handleTokenSelect = (token: Token) => {
+    setSelectedToken(token);
   };
 
   const handleCopyAddress = async (address: string) => {
@@ -164,14 +162,13 @@ export default function DashboardPage() {
 
   const handleClosePreview = () => {
     setSelectedToken(null);
-    setShowPreview(false);
   };
 
   return (
     <div className="min-h-screen bg-gray-950 text-white relative">
       <Navbar />
       <main className="min-h-screen relative pt-16">
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="max-w-[90rem] mx-auto px-4">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold mb-6">DolphAI Project</h1>
             <p className="text-gray-400 mb-8">
@@ -180,46 +177,33 @@ export default function DashboardPage() {
             </p>
           </div>
 
-          <SearchSection
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-            handleSearchClear={handleSearchClear}
-            handleAnalyzeToken={handleAnalyzeToken}
-            filteredTokens={filteredTokens}
-            showPreview={showPreview}
-            setSelectedToken={setSelectedToken}
-            setShowPreview={setShowPreview}
-            wallet={customWallet}
-          />
-
-          <TokenAnalysisSection
-            selectedToken={selectedToken}
-            isAnalyzing={isAnalyzing}
-          />
-
-          <TokenTableSection
-            showLeaderboard={showLeaderboard}
-            setShowLeaderboard={setShowLeaderboard}
-            leaderboardSearch={leaderboardSearch}
-            setLeaderboardSearch={setLeaderboardSearch}
-            tokens={tokens}
-            handleTokenSelect={handleAnalyzeToken}
-            copiedAddress={copiedAddress}
-            handleCopyAddress={handleCopyAddress}
-            watchlist={watchlist}
-            onToggleWatchlist={handleToggleWatchlist}
-          />
-
+          <div className="flex gap-8">
+            <TokenTableSection
+              showLeaderboard={showLeaderboard}
+              setShowLeaderboard={setShowLeaderboard}
+              leaderboardSearch={leaderboardSearch}
+              setLeaderboardSearch={setLeaderboardSearch}
+              tokens={tokens}
+              handleTokenSelect={handleTokenSelect}
+              copiedAddress={copiedAddress}
+              handleCopyAddress={handleCopyAddress}
+              watchlist={watchlist}
+              onToggleWatchlist={handleToggleWatchlist}
+              selectedToken={selectedToken}
+              isWalletConnected={customWallet.isInitialized}
+              onConnectSuccess={() => {}}
+              onConnectError={(error) => setError(error.message)}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              handleSearchClear={handleSearchClear}
+              handleAnalyzeToken={handleAnalyzeToken}
+              filteredTokens={filteredTokens}
+              setSelectedToken={setSelectedToken}
+              wallet={customWallet}
+            />
+          </div>
         </div>
       </main>
-
-      <PreviewSection
-        showPreview={showPreview}
-        selectedToken={selectedToken}
-        handleClosePreview={handleClosePreview}
-        handleAnalyzeToken={handleAnalyzeToken}
-        wallet={customWallet}
-      />
 
       <WatchlistPanel
         isOpen={isWatchlistOpen}
@@ -228,7 +212,7 @@ export default function DashboardPage() {
         onTokenSelect={(token) => {
           setSearchQuery(token.address);
           setSelectedToken(token);
-          setShowPreview(true);
+          handleAnalyzeToken(token);
         }}
         onRemoveToken={handleRemoveFromWatchlist}
       />

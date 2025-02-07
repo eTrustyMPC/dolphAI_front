@@ -1,55 +1,116 @@
 import React from 'react';
-import { Globe, MessageSquare } from 'lucide-react';
+import { Newspaper, ExternalLink } from 'lucide-react';
+import { NewsItem } from '@/types/agent';
 
-interface NewsItem {
-  title: string;
-  source: string;
-  date: string;
-  type: 'news' | 'social';
-  url?: string;
+interface TokenInfo {
+  name: string;
+  address: string;
+  symbol: string;
 }
 
-interface NewsSectionProps {
-  news: NewsItem[];
+const getSentimentClass = (sentiment: 'positive' | 'negative' | 'neutral') => {
+  switch (sentiment) {
+    case 'positive':
+      return 'bg-green-500/20 text-green-300';
+    case 'negative':
+      return 'bg-red-500/20 text-red-300';
+    case 'neutral':
+      return 'bg-gray-500/20 text-gray-300';
+    default:
+      return '';
+  }
+};
+
+interface Props {
+  token: TokenInfo | null;
+  news?: NewsItem[];
 }
 
-export const NewsSection: React.FC<NewsSectionProps> = ({ news }) => {
+export const NewsSection: React.FC<Props> = ({ token, news }) => {
   return (
-    <div className="bg-gray-900 rounded-lg p-6">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-medium">Latest Updates</h3>
-        <div className="flex gap-2">
-          <button className="p-1.5 rounded-md hover:bg-gray-800 transition-colors text-purple-500">
-            <Globe size={20} />
-          </button>
-          <button className="p-1.5 rounded-md hover:bg-gray-800 transition-colors text-purple-500">
-            <MessageSquare size={20} />
-          </button>
-        </div>
+    <div className="bg-gradient-to-br from-gray-900/80 to-gray-800/50 border border-blue-500/20 rounded-xl backdrop-blur-sm overflow-hidden p-3">
+      <div className="flex items-center gap-2 mb-3">
+        <Newspaper className="w-5 h-5 text-purple-400" />
+        <h3 className="text-base font-semibold text-white">Latest {token?.name} News</h3>
       </div>
-
       <div className="space-y-3">
-        {news.map((item, index) => (
-          <div 
-            key={index}
-            className="bg-gray-800 rounded-lg p-3 hover:bg-gray-750 transition-colors cursor-pointer"
-          >
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <h4 className="font-medium mb-1">{item.title}</h4>
-                <div className="flex items-center gap-2 text-sm">
-                  <span className="text-gray-400">{item.source}</span>
-                  <span className="text-gray-600">•</span>
-                  <span className="text-gray-400">{item.date}</span>
-                </div>
+        {/* Token-specific links */}
+        <a 
+          href={`https://${token?.name.toLowerCase()}foundation.org/protocol-upgrade`} 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="block group hover:bg-blue-500/5 rounded-lg p-2 -mx-2 transition-colors"
+        >
+          <div className="flex items-start gap-2">
+            <div className="p-1">
+              <div className="w-1 h-1 rounded-full bg-blue-400" />
+            </div>
+            <div className="flex-1">
+              <div className="flex items-start justify-between gap-2">
+                <h4 className="text-sm font-medium text-gray-200 group-hover:text-white transition-colors">
+                  {token?.name} Network Announces Major Protocol Upgrade
+                </h4>
+                <ExternalLink className="w-3.5 h-3.5 text-gray-400 group-hover:text-white shrink-0 mt-0.5" />
               </div>
-              {item.type === 'news' ? (
-                <Globe size={16} className="text-purple-500 flex-shrink-0 mt-1" />
-              ) : (
-                <MessageSquare size={16} className="text-purple-500 flex-shrink-0 mt-1" />
-              )}
+              <p className="text-xs text-gray-400 mt-1">2 hours ago</p>
             </div>
           </div>
+        </a>
+        <a 
+          href={`https://${token?.name.toLowerCase()}foundation.org/partnerships`} 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="block group hover:bg-blue-500/5 rounded-lg p-2 -mx-2 transition-colors"
+        >
+          <div className="flex items-start gap-2">
+            <div className="p-1">
+              <div className="w-1 h-1 rounded-full bg-blue-400" />
+            </div>
+            <div className="flex-1">
+              <div className="flex items-start justify-between gap-2">
+                <h4 className="text-sm font-medium text-gray-200 group-hover:text-white transition-colors">
+                  New Partnerships Drive {token?.name} Ecosystem Growth
+                </h4>
+                <ExternalLink className="w-3.5 h-3.5 text-gray-400 group-hover:text-white shrink-0 mt-0.5" />
+              </div>
+              <p className="text-xs text-gray-400 mt-1">4 hours ago</p>
+            </div>
+          </div>
+        </a>
+
+        {/* Dynamic news items */}
+        {news?.map((item) => (
+          <a 
+            key={item.id}
+            href={item.url} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="block group hover:bg-blue-500/5 rounded-lg p-2 -mx-2 transition-colors"
+          >
+            <div className="flex items-start gap-2">
+              <div className="p-1">
+                <div className="w-1 h-1 rounded-full bg-blue-400" />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-start justify-between gap-2">
+                  <h4 className="text-sm font-medium text-gray-200 group-hover:text-white transition-colors">
+                    {item.title}
+                  </h4>
+                  <ExternalLink className="w-3.5 h-3.5 text-gray-400 group-hover:text-white shrink-0 mt-0.5" />
+                </div>
+                <div className="flex items-center gap-2 mt-1">
+                  <p className="text-xs text-gray-400">{item.source}</p>
+                  <span className="text-xs text-gray-500">•</span>
+                  <p className="text-xs text-gray-400">{item.date}</p>
+                  {item.sentiment && (
+                    <span className={`text-xs px-1.5 py-0.5 rounded ${getSentimentClass(item.sentiment)}`}>
+                      {item.sentiment}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </a>
         ))}
       </div>
     </div>
