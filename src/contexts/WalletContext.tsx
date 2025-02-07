@@ -40,7 +40,6 @@ export const CustomWalletProvider = ({ children }: { children: React.ReactNode }
       await wallet.disconnect();
       localStorage.removeItem('walletConnected');
       setIsInitialized(false);
-      router.push('/token-preview');
     } catch (error) {
       console.error('Error disconnecting wallet:', error);
     } finally {

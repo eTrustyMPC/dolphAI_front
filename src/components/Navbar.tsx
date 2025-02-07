@@ -42,9 +42,6 @@ export default function Navbar() {
               <CustomConnectButton
                 onSuccess={() => {
                   console.log('Wallet connected successfully');
-                  if (wallet.address) {
-                    router.push('/dashboard');
-                  }
                 }}
                 onError={(err) => {
                   console.error('Connection error:', err);
