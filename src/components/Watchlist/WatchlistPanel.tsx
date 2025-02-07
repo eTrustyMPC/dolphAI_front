@@ -9,6 +9,7 @@ interface WatchlistPanelProps {
   watchedTokens?: TokenCardData[];
   onTokenSelect?: (token: TokenCardData) => void;
   onRemoveToken?: (token: TokenCardData) => void;
+  isWalletConnected?: boolean;
 }
 
 export const WatchlistPanel: React.FC<WatchlistPanelProps> = ({
@@ -16,7 +17,8 @@ export const WatchlistPanel: React.FC<WatchlistPanelProps> = ({
   onToggle,
   watchedTokens = [],
   onTokenSelect,
-  onRemoveToken
+  onRemoveToken,
+  isWalletConnected = false
 }) => {
   const [copiedAddress, setCopiedAddress] = React.useState<string | null>(null);
 
@@ -55,10 +57,24 @@ export const WatchlistPanel: React.FC<WatchlistPanelProps> = ({
           <h2 className="text-xl font-bold">Watchlist</h2>
         </div>
 
-        {watchedTokens.length === 0 ? (
-          <div className="text-center py-8">
-            <p className="text-gray-400 text-sm">
-              Your watched tokens will appear here
+        {!isWalletConnected ? (
+          <div className="text-center py-8 px-4">
+            <Star className="w-8 h-8 text-gray-500 mx-auto mb-3" />
+            <p className="text-gray-300 font-medium mb-1">
+              Connect your wallet to enable watchlist
+            </p>
+            <p className="text-gray-500 text-sm">
+              Track and monitor your favorite tokens
+            </p>
+          </div>
+        ) : watchedTokens.length === 0 ? (
+          <div className="text-center py-8 px-4">
+            <Star className="w-8 h-8 text-yellow-400 mx-auto mb-3" fill="currentColor" />
+            <p className="text-gray-300 font-medium mb-1">
+              Your watchlist is empty
+            </p>
+            <p className="text-gray-500 text-sm">
+              Click the star icon on any token to add it here
             </p>
           </div>
         ) : (

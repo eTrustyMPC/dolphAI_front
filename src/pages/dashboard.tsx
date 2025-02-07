@@ -41,7 +41,27 @@ export default function DashboardPage() {
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [watchlist, setWatchlist] = useState<string[]>([]);
 
+  // Header content
+  const headerContent = (
+    <div className="text-center space-y-6 mb-12">
+      <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-transparent bg-clip-text animate-gradient">
+        DolphAI Project
+      </h1>
+      <div className="space-y-3">
+        <p className="text-xl text-gray-300">
+          Discover, analyze and track tokens with AI-powered insights
+        </p>
+        <p className="text-sm text-gray-400">
+          Connect wallet to unlock full analysis capabilities
+        </p>
+      </div>
+    </div>
+  );
+
   const handleToggleWatchlist = useCallback((address: string) => {
+    // Only allow watchlist functionality if wallet is connected
+    if (!customWallet.isInitialized) return;
+
     const token = tokens.find(t => t.address === address);
     if (!token) return;
 
@@ -79,8 +99,14 @@ export default function DashboardPage() {
   }, [tokens]);
   const [copiedAddress, setCopiedAddress] = useState('');
 
-  // Load watched tokens from localStorage
+  // Load watched tokens from localStorage only if wallet is connected
   useEffect(() => {
+    if (!customWallet.isInitialized) {
+      setWatchedTokens([]);
+      setWatchlist([]);
+      return;
+    }
+
     const savedTokens = localStorage.getItem('watchedTokens');
     if (savedTokens) {
       const tokens = JSON.parse(savedTokens);
@@ -167,15 +193,9 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-gray-950 text-white relative">
       <Navbar />
-      <main className="min-h-screen relative pt-16">
+      <main className="min-h-screen relative pt-24">
         <div className="max-w-[90rem] mx-auto px-4">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold mb-6">DolphAI Project</h1>
-            <p className="text-gray-400 mb-8">
-              Search and analyze tokens
-              {!customWallet.isInitialized && " (connect wallet to analyze)"}
-            </p>
-          </div>
+          {headerContent}
 
           <div className="flex gap-8">
             <TokenTableSection
@@ -215,6 +235,7 @@ export default function DashboardPage() {
           handleAnalyzeToken(token);
         }}
         onRemoveToken={handleRemoveFromWatchlist}
+        isWalletConnected={customWallet.isInitialized}
       />
     </div>
   );
