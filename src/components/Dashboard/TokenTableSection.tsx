@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { Shield, Search } from 'lucide-react';
+import { DeFiGrid } from '@/components/Dashboard/DeFiGrid';
 import { AgentCard } from '@/components/Agent/AgentCard';
 import { mockValueAgent, mockScoringAgents } from '@/services/mockAgentData';
 import { Token } from '@/components/TokenPreview/types';
@@ -148,7 +149,7 @@ export const TokenTableSection: React.FC<Props> = ({
           />
 
           {/* Token Info & Content */}
-          <div className="relative mt-6 space-y-6">
+          <div className="relative mt-4 space-y-4">
             <div className={`${!searchQuery || !selectedToken ? 'blur-sm pointer-events-none' : ''}`}>
               {/* Token Info */}
               <TokenInfo
@@ -161,8 +162,9 @@ export const TokenTableSection: React.FC<Props> = ({
               />
 
               {/* Agents */}
-              <div className="mt-6">
-              <div className="bg-gray-900/40 border border-blue-500/30 rounded-2xl p-4 backdrop-blur-sm">
+              <div className="mt-4">
+              {/* Agents Section */}
+              <div className="bg-gray-900/40 border border-blue-500/30 rounded-2xl p-4 backdrop-blur-sm mb-4">
                 <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
                   <Shield className="w-5 h-5 text-purple-400" />
                   Agent for Value
@@ -175,7 +177,7 @@ export const TokenTableSection: React.FC<Props> = ({
 
               {/* Connect Wallet Promo */}
               {selectedToken && !isWalletConnected && (
-                <div className="mt-6">
+                <div className="mb-6">
                   <ConnectWalletPromo
                     tokenName={selectedToken.name}
                     isWalletConnected={isWalletConnected}
@@ -184,6 +186,13 @@ export const TokenTableSection: React.FC<Props> = ({
                   />
                 </div>
               )}
+
+              {/* DeFi Section */}
+              <div className="relative mb-4">
+                <div className={`bg-[#0B1018] border border-blue-500/30 rounded-2xl ${!isWalletConnected ? 'blur-sm opacity-50' : ''}`}>
+                  <DeFiGrid isWalletConnected={isWalletConnected} />
+                </div>
+              </div>
               </div>
             </div>
 

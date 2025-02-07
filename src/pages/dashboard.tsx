@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import dynamic from 'next/dynamic';
-import { Loader, Search, TrendingUp, X, Check, ClipboardCopy, Globe, Twitter, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Loader, Search, TrendingUp, X, Check, ClipboardCopy, Globe, Twitter, ExternalLink, ChevronLeft, ChevronRight, Shield } from 'lucide-react';
 import { mockDashboardData } from '@/data/mockDashboardData';
 import { mockTokens } from '@/data/mockTokens';
 import Navbar from '@/components/Navbar';
@@ -10,7 +10,6 @@ import { Token } from '@/components/TokenPreview/types';
 import { TokenCardData, TokenScores } from '@/components/TokenCard/types';
 import { TokenPreviewCard } from '@/components/TokenPreview/TokenPreviewCard';
 import { WatchlistPanel } from '@/components/Watchlist/WatchlistPanel';
-import { AgentCards } from '@/components/Analysis/AgentCards';
 import { TokenTableSection } from '@/components/Dashboard/TokenTableSection';
 
 const TokenDashboard = dynamic<any>(
@@ -198,14 +197,7 @@ export default function DashboardPage() {
                 setSelectedToken={setSelectedToken}
                 wallet={customWallet}
               />
-            </div>
-
-            {selectedToken && (
-              <div className="space-y-8">
-                <AgentCards token={selectedToken} />
-                <DeFiGrid isWalletConnected={customWallet.isInitialized} />
-              </div>
-            )}
+            </div> 
           </div>
         </div>
       </main>

@@ -21,7 +21,7 @@ export const TokenInfo: React.FC<TokenInfoProps> = ({
 }) => {
   return (
     <div className="relative">
-    <div className="bg-gradient-to-br from-gray-900/80 to-gray-800/50 border border-blue-500/20 rounded-xl backdrop-blur-sm overflow-hidden p-2.5">
+      <div className="bg-gradient-to-br from-gray-900/80 to-gray-800/50 border border-blue-500/20 rounded-xl backdrop-blur-sm overflow-hidden p-2.5">
       <div className="flex items-center gap-3">
         <div className="relative flex-shrink-0">
           <div className="relative">
@@ -46,11 +46,11 @@ export const TokenInfo: React.FC<TokenInfoProps> = ({
                 </span>
                 <button
                   onClick={() => isWalletConnected ? onToggleWatchlist(token.address) : undefined}
-                  className={`p-1 rounded-lg transition-all ${!isWalletConnected ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-800/50'} ${watchlist.includes(token.address) ? 'text-yellow-400 hover:text-yellow-500' : 'text-gray-400 hover:text-yellow-400'}`}
+                  className={`p-1 rounded-lg transition-all ${!isWalletConnected ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-800/50'}`}
                   title={!isWalletConnected ? 'Connect wallet to use watchlist' : watchlist.includes(token.address) ? 'Remove from watchlist' : 'Add to watchlist'}
                   disabled={!isWalletConnected}
                 >
-                  <Star className="w-4 h-4" />
+                  <Star className={`w-4 h-4 ${watchlist.includes(token.address) ? 'text-yellow-400 fill-yellow-400 stroke-yellow-400' : 'text-yellow-400 hover:text-yellow-500'}`} />
                 </button>
               </div>
             </h3>
@@ -166,16 +166,16 @@ export const TokenInfo: React.FC<TokenInfoProps> = ({
           </div>
         </div>
       </div>
-    </div>
-    {!token && (
-      <div className="absolute inset-0 flex items-center justify-center bg-gray-900/50 backdrop-blur-sm rounded-xl">
-        <div className="text-center px-4">
-          <Search className="w-6 h-6 text-gray-400 mx-auto mb-2" />
-          <p className="text-sm text-gray-400 mb-1">Enter token address in the search bar above</p>
-          <p className="text-xs text-gray-500">Press <span className="text-blue-400 font-medium">Analyze</span> button to start exploration</p>
-        </div>
       </div>
-    )}
+      {!token && (
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-900/50 backdrop-blur-sm rounded-xl">
+          <div className="text-center px-4">
+            <Search className="w-6 h-6 text-gray-400 mx-auto mb-2" />
+            <p className="text-sm text-gray-400 mb-1">Enter token address in the search bar above</p>
+            <p className="text-xs text-gray-500">Press <span className="text-blue-400 font-medium">Analyze</span> button to start exploration</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

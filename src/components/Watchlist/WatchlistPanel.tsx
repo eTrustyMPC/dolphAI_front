@@ -46,8 +46,7 @@ export const WatchlistPanel: React.FC<WatchlistPanelProps> = ({
         aria-label={isOpen ? 'Close watchlist' : 'Open watchlist'}
       >
         <Star 
-          className={`h-5 w-5 ${isOpen ? 'text-yellow-400' : 'text-gray-400 hover:text-yellow-400'}`} 
-          fill={isOpen ? 'currentColor' : 'none'}
+          className={`h-5 w-5 ${isOpen ? 'text-yellow-400 fill-yellow-400 stroke-yellow-400' : 'text-yellow-400 hover:text-yellow-500'}`} 
         />
       </button>
 
@@ -59,7 +58,7 @@ export const WatchlistPanel: React.FC<WatchlistPanelProps> = ({
 
         {!isWalletConnected ? (
           <div className="text-center py-8 px-4">
-            <Star className="w-8 h-8 text-gray-500 mx-auto mb-3" />
+            <Star className="w-8 h-8 text-yellow-400 mx-auto mb-3" />
             <p className="text-gray-300 font-medium mb-1">
               Connect your wallet to enable watchlist
             </p>
