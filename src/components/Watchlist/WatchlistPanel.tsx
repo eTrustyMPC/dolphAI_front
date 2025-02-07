@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { ChevronRight, ChevronLeft, Star, Globe, Twitter, MessageSquare, Copy, Check, X } from 'lucide-react';
 import { TokenCardData } from '../TokenCard/types';
 import Image from 'next/image';
@@ -21,6 +21,29 @@ export const WatchlistPanel: React.FC<WatchlistPanelProps> = ({
   isWalletConnected = false
 }) => {
   const [copiedAddress, setCopiedAddress] = React.useState<string | null>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      const toggleButton = document.querySelector('[aria-label="Close watchlist"]');
+      
+      if (!isOpen) return;
+      
+      // Don't close if clicking the toggle button
+      if (toggleButton && toggleButton.contains(target)) return;
+      
+      // Close if clicking outside the panel
+      if (panelRef.current && !panelRef.current.contains(target)) {
+        onToggle();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen, onToggle]);
 
   const handleCopyAddress = async (address: string) => {
     try {
@@ -33,22 +56,25 @@ export const WatchlistPanel: React.FC<WatchlistPanelProps> = ({
   };
 
   return (
-    <div
-      className={`fixed right-0 top-[64px] bottom-0 bg-gray-900 border-l border-gray-800 transition-all duration-300 flex flex-col ${
-        isOpen ? 'translate-x-0' : 'translate-x-full'
-      }`}
-      style={{ width: '320px' }}
-    >
-      {/* Toggle Button */}
-      <button
-        onClick={onToggle}
-        className="absolute left-0 top-4 -translate-x-full bg-gray-900 border border-gray-800/50 rounded-l-xl p-2 hover:bg-gray-800/50 transition-colors"
-        aria-label={isOpen ? 'Close watchlist' : 'Open watchlist'}
+    <div className="relative">
+      {/* Panel */}
+      <div
+        ref={panelRef}
+        className={`fixed right-0 top-[64px] bottom-0 bg-gray-900 border-l border-gray-800 transition-all duration-300 flex flex-col ${
+          isOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+        style={{ width: '320px' }}
       >
-        <Star 
-          className={`h-5 w-5 ${isOpen ? 'text-yellow-400 fill-yellow-400 stroke-yellow-400' : 'text-yellow-400 hover:text-yellow-500'}`} 
-        />
-      </button>
+        {/* Toggle Button */}
+        <button
+          onClick={onToggle}
+          className={`absolute left-0 top-4 -translate-x-full bg-gray-900 border border-gray-800/50 rounded-l-xl p-2 hover:bg-gray-800/50 transition-colors ${isOpen ? 'opacity-100' : 'opacity-0'}`}
+          aria-label={isOpen ? 'Close watchlist' : 'Open watchlist'}
+        >
+          <Star 
+            className={`h-5 w-5 ${isOpen ? 'text-yellow-400 fill-yellow-400 stroke-yellow-400' : 'text-yellow-400 hover:text-yellow-500'}`} 
+          />
+        </button>
 
       {/* Panel Content */}
       <div className="p-4 border-b border-gray-800/50">
@@ -181,7 +207,22 @@ export const WatchlistPanel: React.FC<WatchlistPanelProps> = ({
             </div>
           </div>
         )}
+        </div>
       </div>
+      
+      {/* Fixed Toggle Button when panel is closed */}
+      <button
+        onClick={onToggle}
+        className={`fixed right-0 top-[80px] bg-gray-900 border-t border-l border-b border-gray-800/50 rounded-l-xl p-2 hover:bg-gray-800/50 transition-all duration-300 ${isOpen ? 'opacity-0 translate-x-8' : 'opacity-100 translate-x-0'}`}
+        aria-label="Open watchlist"
+      >
+        <div className="flex items-center gap-2">
+          <Star 
+            className="h-5 w-5 text-yellow-400 hover:text-yellow-500"
+          />
+          <span className="text-sm text-gray-400">Watchlist</span>
+        </div>
+      </button>
     </div>
   );
 };
