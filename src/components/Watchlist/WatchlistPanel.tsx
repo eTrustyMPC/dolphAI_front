@@ -40,20 +40,18 @@ export const WatchlistPanel: React.FC<WatchlistPanelProps> = ({
       {/* Toggle Button */}
       <button
         onClick={onToggle}
-        className="absolute left-0 top-4 -translate-x-full bg-gray-900 border border-gray-800 rounded-l-lg p-2 hover:bg-gray-800"
+        className="absolute left-0 top-4 -translate-x-full bg-gray-900 border border-gray-800/50 rounded-l-xl p-2 hover:bg-gray-800/50 transition-colors"
         aria-label={isOpen ? 'Close watchlist' : 'Open watchlist'}
       >
-        {isOpen ? (
-          <ChevronRight className="h-5 w-5 text-gray-400" />
-        ) : (
-          <ChevronLeft className="h-5 w-5 text-gray-400" />
-        )}
+        <Star 
+          className={`h-5 w-5 ${isOpen ? 'text-yellow-400' : 'text-gray-400 hover:text-yellow-400'}`} 
+          fill={isOpen ? 'currentColor' : 'none'}
+        />
       </button>
 
       {/* Panel Content */}
-      <div className="p-4 border-b border-gray-800">
-        <div className="flex items-center gap-2 mb-6">
-          <Star className="h-5 w-5 text-yellow-500" />
+      <div className="p-4 border-b border-gray-800/50">
+        <div className="mb-6">
           <h2 className="text-xl font-bold">Watchlist</h2>
         </div>
 
@@ -67,7 +65,7 @@ export const WatchlistPanel: React.FC<WatchlistPanelProps> = ({
           <div className="flex-1 overflow-y-auto custom-scrollbar">
             <div className="space-y-2 max-h-[calc(100vh-120px)] overflow-y-auto px-2">
             {watchedTokens.map((token) => (
-              <div key={token.address} className="group p-4 bg-gray-800/50 hover:bg-gray-800 rounded-lg transition-colors relative">
+              <div key={token.address} className="group p-4 bg-gray-900/40 hover:bg-gray-800/50 rounded-xl transition-colors relative border border-gray-800/50">
                 {/* Remove Button */}
                 {onRemoveToken && (
                   <button
@@ -75,7 +73,7 @@ export const WatchlistPanel: React.FC<WatchlistPanelProps> = ({
                       e.stopPropagation();
                       onRemoveToken(token);
                     }}
-                    className="absolute top-2 right-2 p-1.5 rounded-full bg-gray-700/50 hover:bg-red-500/20 hover:text-red-400 text-gray-400 opacity-0 group-hover:opacity-100 transition-all duration-200"
+                    className="absolute top-2 right-2 p-1.5 rounded-lg bg-gray-900/80 hover:bg-red-500/20 hover:text-red-400 text-gray-400 opacity-0 group-hover:opacity-100 transition-all duration-200"
                     title="Remove from watchlist"
                   >
                     <X className="w-3 h-3" />
@@ -97,13 +95,13 @@ export const WatchlistPanel: React.FC<WatchlistPanelProps> = ({
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => onTokenSelect?.(token)}
-                        className="font-medium hover:text-purple-400 transition-colors"
+                        className="text-base font-medium text-white hover:text-purple-400 transition-colors"
                       >
                         {token.name}
                       </button>
-                      <span className="text-sm text-gray-400">{token.symbol}</span>
+                      <span className="text-sm text-gray-400 ml-1">{token.symbol}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-xs text-gray-500">
+                    <div className="flex items-center gap-2 text-xs text-gray-400 mt-1">
                       <span>{token.address.slice(0, 6)}...{token.address.slice(-4)}</span>
                       <button
                         onClick={(e) => {
@@ -125,19 +123,19 @@ export const WatchlistPanel: React.FC<WatchlistPanelProps> = ({
                 
                 {/* Token Stats */}
                 {token.description && (
-                  <div className="text-sm text-gray-400 mb-3 line-clamp-2">
+                  <div className="text-sm text-gray-500 mt-3 mb-3 line-clamp-2">
                     {token.description}
                   </div>
                 )}
 
                 {/* Social Links */}
-                <div className="flex items-center gap-2 text-gray-400">
+                <div className="flex items-center gap-3 text-gray-400">
                   {token.links?.website && (
                     <a
                       href={token.links.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-1.5 hover:bg-gray-700 rounded-lg transition-colors"
+                      className="p-1.5 hover:bg-gray-800/80 rounded-lg transition-colors"
                     >
                       <Globe className="w-4 h-4" />
                     </a>
@@ -147,7 +145,7 @@ export const WatchlistPanel: React.FC<WatchlistPanelProps> = ({
                       href={token.links.twitter}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-1.5 hover:bg-gray-700 rounded-lg transition-colors"
+                      className="p-1.5 hover:bg-gray-800/80 rounded-lg transition-colors"
                     >
                       <Twitter className="w-4 h-4" />
                     </a>
@@ -157,7 +155,7 @@ export const WatchlistPanel: React.FC<WatchlistPanelProps> = ({
                       href={token.links.discord}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-1.5 hover:bg-gray-700 rounded-lg transition-colors"
+                      className="p-1.5 hover:bg-gray-800/80 rounded-lg transition-colors"
                     >
                       <MessageSquare className="w-4 h-4" />
                     </a>
