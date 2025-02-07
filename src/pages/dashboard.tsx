@@ -12,6 +12,7 @@ import { TokenPreviewCard } from '@/components/TokenPreview/TokenPreviewCard';
 import { WatchlistPanel } from '@/components/Watchlist/WatchlistPanel';
 import { AgentCards } from '@/components/Analysis/AgentCards';
 import { TokenTableSection } from '@/components/Dashboard/TokenTableSection';
+import { DeFiGrid } from '@/components/Dashboard/DeFiGrid';
 
 const TokenDashboard = dynamic<any>(
   () => import('@/components/TokenDashboard/TokenDashboard').then(mod => mod.TokenDashboard),
@@ -173,30 +174,37 @@ export default function DashboardPage() {
         <div className="max-w-[90rem] mx-auto px-4">
           {headerContent}
 
-          <div className="flex gap-8">
-            <TokenTableSection
-              showLeaderboard={showLeaderboard}
-              setShowLeaderboard={setShowLeaderboard}
-              leaderboardSearch={leaderboardSearch}
-              setLeaderboardSearch={setLeaderboardSearch}
-              tokens={tokens}
-              handleTokenSelect={handleTokenSelect}
-              copiedAddress={copiedAddress}
-              handleCopyAddress={handleCopyAddress}
-              watchlist={watchlist}
-              onToggleWatchlist={handleToggleWatchlist}
-              selectedToken={selectedToken}
-              isWalletConnected={customWallet.isInitialized}
-              onConnectSuccess={() => {}}
-              onConnectError={(error) => setError(error.message)}
-              searchQuery={searchQuery}
-              setSearchQuery={setSearchQuery}
-              handleSearchClear={handleSearchClear}
-              handleAnalyzeToken={handleAnalyzeToken}
-              filteredTokens={filteredTokens}
-              setSelectedToken={setSelectedToken}
-              wallet={customWallet}
-            />
+          <div className="space-y-8">
+            <div className="flex gap-8">
+              <TokenTableSection
+                showLeaderboard={showLeaderboard}
+                setShowLeaderboard={setShowLeaderboard}
+                leaderboardSearch={leaderboardSearch}
+                setLeaderboardSearch={setLeaderboardSearch}
+                tokens={tokens}
+                handleTokenSelect={handleTokenSelect}
+                copiedAddress={copiedAddress}
+                handleCopyAddress={handleCopyAddress}
+                watchlist={watchlist}
+                onToggleWatchlist={handleToggleWatchlist}
+                selectedToken={selectedToken}
+                isWalletConnected={customWallet.isInitialized}
+                onConnectSuccess={() => {}}
+                onConnectError={(error) => setError(error.message)}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                handleSearchClear={handleSearchClear}
+                handleAnalyzeToken={handleAnalyzeToken}
+                filteredTokens={filteredTokens}
+                setSelectedToken={setSelectedToken}
+                wallet={customWallet}
+              />
+            </div>
+
+            <div className="bg-gradient-to-br from-gray-900/80 to-gray-800/50 border border-blue-500/20 rounded-xl backdrop-blur-sm overflow-hidden p-6">
+              <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-transparent bg-clip-text animate-gradient">DeFi Analytics</h2>
+              <DeFiGrid />
+            </div>
           </div>
         </div>
       </main>
