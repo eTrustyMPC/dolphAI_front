@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { Repeat, Coins, PiggyBank, TrendingUp } from 'lucide-react';
 
+interface DeFiGridProps {
+  isWalletConnected: boolean;
+}
+
 interface TabProps {
   isActive: boolean;
   icon: React.ReactNode;
@@ -37,7 +41,7 @@ const DeFiCard: React.FC<{
   </div>
 );
 
-export const DeFiGrid: React.FC = () => {
+export const DeFiGrid: React.FC<DeFiGridProps> = ({ isWalletConnected }) => {
   const [activeTab, setActiveTab] = useState('swap');
 
   const tabs = [
@@ -46,6 +50,32 @@ export const DeFiGrid: React.FC = () => {
     { id: 'lending', label: 'Lending', icon: <PiggyBank className="w-4 h-4" /> },
     { id: 'perps', label: 'Perps', icon: <TrendingUp className="w-4 h-4" /> },
   ];
+
+  if (!isWalletConnected) {
+    return (
+      <div className="bg-gradient-to-br from-gray-900/80 to-gray-800/50 border border-blue-500/20 rounded-xl backdrop-blur-sm overflow-hidden p-6">
+        <div className="text-center py-8">
+          <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-transparent bg-clip-text animate-gradient">
+            DeFi Analytics
+          </h2>
+          <p className="text-gray-400 mb-4">
+            Connect your wallet to view detailed DeFi analytics and insights
+          </p>
+          <div className="flex justify-center gap-4 opacity-50">
+            {tabs.map((tab) => (
+              <div
+                key={tab.id}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-800/50 text-gray-500"
+              >
+                {tab.icon}
+                <span className="font-medium">{tab.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const renderContent = () => {
     switch (activeTab) {
