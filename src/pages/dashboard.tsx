@@ -65,38 +65,31 @@ export default function DashboardPage() {
     const token = tokens.find(t => t.address === address);
     if (!token) return;
 
-    setWatchlist(prev => {
-      const newList = prev.includes(address)
-        ? prev.filter(a => a !== address)
-        : [...prev, address];
-      
-      // Sync with watchedTokens
-      const tokenWithScores: TokenCardData = {
-        ...token,
-        scores: {
-          onChainActivity: { value: 75, explanation: 'Moderate transaction volume and user engagement' },
-          liquidityAndTrading: { value: 70, explanation: 'Adequate liquidity with moderate trading volume' },
-          whalesAndHolders: { value: 65, explanation: 'Fair token distribution with moderate holder activity' }
-        }
-      };
-
-      if (newList.includes(address)) {
-        setWatchedTokens(current => {
-          const updated = [...current, tokenWithScores];
-          localStorage.setItem('watchedTokens', JSON.stringify(updated));
-          return updated;
-        });
-      } else {
-        setWatchedTokens(current => {
-          const updated = current.filter(t => t.address !== address);
-          localStorage.setItem('watchedTokens', JSON.stringify(updated));
-          return updated;
-        });
+    const tokenWithScores: TokenCardData = {
+      ...token,
+      scores: {
+        onChainActivity: { value: 75, explanation: 'Moderate transaction volume and user engagement' },
+        liquidityAndTrading: { value: 70, explanation: 'Adequate liquidity with moderate trading volume' },
+        whalesAndHolders: { value: 65, explanation: 'Fair token distribution with moderate holder activity' }
       }
+    };
+
+    setWatchlist(prev => {
+      const isWatched = prev.includes(address);
+      const newList = isWatched ? prev.filter(a => a !== address) : [...prev, address];
+      
+      setWatchedTokens(current => {
+        const updated = isWatched
+          ? current.filter(t => t.address !== address)
+          : [...current, tokenWithScores];
+        localStorage.setItem('watchedTokens', JSON.stringify(updated));
+        localStorage.setItem('watchlist', JSON.stringify(newList));
+        return updated;
+      });
 
       return newList;
     });
-  }, [tokens]);
+  }, [tokens, customWallet.isInitialized]);
   const [copiedAddress, setCopiedAddress] = useState('');
 
   // Load watched tokens from localStorage only if wallet is connected
@@ -108,46 +101,29 @@ export default function DashboardPage() {
     }
 
     const savedTokens = localStorage.getItem('watchedTokens');
-    if (savedTokens) {
+    const savedWatchlist = localStorage.getItem('watchlist');
+    if (savedTokens && savedWatchlist) {
       const tokens = JSON.parse(savedTokens);
+      const list = JSON.parse(savedWatchlist);
       setWatchedTokens(tokens);
-      setWatchlist(tokens.map((t: TokenCardData) => t.address));
+      setWatchlist(list);
     } else {
       // Set some default watched tokens
       const defaultWatched = mockTokens.slice(0, 3);
+      const defaultList = defaultWatched.map(t => t.address);
       setWatchedTokens(defaultWatched);
-      setWatchlist(defaultWatched.map(t => t.address));
+      setWatchlist(defaultList);
       localStorage.setItem('watchedTokens', JSON.stringify(defaultWatched));
+      localStorage.setItem('watchlist', JSON.stringify(defaultList));
     }
-  }, []);
+  }, [customWallet.isInitialized]);
 
   const handleRemoveFromWatchlist = (tokenToRemove: Token) => {
-    setWatchedTokens(current => {
-      const updated = current.filter(token => token.address !== tokenToRemove.address);
-      localStorage.setItem('watchedTokens', JSON.stringify(updated));
-      setWatchlist(updated.map(t => t.address));
-      return updated;
-    });
+    handleToggleWatchlist(tokenToRemove.address);
   };
 
   const toggleWatchToken = (token: Token) => {
-    // Convert Token to TokenCardData by adding default scores
-    const tokenWithScores: TokenCardData = {
-      ...token,
-      scores: {
-        onChainActivity: { value: 75, explanation: 'Moderate transaction volume and user engagement' },
-        liquidityAndTrading: { value: 70, explanation: 'Adequate liquidity with moderate trading volume' },
-        whalesAndHolders: { value: 65, explanation: 'Fair token distribution with moderate holder activity' }
-      }
-    };
-    setWatchedTokens(current => {
-      const isWatched = current.some(t => t.address === token.address);
-      const newTokens = isWatched
-        ? current.filter(t => t.address !== token.address)
-        : [...current, tokenWithScores];
-      localStorage.setItem('watchedTokens', JSON.stringify(newTokens));
-      return newTokens;
-    });
+    handleToggleWatchlist(token.address);
   };
 
   // Memoize filtered tokens
