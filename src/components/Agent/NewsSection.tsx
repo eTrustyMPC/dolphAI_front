@@ -34,50 +34,6 @@ export const NewsSection: React.FC<Props> = ({ token, news }) => {
         <h3 className="text-base font-semibold text-white">Latest {token?.name} News</h3>
       </div>
       <div className="space-y-3">
-        {/* Token-specific links */}
-        <a 
-          href={`https://${token?.name.toLowerCase()}foundation.org/protocol-upgrade`} 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          className="block group hover:bg-blue-500/5 rounded-lg p-2 -mx-2 transition-colors"
-        >
-          <div className="flex items-start gap-2">
-            <div className="p-1">
-              <div className="w-1 h-1 rounded-full bg-blue-400" />
-            </div>
-            <div className="flex-1">
-              <div className="flex items-start justify-between gap-2">
-                <h4 className="text-sm font-medium text-gray-200 group-hover:text-white transition-colors">
-                  {token?.name} Network Announces Major Protocol Upgrade
-                </h4>
-                <ExternalLink className="w-3.5 h-3.5 text-gray-400 group-hover:text-white shrink-0 mt-0.5" />
-              </div>
-              <p className="text-xs text-gray-400 mt-1">2 hours ago</p>
-            </div>
-          </div>
-        </a>
-        <a 
-          href={`https://${token?.name.toLowerCase()}foundation.org/partnerships`} 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          className="block group hover:bg-blue-500/5 rounded-lg p-2 -mx-2 transition-colors"
-        >
-          <div className="flex items-start gap-2">
-            <div className="p-1">
-              <div className="w-1 h-1 rounded-full bg-blue-400" />
-            </div>
-            <div className="flex-1">
-              <div className="flex items-start justify-between gap-2">
-                <h4 className="text-sm font-medium text-gray-200 group-hover:text-white transition-colors">
-                  New Partnerships Drive {token?.name} Ecosystem Growth
-                </h4>
-                <ExternalLink className="w-3.5 h-3.5 text-gray-400 group-hover:text-white shrink-0 mt-0.5" />
-              </div>
-              <p className="text-xs text-gray-400 mt-1">4 hours ago</p>
-            </div>
-          </div>
-        </a>
-
         {/* Dynamic news items */}
         {news?.map((item) => (
           <a 

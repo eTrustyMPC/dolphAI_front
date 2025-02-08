@@ -25,18 +25,11 @@ export interface Token {
   marketCap?: number;
   volume24h?: number;
   volumeChange24h: string;
-  holdersChange: string;
-  transactions: number;
-  transactionsChange: string;
-  liquidity: number;
-  website?: string;
-  twitter?: string;
-  telegram?: string;
-  discord?: string;
-  github?: string;
-  whitepaper?: string;
-  liquidityChange: string;
-  totalSupply?: number;
+  fdv?: number;  // Fully Diluted Valuation
+  volMktCap?: number;  // Volume/Market Cap ratio
+  maxSupply?: number;  // Maximum supply
+  circulatingSupply?: number;  // Circulating supply
+  totalSupply?: number;  // Total supply
   valueProp?: string;
   dynamics?: TokenDynamics;
   recentArticles?: {
@@ -46,8 +39,7 @@ export interface Token {
   recentUpdates?: TokenUpdate[];
   links: {
     website?: string;
-    twitter?: string;
-    discord?: string;
+    whitepaper?: string;
     contract?: string;
     explorer?: string;
     telegram?: string;

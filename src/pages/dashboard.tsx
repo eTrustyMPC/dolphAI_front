@@ -34,7 +34,7 @@ export default function DashboardPage() {
   const [error, setError] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [selectedToken, setSelectedToken] = useState<Token | null>(null);
-  const [isWatchlistOpen, setIsWatchlistOpen] = useState(true);
+  const [isWatchlistOpen, setIsWatchlistOpen] = useState(false);
   const [watchedTokens, setWatchedTokens] = useState<TokenCardData[]>([]);
   const [leaderboardSearch, setLeaderboardSearch] = useState('');
   const [showLeaderboard, setShowLeaderboard] = useState(false);
@@ -42,16 +42,13 @@ export default function DashboardPage() {
 
   // Header content
   const headerContent = (
-    <div className="text-center space-y-6 mb-12">
-      <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-transparent bg-clip-text animate-gradient">
+    <div className="text-center space-y-6 mb-6">
+      <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-transparent bg-clip-text animate-gradient">
         DolphAI Project
       </h1>
       <div className="space-y-3">
         <p className="text-xl text-gray-300">
           Discover, analyze and track tokens with AI-powered insights
-        </p>
-        <p className="text-sm text-gray-400">
-          Connect wallet to unlock full analysis capabilities
         </p>
       </div>
     </div>
@@ -168,8 +165,8 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-gray-950 text-white relative">
       <Navbar />
-      <main className="min-h-screen relative pt-24">
-        <div className="max-w-[90rem] mx-auto px-4">
+      <main className="min-h-screen relative pt-20">
+        <div className="max-w-[90rem] mx-auto px-0">
           {headerContent}
 
           <div className="space-y-8">

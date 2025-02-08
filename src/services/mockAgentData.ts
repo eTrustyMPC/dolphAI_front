@@ -17,32 +17,28 @@ export const mockValueAgent: ValueAgent = {
 
 export const mockScoringAgents: ScoringAgent[] = [
   {
-    id: 'meta-dolphin',
+    id: 'flipper-agent',
     type: 'scoring',
-    name: 'Meta Dolphin',
+    name: 'FLIPPER',
     imageUrl: '/images/dolphin-circuit.png',
     lastUpdated: '2025-02-06T13:00:00Z',
     score: 8.5,
     confidence: 0.92,
     calculationLogic: 'Score = (FA Score × 0.3) + (On-chain Score × 0.25) + (Market Score × 0.25) + (Social Score × 0.2). Higher weight given to fundamental analysis and on-chain metrics as key indicators of project health.',
     indicators: [
-      { name: 'FA Score', value: 8.8, tooltip: 'Based on tokenomics, utility, and ecosystem growth metrics' },
-      { name: 'On-chain Score', value: 8.5, tooltip: 'Analysis of transaction patterns, wallet behaviors, and smart contract usage' },
-      { name: 'Market Score', value: 8.2, tooltip: 'DeFi metrics including TVL growth, yield opportunities, and protocol revenue' },
-      { name: 'Social Score', value: 8.4, tooltip: 'Community engagement, developer activity, and social sentiment analysis' }
+      { name: 'On-chain Agent', value: 8.8, tooltip: 'Based on tokenomics, utility, and ecosystem growth metrics' },
+      { name: 'Defi Agent', value: 8.5, tooltip: 'Analysis of transaction patterns, wallet behaviors, and smart contract usage' },
+      { name: 'Sentimental Analysis Agent', value: 8.2, tooltip: 'DeFi metrics including TVL growth, yield opportunities, and protocol revenue' },
     ],
     aiSummary: 'SUI ecosystem shows strong growth with TVL increasing by 45% this quarter across DeFi protocols. Integration with major platforms like Scallop and Navi Protocol demonstrates growing institutional adoption. The ecosystem maintains robust development activity with over 200 active monthly developers.',
     bgColor: 'bg-indigo-900/20',
     links: [
-      { text: 'View TVL Stats', url: 'https://defillama.com/chain/Sui' },
-      { text: 'Developer Activity', url: 'https://sui.io/developers' },
-      { text: 'Network Stats', url: 'https://suiexplorer.com/' }
     ]
   },
   {
     id: 'fa-agent',
     type: 'scoring',
-    name: 'FA Agent',
+    name: 'On-chain Analysis Agent',
     imageUrl: '/images/dolphin-chart.png',
     lastUpdated: '2025-02-06T13:00:00Z',
     score: 8.8,
@@ -53,12 +49,14 @@ export const mockScoringAgents: ScoringAgent[] = [
       { name: 'Utility Score', value: 8.5, tooltip: 'Real-world applications and integration with SUI ecosystem' },
       { name: 'Ecosystem Growth', value: 9.0, tooltip: 'Developer adoption, protocol integrations, and TVL growth' }
     ],
-    aiSummary: 'SUI demonstrates strong utility with Move language enabling secure smart contract development and efficient resource management. The tokenomics model shows balanced distribution with effective staking mechanisms and validator incentives. Recent protocol upgrades have enhanced scalability with parallel execution of transactions.',
+    aiSummary: 'SUI demonstrates strong utility with Move language enabling secure smart contract development and efficient resource management. The tokenomics model shows balanced distribution with effective staking mechanisms and validator incentives.',
     bgColor: 'bg-purple-900/20',
     links: [
-      { text: 'Staking Analytics', url: 'https://suiexplorer.com/stakes' },
-      { text: 'Move Playground', url: 'https://sui.io/move' },
-      { text: 'Protocol Docs', url: 'https://docs.sui.io' }
+      { text: 'Latest: SUI Network Upgrade', url: 'https://suiexplorer.com/news/upgrade' },
+      { text: 'DeFi Growth Report Q1', url: 'https://suiexplorer.com/news/defi-q1' },
+      { text: 'New Validator Onboarding', url: 'https://suiexplorer.com/news/validators' },
+      { text: 'Ecosystem Fund Launch', url: 'https://suiexplorer.com/news/fund' },
+      { text: 'Developer Tooling Update', url: 'https://suiexplorer.com/news/tools' }
     ]
   },
   {

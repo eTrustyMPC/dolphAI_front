@@ -20,7 +20,7 @@ export const TokenSearch: React.FC<TokenSearchProps> = ({
   filteredTokens,
 }) => {
   return (
-    <div className="flex justify-center mt-8 mb-12">
+    <div className="flex justify-center mt-0 mb-1">
       <div className="flex gap-3 w-[900px]">
         <div className="relative flex-1">
           <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
@@ -30,13 +30,22 @@ export const TokenSearch: React.FC<TokenSearchProps> = ({
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && searchQuery && filteredTokens.length > 0) {
+                setSelectedToken(filteredTokens[0]);
+                handleAnalyzeToken(filteredTokens[0]);
+              }
+            }}
             placeholder="Enter token name or address to start analysis"
-            className="w-full h-14 pl-12 pr-12 bg-gray-900/60 backdrop-blur-sm border border-blue-500/30 rounded-xl text-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all"
+            className="w-full h-14 pl-12 pr-12 bg-gray-900/60 border border-blue-500/30 rounded-xl text-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all"
           />
           {searchQuery && (
             <button
-              onClick={handleSearchClear}
-              className="absolute inset-y-0 right-4 flex items-center"
+              onClick={() => {
+                handleSearchClear();
+                setSearchQuery('');
+              }}
+              className="absolute inset-y-0 right-4 flex items-center cursor-pointer"
             >
               <X className="h-5 w-5 text-gray-400 hover:text-blue-400 transition-colors" />
             </button>

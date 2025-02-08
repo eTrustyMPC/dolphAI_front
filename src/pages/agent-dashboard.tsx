@@ -106,21 +106,33 @@ const AgentDashboard: React.FC = () => {
 
   const mockNews = [
     { 
-      title: "Protocol Upgrade Successfully Implemented",
+      title: "SUI Network Upgrade: Enhanced Performance",
       source: "Official Blog",
-      date: "2h ago",
+      date: "1h ago",
       type: 'news' as const
     },
     {
-      title: "Community Discussion: New Governance Proposal",
-      source: "Discord",
-      date: "4h ago",
-      type: 'social' as const
+      title: "DeFi Growth Report Q1: 45% TVL Increase",
+      source: "SUI Analytics",
+      date: "3h ago",
+      type: 'news' as const
     },
     {
-      title: "Q1 2025 Development Update",
+      title: "New Validator Onboarding Program Launched",
+      source: "Official Blog",
+      date: "5h ago",
+      type: 'news' as const
+    },
+    {
+      title: "Ecosystem Fund: $50M for Developer Growth",
       source: "Medium",
-      date: "6h ago",
+      date: "8h ago",
+      type: 'news' as const
+    },
+    {
+      title: "Developer Tooling Update: Move IDE 2.0",
+      source: "Dev Portal",
+      date: "12h ago",
       type: 'news' as const
     }
   ];

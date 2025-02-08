@@ -30,22 +30,22 @@ export const SearchSection: React.FC<SearchSectionProps> = ({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Enter token name or address..."
-            className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg pl-10 pr-12 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            className="w-full px-4 py-3 bg-[#111111] border border-[#1F1F1F] rounded-xl pl-12 pr-12 focus:outline-none focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent text-white placeholder-gray-500"
           />
-          <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-            <Search className="h-5 w-5 text-gray-400" />
+          <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+            <Search className="h-6 w-6 text-white/80" />
           </div>
           {searchQuery && (
             <button
               onClick={handleSearchClear}
               className="absolute inset-y-0 right-3 flex items-center"
             >
-              <X className="h-5 w-5 text-gray-400 hover:text-purple-400" />
+              <X className="h-5 w-5 text-white/60 hover:text-white transition-colors" />
             </button>
           )}
         </div>
         <button
-          className="flex items-center gap-2 px-6 py-3 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex items-center gap-2 px-6 py-3 bg-[#8B5CF6] text-white rounded-xl hover:bg-[#7C3AED] transition-colors whitespace-nowrap font-medium disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={() => {
             if (searchQuery && filteredTokens.length > 0) {
               setSelectedToken(filteredTokens[0]);

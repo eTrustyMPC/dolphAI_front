@@ -26,14 +26,14 @@ export const TokenActions: React.FC<TokenActionsProps> = ({ token = null, onShar
               Website
             </a>
           )}
-          {token.links.twitter && (
+          {token.links.telegram && (
             <a
-              href={token.links.twitter}
+              href={token.links.telegram}
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 text-gray-400 hover:text-purple-500 transition-colors"
             >
-              Twitter
+              Telegram
             </a>
           )}
           {token.links.explorer && (

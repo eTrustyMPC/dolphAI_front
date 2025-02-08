@@ -1,5 +1,5 @@
 import React from 'react';
-import { TrendingUp, Globe, Twitter, MessageSquare, FileText, ExternalLink, Clock, AlertCircle, CheckCircle, Info, Newspaper, Users, Activity, PieChart, ArrowUpRight, ArrowDownRight, Wallet, ChevronDown, ChevronRight, X, Star } from 'lucide-react';
+import { TrendingUp, Globe, MessageSquare, FileText, ExternalLink, Clock, AlertCircle, CheckCircle, Info, Newspaper, Users, Activity, PieChart, ArrowUpRight, ArrowDownRight, Wallet, ChevronDown, ChevronRight, X, Star } from 'lucide-react';
 import { Token, TokenUpdate } from './types';
 import { CustomConnectButton } from '../CustomConnectButton';
 
@@ -136,17 +136,6 @@ export const TokenPreviewCard: React.FC<TokenPreviewCardProps> = ({
                 <Globe className="w-4 h-4" />
               </a>
             )}
-            {token.links.twitter && (
-              <a 
-                href={token.links.twitter} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="text-gray-400 hover:text-white transition-colors"
-                title="Twitter"
-              >
-                <Twitter className="w-4 h-4" />
-              </a>
-            )}
             {token.links.telegram && (
               <a 
                 href={token.links.telegram} 
@@ -156,6 +145,28 @@ export const TokenPreviewCard: React.FC<TokenPreviewCardProps> = ({
                 title="Telegram"
               >
                 <MessageSquare className="w-4 h-4" />
+              </a>
+            )}
+            {token.links.whitepaper && (
+              <a 
+                href={token.links.whitepaper} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-gray-400 hover:text-white transition-colors"
+                title="Whitepaper"
+              >
+                <FileText className="w-4 h-4" />
+              </a>
+            )}
+            {token.links.explorer && (
+              <a 
+                href={token.links.explorer} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-gray-400 hover:text-white transition-colors"
+                title="Explorer"
+              >
+                <ExternalLink className="w-4 h-4" />
               </a>
             )}
           </div>
@@ -188,24 +199,24 @@ export const TokenPreviewCard: React.FC<TokenPreviewCardProps> = ({
               change={token.marketCapChange}
             />
             <MarketInfoCard
-              title="Volume"
+              title="Volume (24h)"
               value={`$${formatNumber(token.volume24h)}`}
               change={token.volumeChange24h}
             />
             <MarketInfoCard
+              title="Market Cap"
+              value={`$${formatNumber(token.marketCap)}`}
+              change={token.marketCapChange}
+            />
+            <MarketInfoCard
               title="Holders"
               value={formatNumber(token.holders)}
-              change={token.holdersChange}
+              change={token.dynamics?.weeklyHolderChange?.toString() + '%' || '0%'}
             />
             <MarketInfoCard
-              title="Transactions"
-              value={formatNumber(token.transactions)}
-              change={token.transactionsChange}
-            />
-            <MarketInfoCard
-              title="Liquidity"
-              value={`$${formatNumber(token.liquidity)}`}
-              change={token.liquidityChange}
+              title="Weekly Txs"
+              value={formatNumber(token.dynamics?.weeklyTxCount)}
+              change={token.dynamics?.weeklyVolumeChange?.toString() + '%' || '0%'}
             />
           </div>
 

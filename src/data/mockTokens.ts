@@ -32,17 +32,20 @@ export const mockTokens: TokenCardData[] = [
     holders: 95000,
     icon: 'https://raw.githubusercontent.com/hippospace/aptos-coin-list/main/icons/BFN.svg',
     description: 'Advanced DEX platform with innovative trading features.',
-    transactions: 2200,
     marketCapChange: '+18.5%',
     volumeChange24h: '+12.3%',
-    holdersChange: '+3.1%',
-    transactionsChange: '+6.2%',
-    liquidity: 140000000,
-    liquidityChange: '+4.5%',
+    dynamics: {
+      weeklyActiveUsers: 125000,
+      weeklyTxCount: 2200,
+      weeklyVolumeChange: 12.3,
+      weeklyHolderChange: 3.1,
+      topHoldersConcentration: 45.2
+    },
     links: {
       website: 'https://bluefin.io',
-      twitter: 'https://twitter.com/BluefinProtocol',
-      explorer: 'https://explorer.sui.io'
+      explorer: 'https://explorer.sui.io',
+      telegram: 'https://t.me/bluefinprotocol',
+      whitepaper: 'https://bluefin.io/whitepaper'
     }
   },
   {
@@ -58,17 +61,20 @@ export const mockTokens: TokenCardData[] = [
     holders: 100000,
     marketCapChange: '+10.5%',
     volumeChange24h: '+6.2%',
-    holdersChange: '+1.8%',
-    transactionsChange: '+4.2%',
-    liquidity: 250000000,
-    liquidityChange: '+2.8%',
     icon: '/sui-logo.png',
     description: 'The native token of the Sui blockchain platform.',
-    transactions: 2200,
+    dynamics: {
+      weeklyActiveUsers: 100000,
+      weeklyTxCount: 2200,
+      weeklyVolumeChange: 6.2,
+      weeklyHolderChange: 1.8,
+      topHoldersConcentration: 42.5
+    },
     links: {
       website: 'https://sui.io',
-      twitter: 'https://twitter.com/SuiNetwork',
-      explorer: 'https://explorer.sui.io'
+      explorer: 'https://explorer.sui.io',
+      telegram: 'https://t.me/sui_network',
+      whitepaper: 'https://sui.io/whitepaper'
     }
   },
   {
@@ -84,17 +90,20 @@ export const mockTokens: TokenCardData[] = [
     holders: 50000,
     icon: '/scallop-logo.png',
     description: 'Lending and borrowing protocol built on Sui.',
-    transactions: 1800,
     marketCapChange: '-3.2%',
     volumeChange24h: '-1.8%',
-    holdersChange: '+1.2%',
-    transactionsChange: '-0.8%',
-    liquidity: 90000000,
-    liquidityChange: '-1.5%',
+    dynamics: {
+      weeklyActiveUsers: 80000,
+      weeklyTxCount: 1800,
+      weeklyVolumeChange: -1.8,
+      weeklyHolderChange: 1.2,
+      topHoldersConcentration: 38.5
+    },
     links: {
       website: 'https://scallop.io',
-      twitter: 'https://twitter.com/ScallopProtocol',
-      explorer: 'https://explorer.sui.io'
+      explorer: 'https://explorer.sui.io',
+      telegram: 'https://t.me/scallopprotocol',
+      whitepaper: 'https://scallop.io/whitepaper'
     }
   },
   {
@@ -110,17 +119,20 @@ export const mockTokens: TokenCardData[] = [
     holders: 75000,
     icon: '/aftermath-logo.png',
     description: 'Decentralized exchange and trading platform on Sui.',
-    transactions: 1500,
     marketCapChange: '+11.2%',
     volumeChange24h: '+6.8%',
-    holdersChange: '+2.5%',
-    transactionsChange: '+4.2%',
-    liquidity: 160000000,
-    liquidityChange: '+3.8%',
+    dynamics: {
+      weeklyActiveUsers: 95000,
+      weeklyTxCount: 1500,
+      weeklyVolumeChange: 6.8,
+      weeklyHolderChange: 2.5,
+      topHoldersConcentration: 41.8
+    },
     links: {
       website: 'https://aftermath.finance',
-      twitter: 'https://twitter.com/AftermathFi',
-      explorer: 'https://explorer.sui.io'
+      explorer: 'https://explorer.sui.io',
+      telegram: 'https://t.me/aftermathfi',
+      whitepaper: 'https://aftermath.finance/whitepaper'
     }
   },
   {
@@ -136,17 +148,20 @@ export const mockTokens: TokenCardData[] = [
     holders: 65000,
     icon: '/turbos-logo.png',
     description: 'High-performance DEX aggregator on Sui.',
-    transactions: 1300,
     marketCapChange: '+9.5%',
     volumeChange24h: '+5.8%',
-    holdersChange: '+2.2%',
-    transactionsChange: '+3.5%',
-    liquidity: 130000000,
-    liquidityChange: '+2.8%',
+    dynamics: {
+      weeklyActiveUsers: 85000,
+      weeklyTxCount: 1300,
+      weeklyVolumeChange: 5.8,
+      weeklyHolderChange: 2.2,
+      topHoldersConcentration: 40.5
+    },
     links: {
       website: 'https://turbos.finance',
-      twitter: 'https://twitter.com/TurbosFinance',
-      explorer: 'https://explorer.sui.io'
+      explorer: 'https://explorer.sui.io',
+      telegram: 'https://t.me/turbosfinance',
+      whitepaper: 'https://turbos.finance/whitepaper'
     }
   },
   {
@@ -162,17 +177,20 @@ export const mockTokens: TokenCardData[] = [
     holders: 45000,
     icon: '/bucket-logo.png',
     description: 'Stablecoin protocol on Sui.',
-    transactions: 1100,
     marketCapChange: '-2.5%',
     volumeChange24h: '-1.5%',
-    holdersChange: '+0.8%',
-    transactionsChange: '-1.2%',
-    liquidity: 70000000,
-    liquidityChange: '-0.9%',
+    dynamics: {
+      weeklyActiveUsers: 75000,
+      weeklyTxCount: 1100,
+      weeklyVolumeChange: -1.5,
+      weeklyHolderChange: 0.8,
+      topHoldersConcentration: 37.2
+    },
     links: {
       website: 'https://bucket.fi',
-      twitter: 'https://twitter.com/BucketProtocol',
-      explorer: 'https://explorer.sui.io'
+      explorer: 'https://explorer.sui.io',
+      telegram: 'https://t.me/bucketprotocol',
+      whitepaper: 'https://bucket.fi/whitepaper'
     }
   },
   {
@@ -188,17 +206,20 @@ export const mockTokens: TokenCardData[] = [
     holders: 55000,
     icon: '/navi-logo.png',
     description: 'Cross-chain bridge and liquidity protocol.',
-    transactions: 900,
     marketCapChange: '+6.8%',
     volumeChange24h: '+4.2%',
-    holdersChange: '+1.5%',
-    transactionsChange: '+2.8%',
-    liquidity: 140000000,
-    liquidityChange: '+2.1%',
+    dynamics: {
+      weeklyActiveUsers: 70000,
+      weeklyTxCount: 900,
+      weeklyVolumeChange: 4.2,
+      weeklyHolderChange: 1.5,
+      topHoldersConcentration: 36.8
+    },
     links: {
       website: 'https://navi.xyz',
-      twitter: 'https://twitter.com/NaviProtocol',
-      explorer: 'https://explorer.sui.io'
+      explorer: 'https://explorer.sui.io',
+      telegram: 'https://t.me/naviprotocol',
+      whitepaper: 'https://navi.xyz/whitepaper'
     }
   },
   {
@@ -214,17 +235,20 @@ export const mockTokens: TokenCardData[] = [
     holders: 40000,
     icon: '/kriya-logo.png',
     description: 'Derivatives trading platform on Sui.',
-    transactions: 800,
     marketCapChange: '+4.2%',
     volumeChange24h: '+3.1%',
-    holdersChange: '+1.2%',
-    transactionsChange: '+1.8%',
-    liquidity: 100000000,
-    liquidityChange: '+1.5%',
+    dynamics: {
+      weeklyActiveUsers: 65000,
+      weeklyTxCount: 800,
+      weeklyVolumeChange: 3.1,
+      weeklyHolderChange: 1.2,
+      topHoldersConcentration: 35.5
+    },
     links: {
       website: 'https://kriya.finance',
-      twitter: 'https://twitter.com/KriyaFinance',
-      explorer: 'https://explorer.sui.io'
+      explorer: 'https://explorer.sui.io',
+      telegram: 'https://t.me/kriyafinance',
+      whitepaper: 'https://kriya.finance/whitepaper'
     }
   },
   {
@@ -240,17 +264,20 @@ export const mockTokens: TokenCardData[] = [
     holders: 35000,
     icon: '/suia-logo.png',
     description: 'NFT marketplace and creator platform.',
-    transactions: 700,
     marketCapChange: '-1.8%',
     volumeChange24h: '-1.2%',
-    holdersChange: '+0.5%',
-    transactionsChange: '-0.9%',
-    liquidity: 50000000,
-    liquidityChange: '-0.6%',
+    dynamics: {
+      weeklyActiveUsers: 60000,
+      weeklyTxCount: 700,
+      weeklyVolumeChange: -1.2,
+      weeklyHolderChange: 0.5,
+      topHoldersConcentration: 34.2
+    },
     links: {
       website: 'https://suia.io',
-      twitter: 'https://twitter.com/SuiaProtocol',
-      explorer: 'https://explorer.sui.io'
+      explorer: 'https://explorer.sui.io',
+      telegram: 'https://t.me/suiaprotocol',
+      whitepaper: 'https://suia.io/whitepaper'
     }
   },
   {
@@ -266,17 +293,20 @@ export const mockTokens: TokenCardData[] = [
     holders: 30000,
     icon: '/movex-logo.png',
     description: 'Decentralized options trading platform.',
-    transactions: 600,
     marketCapChange: '+2.8%',
     volumeChange24h: '+1.9%',
-    holdersChange: '+0.8%',
-    transactionsChange: '+1.2%',
-    liquidity: 80000000,
-    liquidityChange: '+0.9%',
+    dynamics: {
+      weeklyActiveUsers: 55000,
+      weeklyTxCount: 600,
+      weeklyVolumeChange: 1.9,
+      weeklyHolderChange: 0.8,
+      topHoldersConcentration: 33.5
+    },
     links: {
       website: 'https://movex.exchange',
-      twitter: 'https://twitter.com/MovExProtocol',
-      explorer: 'https://explorer.sui.io'
+      explorer: 'https://explorer.sui.io',
+      telegram: 'https://t.me/movexprotocol',
+      whitepaper: 'https://movex.exchange/whitepaper'
     }
   }
 ];

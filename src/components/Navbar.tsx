@@ -1,8 +1,10 @@
 import { useWallet } from '@suiet/wallet-kit';
 import { useCustomWallet } from '@/contexts/WalletContext';
-import { Wallet } from 'lucide-react';
+import { Wallet, Globe } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { XIcon } from './icons/XIcon';
+import Link from 'next/link';
 import { CustomConnectButton } from './CustomConnectButton';
 
 export default function Navbar() {
@@ -16,24 +18,53 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 bg-gray-950/80 backdrop-blur-md border-b border-gray-800 z-50">
-      <div className="max-w-[98%] mx-auto px-2">
-        <div className="flex justify-between items-center h-14">
+    <nav className="fixed top-0 left-0 right-0 bg-[#0A0A0A] z-50">
+      <div className="max-w-[98%] mx-auto px-4">
+        <div className="flex justify-between items-center h-16">
           {/* Logo/Brand */}
           <div className="flex items-center">
             <span className="text-lg font-bold text-white">DolphAI</span>
           </div>
 
-          {/* Wallet Connection */}
+          {/* Wallet Connection and Social Icons */}
           <div className="flex items-center">
+            {/* Social Icons */}
+            <div className="flex items-center gap-4 mr-8">
+              <a
+                href="https://twitter.com/DolphAI_ETH"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white/80 hover:text-white transition-colors"
+              >
+                <XIcon size={20} />
+              </a>
+              <a
+                href="https://twitter.com/DolphAI_Agent"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white/80 hover:text-white transition-colors"
+              >
+                <XIcon size={20} />
+              </a>
+              <a
+                href="https://dolphai.io"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white/80 hover:text-white transition-colors"
+              >
+                <Globe size={20} />
+              </a>
+            </div>
+
+            {/* Wallet Connection */}
             {wallet.connected ? (
-              <div className="flex items-center gap-2">
-                <span className="text-gray-400 font-mono text-sm">
+              <div className="flex items-center gap-3">
+                <span className="text-white/80 font-mono text-sm">
                   {wallet.address ? formatAddress(wallet.address) : '...'}
                 </span>
                 <button
                   onClick={() => customWallet.disconnect()}
-                  className="flex items-center gap-2 px-3 py-1.5 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors text-sm"
+                  className="flex items-center gap-2 px-4 py-2 bg-[#8B5CF6] hover:bg-[#7C3AED] rounded-xl transition-colors text-white font-medium"
                 >
                   Disconnect
                 </button>

@@ -12,19 +12,20 @@ export const mockDashboardData: TokenDashboardData = {
   volumeChange24h: '+8.5%',
   totalSupply: 10000000000,
   holders: 100000,
-  holdersChange: '+2.3%',
-  transactions: 250000,
-  transactionsChange: '+5.8%',
-  liquidity: 75000000,
-  liquidityChange: '+3.2%',
+  dynamics: {
+    weeklyActiveUsers: 125000,
+    weeklyTxCount: 250000,
+    weeklyVolumeChange: 5.8,
+    weeklyHolderChange: 2.3,
+    topHoldersConcentration: 45.2
+  },
   icon: '/sui-logo.png',
   links: {
     website: 'https://sui.io',
-    twitter: 'https://twitter.com/SuiNetwork',
     telegram: 'https://t.me/sui_network',
-    discord: 'https://discord.gg/sui',
     contract: 'https://explorer.sui.io/token/0x2::sui::SUI',
-    explorer: 'https://explorer.sui.io'
+    explorer: 'https://explorer.sui.io',
+    whitepaper: 'https://sui.io/whitepaper'
   },
   
   // Required by TokenDashboardData
@@ -185,16 +186,6 @@ export const mockDashboardData: TokenDashboardData = {
       source: 'Sui Blog'
     }
   ],
-
-
-  // Market Dynamics
-  dynamics: {
-    weeklyActiveUsers: 125000,
-    weeklyTxCount: 850000,
-    weeklyVolumeChange: 15.3,
-    weeklyHolderChange: 8.2,
-    topHoldersConcentration: 45.5
-  },
 
   scores: {
     onChainActivity: {

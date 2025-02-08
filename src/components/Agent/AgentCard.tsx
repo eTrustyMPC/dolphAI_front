@@ -5,9 +5,10 @@ import { Agent, ValueAgent, ScoringAgent } from '@/types/agent';
 
 interface AgentCardProps {
   agent: Agent;
+  isComingSoon?: boolean;
 }
 
-export const AgentCard: React.FC<AgentCardProps> = ({ agent }) => {
+export const AgentCard: React.FC<AgentCardProps> = ({ agent, isComingSoon }) => {
   const isValueAgent = (agent: Agent): agent is ValueAgent => {
     return 'description' in agent;
   };
@@ -16,21 +17,61 @@ export const AgentCard: React.FC<AgentCardProps> = ({ agent }) => {
     return 'score' in agent && 'indicators' in agent;
   };
 
+  if (isComingSoon) {
+    return (
+      <div className="relative rounded-lg h-full overflow-hidden">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="relative w-14 h-14">
+            <Image
+              src={agent.imageUrl}
+              alt={agent.name}
+              fill
+              className="object-contain drop-shadow-lg"
+              priority
+            />
+          </div>
+          <div className="flex-1">
+            <h3 className="text-lg font-semibold text-white">{agent.name}</h3>
+            <div className="bg-emerald-500 text-white text-xs px-2 py-0.5 rounded-full w-fit mt-1">
+              Score: 8.8
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <div>
+            <h4 className="text-sm font-medium text-gray-400 mb-2">Indicators Used</h4>
+            <div className="flex flex-wrap gap-2">
+              <div className="bg-blue-500/10 text-blue-400 text-xs px-2 py-1 rounded-lg">
+                Tokenomics
+              </div>
+              <div className="bg-blue-500/10 text-blue-400 text-xs px-2 py-1 rounded-lg">
+                Utility Score
+              </div>
+              <div className="bg-blue-500/10 text-blue-400 text-xs px-2 py-1 rounded-lg">
+                Ecosystem Growth
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-medium text-gray-400 mb-2">AI Analysis</h4>
+            <div className="text-gray-300 space-y-2 text-sm">
+              <p>SUI demonstrates strong utility with Move language enabling secure smart contract development and efficient resource management.</p>
+              <p>The tokenomics model shows balanced distribution with effective staking mechanisms and validator incentives.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (isValueAgent(agent)) {
     return (
-      <div className="relative bg-emerald-900/20 rounded-lg p-4 shadow-lg backdrop-blur-sm h-full overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <Image
-            src={agent.imageUrl}
-            alt=""
-            fill
-            className="object-cover scale-150 blur-sm"
-            priority
-          />
-        </div>
+      <div className="relative rounded-lg p-4 h-full overflow-hidden">
         <div className="relative z-10">
-        <div className="flex items-center gap-4 mb-4">
-          <div className="relative w-16 h-16">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="relative w-14 h-14">
             <Image
               src={agent.imageUrl}
               alt={agent.name}
@@ -44,33 +85,17 @@ export const AgentCard: React.FC<AgentCardProps> = ({ agent }) => {
           </div>
         </div>
         
-        <div className="space-y-4">
-          <div className="bg-emerald-500/10 rounded-lg p-3">
-            <h4 className="text-xs font-medium text-emerald-400 mb-1.5">Analysis Summary</h4>
+        <div className="space-y-2">
+          <div className="bg-emerald-500/10 rounded-lg p-2">
+            <h4 className="text-[10px] font-medium text-emerald-400 mb-1">Analysis Summary</h4>
             <div className="text-gray-300 space-y-2">
               {agent.description.split('. ').map((sentence, index) => (
-                <p key={index} className="text-xs leading-relaxed">
+                <p key={index} className="text-[11px] leading-relaxed">
                   {sentence.trim() + (index < agent.description.split('. ').length - 1 ? '.' : '')}
                 </p>
               ))}
             </div>
           </div>
-          
-          {agent.links.length > 0 && (
-            <div className="flex flex-wrap gap-2">
-              {agent.links.map((link, index) => (
-                <a
-                  key={index}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs text-purple-400 hover:text-purple-300 transition-colors"
-                >
-                  {link.text} →
-                </a>
-              ))}
-            </div>
-          )}
         </div>
         </div>
       </div>
@@ -79,18 +104,9 @@ export const AgentCard: React.FC<AgentCardProps> = ({ agent }) => {
 
   if (isScoringAgent(agent)) {
     return (
-      <div className={`relative ${agent.bgColor} rounded-lg p-4 shadow-lg backdrop-blur-sm h-full overflow-hidden`}>
-        <div className="absolute inset-0 opacity-10">
-          <Image
-            src={agent.imageUrl}
-            alt=""
-            fill
-            className="object-cover scale-150 blur-sm"
-            priority
-          />
-        </div>
+      <div className="relative rounded-lg p-2 h-full overflow-hidden">
         <div className="relative z-10">
-        <div className="flex items-center gap-3 mb-3">
+        <div className="flex items-center gap-3 mb-2">
           <div className="relative w-14 h-14 flex-shrink-0">
             <Image
               src={agent.imageUrl}
@@ -129,7 +145,7 @@ export const AgentCard: React.FC<AgentCardProps> = ({ agent }) => {
 
         <div className="space-y-4">
           <div className="bg-blue-500/10 rounded-lg p-2">
-            <h4 className="text-[10px] font-medium text-blue-400 mb-1">Indicators Used</h4>
+            <h4 className="text-[14px] font-medium text-blue-400 mb-1">Indicators Used</h4>
             <div className="flex flex-wrap gap-x-1 gap-y-0.5">
               {agent.indicators.map((indicator, index) => (
                 <div
@@ -137,7 +153,7 @@ export const AgentCard: React.FC<AgentCardProps> = ({ agent }) => {
                   className="relative group inline-flex items-center"
                 >
                   <div className={`px-1 py-0.5 rounded-sm bg-blue-500/20 flex items-center gap-0.5`}>
-                    <span className="text-[9px] text-blue-200 leading-none">{indicator.name}</span>
+                    <span className="text-[11px] text-blue-200 leading-none">{indicator.name}</span>
                     <InfoIcon className="w-2.5 h-2.5 text-blue-300/60 group-hover:text-blue-300 cursor-help transition-colors" />
                   </div>
                   
@@ -157,10 +173,10 @@ export const AgentCard: React.FC<AgentCardProps> = ({ agent }) => {
           </div>
 
           <div className="bg-emerald-500/10 rounded-lg p-2">
-            <h4 className="text-[10px] font-medium text-emerald-400 mb-1">AI Analysis</h4>
+            <h4 className="text-[14px] font-medium text-emerald-400 mb-1">AI Analysis</h4>
             <div className="text-gray-300 space-y-2">
               {agent.aiSummary.split('. ').map((sentence, index) => (
-                <p key={index} className="text-xs leading-relaxed">
+                <p key={index} className="text-[12px] leading-relaxed">
                   {sentence.trim() + (index < agent.aiSummary.split('. ').length - 1 ? '.' : '')}
                 </p>
               ))}

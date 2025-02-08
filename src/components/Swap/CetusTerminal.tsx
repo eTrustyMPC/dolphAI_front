@@ -38,7 +38,7 @@ export const CetusTerminal: React.FC<CetusTerminalProps> = ({ isWalletConnected,
   return (
     <div className="flex justify-center items-center p-4">
       <div className="bg-gray-900/50 rounded-lg overflow-hidden w-[540px]">
-        <div id="cetus-terminal" className="w-full h-[520px]" />
+        <div id="cetus-terminal" className="w-full h-[530px]" />
       </div>
     </div>
   );

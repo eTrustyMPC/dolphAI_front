@@ -75,11 +75,11 @@ export const TokenCard: React.FC<TokenCardProps> = ({ data }) => {
       {/* Market Info */}
       <TokenMetrics
         metrics={{
-          liquidity: data.liquidity || 0,
+          liquidity: 0, // Required by interface but not available in Token
           volume: data.volume24h || 0,
           priceChange24h: data.priceChange24h || 0,
-          holders: data.holders,
-          marketCap: data.marketCap,
+          holders: data.holders || 0,
+          marketCap: data.marketCap || 0
         }}
       />
 

@@ -247,9 +247,9 @@ export const TokenDashboard: React.FC<TokenDashboardProps> = ({
             <div className="bg-gray-900 rounded-lg p-4">
               <h3 className="text-lg font-medium mb-4">Links</h3>
               <div className="space-y-3">
-                {data.website && (
+                {data.links?.website && (
                   <a
-                    href={data.website}
+                    href={data.links.website}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
@@ -259,21 +259,9 @@ export const TokenDashboard: React.FC<TokenDashboardProps> = ({
                     <ExternalLink size={12} className="ml-auto" />
                   </a>
                 )}
-                {data.twitter && (
+                {data.links?.telegram && (
                   <a
-                    href={data.twitter}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
-                  >
-                    <Twitter size={16} />
-                    <span>Twitter</span>
-                    <ExternalLink size={12} className="ml-auto" />
-                  </a>
-                )}
-                {data.telegram && (
-                  <a
-                    href={data.telegram}
+                    href={data.links.telegram}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
@@ -283,9 +271,9 @@ export const TokenDashboard: React.FC<TokenDashboardProps> = ({
                     <ExternalLink size={12} className="ml-auto" />
                   </a>
                 )}
-                {data.whitepaper && (
+                {data.links?.whitepaper && (
                   <a
-                    href={data.whitepaper}
+                    href={data.links.whitepaper}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"

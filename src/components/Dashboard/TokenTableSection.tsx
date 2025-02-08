@@ -1,15 +1,15 @@
 import React, { useMemo } from 'react';
-import { Shield, Search } from 'lucide-react';
+import { Shield, Search, TrendingUp, FileText } from 'lucide-react';
 import { DeFiGrid } from '@/components/Dashboard/DeFiGrid';
 import { AgentCard } from '@/components/Agent/AgentCard';
 import { mockValueAgent, mockScoringAgents } from '@/services/mockAgentData';
 import { Token } from '@/components/TokenPreview/types';
 import { ConnectWalletPromo } from '@/components/ConnectWallet/ConnectWalletPromo';
 import { NewsSection } from '../Agent/NewsSection';
-import { OnChainUpdates } from '../Agent/OnChainUpdates';
 import { TokenInfo } from '../Token/TokenInfo';
 import { TokenSearch } from '../Token/TokenSearch';
 import { TokenLeaderboard } from '../Token/TokenLeaderboard';
+import Image from 'next/image';
 
 interface Props {
   showLeaderboard: boolean;
@@ -42,16 +42,15 @@ const defaultToken: Token = {
   price: '0.00',
   marketCapChange: '0%',
   volumeChange24h: '0%',
-  holdersChange: '0%',
-  transactions: 0,
-  transactionsChange: '0%',
-  liquidity: 0,
-  liquidityChange: '0%',
   links: {
     website: undefined,
-    twitter: undefined,
-    discord: undefined,
-    contract: undefined
+    whitepaper: undefined,
+    contract: undefined,
+    explorer: undefined,
+    telegram: undefined
+  },
+  dynamics: {
+    weeklyHolderChange: 0
   }
 };
 
@@ -78,7 +77,7 @@ export const TokenTableSection: React.FC<Props> = ({
   setSelectedToken,
 }) => {
   const sortedTokens = useMemo(
-    () => tokens.sort((a, b) => (b.transactions ?? 0) - (a.transactions ?? 0)),
+    () => tokens.sort((a, b) => (b.volume24h ?? 0) - (a.volume24h ?? 0)),
     [tokens]
   );
 
@@ -109,30 +108,134 @@ export const TokenTableSection: React.FC<Props> = ({
     handleAnalyzeToken(token);
   };
 
+  const [activeTab, setActiveTab] = React.useState<'leaderboard' | 'watchlist'>('leaderboard');
+  const [showWatchlist, setShowWatchlist] = React.useState(false);
+
+  const displayedTokensWithWatchlist = activeTab === 'watchlist' 
+    ? tokens.filter(token => watchlist.includes(token.address))
+    : displayedTokens;
+
   return (
     <div className="flex gap-8 h-full min-h-[32rem] mt-8 relative">
       <div className="w-full h-full flex gap-8">
-        {/* Left Side - Leaderboard & News */}
+        {/* Left Side - Leaderboard, News & Connect Wallet */}
         <div className="flex flex-col gap-4 w-[400px]">
-          {/* Leaderboard */}
-          <TokenLeaderboard
-            showLeaderboard={showLeaderboard}
-            setShowLeaderboard={setShowLeaderboard}
-            leaderboardSearch={leaderboardSearch}
-            setLeaderboardSearch={setLeaderboardSearch}
-            displayedTokens={displayedTokens}
-            handleTokenSelect={handleTokenSelect}
-            getGradientClass={getGradientClass}
-            copiedAddress={copiedAddress}
-            handleCopyAddress={handleCopyAddress}
-            watchlist={watchlist}
-            onToggleWatchlist={onToggleWatchlist}
-          />
+          {/* Leaderboard & Watchlist */}
+          <div className="border border-blue-500/30 rounded-2xl overflow-hidden bg-[#151820]">
+            <div className="flex border-b border-gray-800">
+              <button
+                onClick={() => setActiveTab('leaderboard')}
+                className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${activeTab === 'leaderboard' ? 'text-white bg-purple-500/10' : 'text-gray-400 hover:text-white hover:bg-purple-500/5'}`}
+              >
+                Leaderboard
+              </button>
+              <button
+                onClick={() => setActiveTab('watchlist')}
+                className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${activeTab === 'watchlist' ? 'text-white bg-purple-500/10' : 'text-gray-400 hover:text-white hover:bg-purple-500/5'}`}
+              >
+                Watchlist
+              </button>
+            </div>
+            {activeTab === 'watchlist' && !isWalletConnected ? (
+              <div className="p-6 flex flex-col items-center justify-center text-center h-[32rem]">
+                <div>
+                  <h4 className="text-sm font-medium text-white mb-1">Get More Insights</h4>
+                  <p className="text-xs text-gray-400 mb-2">
+                    Connect wallet to access <span className="text-purple-400 font-medium">detailed analytics</span> and <span className="text-purple-400 font-medium">DeFi features</span>
+                  </p>
+                  <div className="flex items-center justify-center gap-2">
+                    <a 
+                      href="https://bluefin.io" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 px-1.5 py-0.5 bg-gray-800/50 rounded hover:bg-gray-700/50 transition-colors group"
+                    >
+                      <div className="p-0.5 bg-blue-500/10 rounded">
+                        <TrendingUp className="h-2.5 w-2.5 text-blue-400" />
+                      </div>
+                      <span className="text-[10px] font-medium group-hover:text-blue-400 transition-colors">Bluefin</span>
+                    </a>
+                    <a 
+                      href="https://suilend.fi" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 px-1.5 py-0.5 bg-gray-800/50 rounded hover:bg-gray-700/50 transition-colors group"
+                    >
+                      <div className="p-0.5 bg-green-500/10 rounded">
+                        <FileText className="h-2.5 w-2.5 text-green-400" />
+                      </div>
+                      <span className="text-[10px] font-medium group-hover:text-green-400 transition-colors">SuiLend</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <TokenLeaderboard
+                showLeaderboard={activeTab === 'leaderboard' ? showLeaderboard : showWatchlist}
+                setShowLeaderboard={activeTab === 'leaderboard' ? setShowLeaderboard : setShowWatchlist}
+                leaderboardSearch={leaderboardSearch}
+                setLeaderboardSearch={setLeaderboardSearch}
+                displayedTokens={displayedTokensWithWatchlist}
+                handleTokenSelect={handleTokenSelect}
+                getGradientClass={getGradientClass}
+                copiedAddress={copiedAddress}
+                handleCopyAddress={handleCopyAddress}
+                watchlist={watchlist}
+                onToggleWatchlist={onToggleWatchlist}
+                activeTab={activeTab}
+              />
+            )}
+          </div>
 
-          {/* News & Updates */}
-          <div className={`space-y-4 ${!searchQuery || !selectedToken ? 'blur-sm pointer-events-none' : ''}`}>
-            <NewsSection token={selectedToken || defaultToken} />
-            <OnChainUpdates token={selectedToken || defaultToken} />
+          {/* News */}
+          <div className={`${!searchQuery || !selectedToken ? 'opacity-50 pointer-events-none' : ''} transition-opacity duration-200`}>
+            <div className="bg-gray-900/40 border border-blue-500/30 rounded-2xl p-4">
+              <NewsSection 
+                token={selectedToken || defaultToken}
+                news={[
+                  { 
+                    id: '1',
+                    title: 'SUI Network Upgrade: Enhanced Performance',
+                    source: 'Official Blog',
+                    date: '1h ago',
+                    url: 'https://suiexplorer.com/news/upgrade',
+                    type: 'news'
+                  },
+                  {
+                    id: '2',
+                    title: 'DeFi Growth Report Q1: 45% TVL Increase',
+                    source: 'SUI Analytics',
+                    date: '3h ago',
+                    url: 'https://suiexplorer.com/news/defi-q1',
+                    type: 'news'
+                  },
+                  {
+                    id: '3',
+                    title: 'New Validator Onboarding Program Launched',
+                    source: 'Official Blog',
+                    date: '5h ago',
+                    url: 'https://suiexplorer.com/news/validators',
+                    type: 'news'
+                  },
+                  {
+                    id: '4',
+                    title: 'Ecosystem Fund: $50M for Developer Growth',
+                    source: 'Medium',
+                    date: '8h ago',
+                    url: 'https://suiexplorer.com/news/fund',
+                    type: 'news'
+                  },
+                  {
+                    id: '5',
+                    title: 'Developer Tooling Update: Move IDE 2.0',
+                    source: 'Dev Portal',
+                    date: '12h ago',
+                    url: 'https://suiexplorer.com/news/tools',
+                    type: 'news'
+                  }
+                ]}
+              />
+            </div>
           </div>
         </div>
 
@@ -148,36 +251,32 @@ export const TokenTableSection: React.FC<Props> = ({
             filteredTokens={filteredTokens}
           />
 
-          {/* Token Info & Content */}
-          <div className="relative mt-4 space-y-4">
+          {/* Main Content */}
+          <div className="relative mt-4">
             <div className={`${!searchQuery || !selectedToken ? 'blur-sm pointer-events-none' : ''}`}>
-              {/* Token Info */}
-              <TokenInfo
-                token={selectedToken || defaultToken}
-                watchlist={watchlist}
-                copiedAddress={copiedAddress}
-                onToggleWatchlist={onToggleWatchlist}
-                handleCopyAddress={handleCopyAddress}
-                isWalletConnected={isWalletConnected}
-              />
+              {/* Token Info & Agent Cards */}
+              <div className="grid grid-cols-2 gap-4 mb-6">
+                {/* Token Info - Left Side */}
+                <div className="bg-gray-900/40 border border-blue-500/30 rounded-2xl p-4">
+                  <TokenInfo
+                    token={selectedToken || defaultToken}
+                    watchlist={watchlist}
+                    copiedAddress={copiedAddress}
+                    onToggleWatchlist={onToggleWatchlist}
+                    handleCopyAddress={handleCopyAddress}
+                    isWalletConnected={isWalletConnected}
+                  />
+                </div>
 
-              {/* Agents */}
-              <div className="mt-4">
-              {/* Agents Section */}
-              <div className="bg-gray-900/40 border border-blue-500/30 rounded-2xl p-4 backdrop-blur-sm mb-4">
-                <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  <Shield className="w-5 h-5 text-purple-400" />
-                  Agent for Value
-                </h2>
-                <div className="grid grid-cols-2 gap-4">
-                  <AgentCard agent={mockValueAgent} />
+                {/* Agents - Right Side */}
+                <div className="bg-blue-500/10 border border-blue-500/30 rounded-2xl p-4">
                   <AgentCard agent={mockScoringAgents[0]} />
                 </div>
               </div>
 
               {/* Connect Wallet Promo */}
               {selectedToken && !isWalletConnected && (
-                <div className="mb-6">
+                <div className="bg-gray-900/40 border border-blue-500/30 rounded-2xl p-3 mb-6">
                   <ConnectWalletPromo
                     tokenName={selectedToken.name}
                     isWalletConnected={isWalletConnected}
@@ -187,12 +286,58 @@ export const TokenTableSection: React.FC<Props> = ({
                 </div>
               )}
 
+              {/* Agents Grid */}
+              <div className={`grid grid-cols-3 gap-4 mb-6 ${!isWalletConnected ? 'blur-sm opacity-50' : ''}`}>
+                {/* FA Agent */}
+                <div className="bg-blue-500/10 border border-blue-500/30 rounded-2xl p-2">
+                  <AgentCard 
+                    agent={{
+                      ...mockScoringAgents[1],
+                      links: []
+                    }} 
+                  />
+                </div>
+
+                {/* Technical Analysis Agent - Coming Soon */}
+                <div className="relative bg-blue-500/10 border border-blue-500/30 rounded-2xl p-4">
+                  <AgentCard 
+                    agent={{
+                      ...mockScoringAgents[0],
+                      name: 'Technical Analysis',
+                      imageUrl: '/images/agents/technical.png'
+                    }}
+                    isComingSoon
+                  />
+                  <div className="absolute inset-0 backdrop-blur-[6px] bg-[#0F1729]/50 rounded-2xl z-10 flex items-center justify-center">
+                    <div className="text-center">
+                      <p className="text-sm text-gray-400">Sentimental Analysis Agent is Coming Soon</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Value Analysis Agent - Coming Soon */}
+                <div className="relative bg-blue-500/10 border border-blue-500/30 rounded-2xl p-4">
+                  <AgentCard 
+                    agent={{
+                      ...mockScoringAgents[0],
+                      name: 'Value Analysis',
+                      imageUrl: '/images/agents/value.png'
+                    }}
+                    isComingSoon
+                  />
+                  <div className="absolute inset-0 backdrop-blur-[6px] bg-[#0F1729]/50 rounded-2xl z-10 flex items-center justify-center">
+                    <div className="text-center">
+                      <p className="text-sm text-gray-400">Defi Agent is Coming Soon</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               {/* DeFi Section */}
-              <div className="relative mb-4">
+              <div className="relative mb-8">
                 <div className={`bg-[#0B1018] border border-blue-500/30 rounded-2xl ${!isWalletConnected ? 'blur-sm opacity-50' : ''}`}>
                   <DeFiGrid isWalletConnected={isWalletConnected} />
                 </div>
-              </div>
               </div>
             </div>
 

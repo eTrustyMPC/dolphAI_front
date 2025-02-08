@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { Repeat, Coins, PiggyBank, TrendingUp } from 'lucide-react';
 import { useWallet } from '@suiet/wallet-kit';
 import { CetusTerminal } from '@/components/Swap/CetusTerminal';
+import { StakingPools } from '@/components/Stake/StakingPools';
+import { LendingPlatforms } from '@/components/Lending/LendingPlatforms';
+import { PerpsPlatform } from '@/components/Perps/PerpsPlatform';
+import { mockStakingPools } from '@/services/mockStakingData';
 
 interface DeFiGridProps {
   isWalletConnected: boolean;
@@ -17,14 +21,16 @@ interface TabProps {
 const Tab: React.FC<TabProps> = ({ isActive, icon, label, onClick }) => (
   <button
     onClick={onClick}
-    className={`flex items-center gap-2 px-3 py-1.5 rounded transition-all ${
+    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
       isActive
-        ? 'bg-gray-800 text-white'
-        : 'text-gray-400 hover:text-white hover:bg-gray-800'
+        ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20 shadow-[0_0_10px_rgba(59,130,246,0.1)]'
+        : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800/50'
     }`}
   >
-    {icon}
-    <span className="text-sm">{label}</span>
+    <span className={`${isActive ? 'text-blue-400' : 'text-gray-400'} transition-colors`}>
+      {icon}
+    </span>
+    <span>{label}</span>
   </button>
 );
 
@@ -46,15 +52,37 @@ export const DeFiGrid: React.FC<DeFiGridProps> = ({ isWalletConnected }) => {
           <CetusTerminal isWalletConnected={isWalletConnected} wallet={wallet} />
         );
       case 'stake':
+        return (
+          <div className="h-[520px] overflow-hidden">
+            <StakingPools
+              pools={mockStakingPools}
+              onProjectClick={(projectName) => {
+                // Handle project click
+                console.log('Project clicked:', projectName);
+              }}
+            />
+          </div>
+        );
       case 'lending':
+        return (
+          <div className="h-[520px]">
+            <LendingPlatforms
+              onPlatformClick={(url) => {
+                // Open platform URL in new tab
+                window.open(url, '_blank');
+              }}
+            />
+          </div>
+        );
       case 'perps':
         return (
-          <div className="flex items-center justify-center h-[520px] bg-gray-900/50 rounded-lg p-4">
-            <div className="text-center space-y-3">
-              <p className="text-gray-400 text-lg">
-                Coming soon...
-              </p>
-            </div>
+          <div className="h-[520px]">
+            <PerpsPlatform
+              onPlatformClick={(url) => {
+                // Open platform URL in new tab
+                window.open(url, '_blank');
+              }}
+            />
           </div>
         );
       default:
@@ -63,8 +91,8 @@ export const DeFiGrid: React.FC<DeFiGridProps> = ({ isWalletConnected }) => {
   };
 
   return (
-    <div className={`relative bg-gray-900/50 rounded-xl transition-all duration-300 ${isWalletConnected ? 'p-6' : 'p-4'}`}>
-      <div className="flex gap-2 mb-3">
+    <div className={`relative bg-[#0B1018] rounded-xl border border-gray-800/50 transition-all duration-300 ${isWalletConnected ? 'p-6' : 'p-4'}`}>
+      <div className="flex gap-2 mb-4">
         {tabs.map((tab) => (
           <Tab
             key={tab.id}
@@ -75,7 +103,7 @@ export const DeFiGrid: React.FC<DeFiGridProps> = ({ isWalletConnected }) => {
           />
         ))}
       </div>
-      <div className={`${isWalletConnected ? 'h-[600px]' : 'h-[200px]'} transition-all duration-300`}>
+      <div className={`${isWalletConnected ? 'h-[540px]' : 'h-[200px]'} transition-all duration-300`}>
         {isWalletConnected ? (
           <div className="h-full overflow-hidden">
             {renderContent()}

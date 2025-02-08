@@ -14,7 +14,7 @@ export function CustomConnectButton({ onSuccess, onError }: CustomConnectButtonP
         onConnectError={onError}
         className="!bg-transparent"
       >
-        <div className="flex items-center justify-center gap-2 px-6 py-2.5 bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+        <div className="flex items-center justify-center gap-2 px-6 py-2.5 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white rounded-xl transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed">
           <Wallet className="h-5 w-5" />
           <span>Connect Wallet</span>
         </div>
