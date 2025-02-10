@@ -12,6 +12,12 @@ export interface TokenUpdate {
   type: 'info' | 'warning' | 'success';
 }
 
+export interface TokenMetrics {
+  holders?: number;
+  volume24h?: number;
+  marketCap?: number;
+}
+
 export interface Token {
   id: string;
   name: string;
@@ -33,6 +39,7 @@ export interface Token {
   totalSupply?: number;  // Total supply
   valueProp?: string;
   dynamics?: TokenDynamics;
+  metrics?: TokenMetrics;
   recentArticles?: {
     title: string;
     url: string;
@@ -49,13 +56,35 @@ export interface Token {
   queryCount?: number;
 }
 
+export interface OnChainMetrics {
+  dailyTransactions?: number;
+  dailyActiveUsers?: number;
+  totalHolders?: number;
+  liquidityUSD?: number;
+  volumeUSD24h?: number;
+}
+
+export interface AnalysisHistory {
+  timestamp: string;
+  analysis: string;
+  sentiment: 'positive' | 'negative' | 'neutral';
+  score?: number;
+}
+
+export interface TokenDashboardData extends Token {
+  metrics: TokenMetrics;
+  onChainMetrics: OnChainMetrics;
+  analysisHistory: AnalysisHistory[];
+}
+
 export interface TokenMetrics {
-  holders: number;
-  volume: number;
-  marketCap: number;
-  marketCapChange: number;
-  liquidity: number;
-  priceChange24h: number;
+  holders?: number;
+  volume?: number;
+  marketCap?: number;
+  marketCapChange?: number;
+  liquidity?: number;
+  priceChange24h?: number;
+  volume24h?: number;
 }
 
 export interface TokenActionProps {

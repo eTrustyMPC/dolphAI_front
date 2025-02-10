@@ -33,10 +33,16 @@ export interface NewsItem {
 }
 
 export interface TokenMetrics {
-  securityScore: number;
-  communityScore: number;
-  liquidityScore: number;
-  // Add other metrics as needed
+  holders?: number;
+  volume?: number;
+  marketCap?: number;
+  marketCapChange?: number;
+  liquidity?: number;
+  priceChange24h?: number;
+  volume24h?: number;
+  securityScore?: number;
+  communityScore?: number;
+  liquidityScore?: number;
 }
 
 export interface OnChainMetrics {

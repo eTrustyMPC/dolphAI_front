@@ -208,7 +208,7 @@ export const TokenTableSection: React.FC<Props> = ({
           </div>
 
           {/* News */}
-          <div className={`${!isAnalyzed ? 'opacity-50 pointer-events-none' : ''} transition-opacity duration-200`}>
+          <div className={`transition-all duration-200 ${(!isWalletConnected && !isAnalyzed) ? 'blur-sm opacity-50' : ''}`}>
             <div className="bg-gray-900/40 border border-blue-500/30 rounded-2xl p-4">
               <NewsSection 
                 token={selectedToken || defaultToken}
@@ -273,7 +273,7 @@ export const TokenTableSection: React.FC<Props> = ({
 
           {/* Main Content */}
           <div className="relative mt-4">
-            <div className={`${!isAnalyzed ? 'opacity-50 pointer-events-none' : ''} transition-opacity duration-200`}>
+            <div className={`transition-all duration-200 ${(!searchQuery || !selectedToken) ? 'blur-sm opacity-50' : ''}`}>
               {/* Token Info & Agent Cards */}
               <div className="grid grid-cols-2 gap-4 mb-6">
                 {/* Token Info - Left Side */}
@@ -356,7 +356,7 @@ export const TokenTableSection: React.FC<Props> = ({
 
               {/* DeFi Section */}
               <div className="relative mb-8">
-                <div className={`bg-[#0B1018] border border-blue-500/30 rounded-2xl ${!isWalletConnected ? 'blur-sm opacity-50' : ''}`}>
+              <div className={`bg-[#0B1018] border border-blue-500/30 rounded-2xl ${!isWalletConnected ? 'blur-sm opacity-50' : ''}`}>
                   <DeFiGrid isWalletConnected={isWalletConnected} />
                 </div>
               </div>

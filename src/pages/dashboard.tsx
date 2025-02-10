@@ -67,11 +67,11 @@ export default function DashboardPage() {
     </div>
   );
 
-  const handleToggleWatchlist = useCallback(async (address: string) => {
+  const handleToggleWatchlist = useCallback(async (id: string) => {
     // Only allow watchlist functionality if wallet is connected
     if (!customWallet.isInitialized || !customWallet.address) return;
 
-    const token = tokens.find(t => t.address === address);
+    const token = tokens.find(t => t.id === id);
     if (!token) return;
 
     const isWatched = watchedTokens.some(t => t.id === token.id);
@@ -91,11 +91,11 @@ export default function DashboardPage() {
   const [copiedAddress, setCopiedAddress] = useState('');
 
   const handleRemoveFromWatchlist = (tokenToRemove: Token) => {
-    handleToggleWatchlist(tokenToRemove.address);
+    handleToggleWatchlist(tokenToRemove.id);
   };
 
   const toggleWatchToken = (token: Token) => {
-    handleToggleWatchlist(token.address);
+    handleToggleWatchlist(token.id);
   };
 
   // Keep all tokens available but don't filter them
@@ -113,11 +113,26 @@ export default function DashboardPage() {
 
   const [isAnalyzed, setIsAnalyzed] = useState(false);
 
-  const handleAnalyzeToken = (token: Token) => {
-    setSearchQuery(token.address);
-    setSelectedToken(token);
-    setIsAnalyzing(true);
-    setIsAnalyzed(true);
+  const handleAnalyzeToken = async (token: Token) => {
+    try {
+      setIsAnalyzing(true);
+      setIsAnalyzed(false); // Reset analysis state while loading
+      
+      // Load full token data using loadById
+      const fullTokenData = await tokenService.loadById(token.id);
+      
+      // Update all relevant state
+      setSearchQuery(token.id);
+      setSelectedToken(fullTokenData);
+      setIsAnalyzed(true);
+      setError(null); // Clear any previous errors
+    } catch (error) {
+      console.error('Error analyzing token:', error);
+      setError('Failed to analyze token');
+      setIsAnalyzed(false); // Ensure analysis state is false on error
+    } finally {
+      setIsAnalyzing(false);
+    }
   };
 
   const handleTokenSelect = (token: Token) => {
@@ -162,18 +177,19 @@ export default function DashboardPage() {
     loadTokens();
   }, []); // Load on mount
 
-  const handleCopyAddress = async (address: string) => {
+  const handleCopyAddress = async (id: string) => {
     try {
-      await navigator.clipboard.writeText(address);
-      setCopiedAddress(address);
+      await navigator.clipboard.writeText(id);
+      setCopiedAddress(id);
       setTimeout(() => setCopiedAddress(''), 2000);
     } catch (err) {
-      console.error('Failed to copy address:', err);
+      console.error('Failed to copy id:', err);
     }
   };
 
   const handleClosePreview = () => {
     setSelectedToken(null);
+    setIsAnalyzed(false);
   };
 
   return (
@@ -197,7 +213,7 @@ export default function DashboardPage() {
                 watchlist={watchlistAddresses}
                 onToggleWatchlist={handleToggleWatchlist}
                 selectedToken={selectedToken}
-                isWalletConnected={customWallet.isConnected}
+                isWalletConnected={customWallet.isConnected && customWallet.isInitialized}
                 isAnalyzed={isAnalyzed}
                 onConnectSuccess={() => {}}
                 onConnectError={(error) => setError(error.message)}

@@ -29,7 +29,7 @@ export const SearchSection: React.FC<SearchSectionProps> = ({
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Enter token name or address..."
+            placeholder="Enter token address"
             className="w-full px-4 py-3 bg-[#111111] border border-[#1F1F1F] rounded-xl pl-12 pr-12 focus:outline-none focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent text-white placeholder-gray-500"
           />
           <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">

@@ -54,18 +54,20 @@ export const TokenSearch: React.FC<TokenSearchProps> = ({
         <button
           className="flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium rounded-xl shadow-lg shadow-purple-500/20 transition-all whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
           onClick={() => {
-            if (searchQuery) {
-              // Find matching token
-              const matchingToken = filteredTokens.find(token => 
-                token.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                token.symbol.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                token.address.toLowerCase().includes(searchQuery.toLowerCase())
-              );
-              
-              if (matchingToken) {
-                setSelectedToken(matchingToken);
-                handleAnalyzeToken(matchingToken);
-              }
+            console.log('Analyze button clicked');
+            console.log('Search query:', searchQuery);
+            console.log('Filtered tokens:', filteredTokens);
+            
+            // Find the token by exact ID match
+            const token = filteredTokens.find(t => t.id === searchQuery);
+            console.log('Found token:', token);
+            
+            if (token) {
+              console.log('Analyzing token:', token.id);
+              setSelectedToken(token);
+              handleAnalyzeToken(token);
+            } else {
+              console.log('No token found with ID:', searchQuery);
             }
           }}
           disabled={!searchQuery}
