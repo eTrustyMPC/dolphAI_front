@@ -243,5 +243,6 @@ const AgentDashboard: React.FC = () => {
 };
 
 export { AgentDashboard };
+export default AgentDashboard;
 
 
