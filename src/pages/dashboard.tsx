@@ -43,8 +43,8 @@ export default function DashboardPage() {
   const [showLeaderboard, setShowLeaderboard] = useState(false);
 
   // Use the useWatchlist hook
-  const { watchlist: watchedTokens, loadWatchlist } = useWatchlist(customWallet.isInitialized ? customWallet.address : null);
-  const watchlistAddresses = useMemo(() => watchedTokens.map(t => t.address), [watchedTokens]);
+  const { watchlist: watchedTokens, loadWatchlist } = useWatchlist(customWallet.isInitialized && customWallet.address ? customWallet.address : null);
+  const watchlistAddresses = useMemo(() => watchedTokens, [watchedTokens]);
 
   // Load watchlist when wallet connects
   useEffect(() => {
@@ -98,27 +98,26 @@ export default function DashboardPage() {
     handleToggleWatchlist(token.address);
   };
 
-  // Memoize filtered tokens
+  // Keep all tokens available but don't filter them
   const filteredTokens = useMemo(() => {
     if (isLoadingTokens) return [];
-    if (!searchQuery) return tokens;
-    return tokens.filter(token => 
-      token.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      token.symbol.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      token.address.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }, [searchQuery, tokens, isLoadingTokens]);
+    return tokens;
+  }, [tokens, isLoadingTokens]);
 
   const handleSearchClear = () => {
     setSearchQuery('');
     setSelectedToken(null);
     setError(null);
+    setIsAnalyzed(false);
   };
+
+  const [isAnalyzed, setIsAnalyzed] = useState(false);
 
   const handleAnalyzeToken = (token: Token) => {
     setSearchQuery(token.address);
     setSelectedToken(token);
     setIsAnalyzing(true);
+    setIsAnalyzed(true);
   };
 
   const handleTokenSelect = (token: Token) => {
@@ -199,6 +198,7 @@ export default function DashboardPage() {
                 onToggleWatchlist={handleToggleWatchlist}
                 selectedToken={selectedToken}
                 isWalletConnected={customWallet.isConnected}
+                isAnalyzed={isAnalyzed}
                 onConnectSuccess={() => {}}
                 onConnectError={(error) => setError(error.message)}
                 searchQuery={searchQuery}

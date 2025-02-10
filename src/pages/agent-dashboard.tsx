@@ -7,7 +7,7 @@ import { NewsSection } from '../components/Agent/NewsSection';
 import { TokenActions } from '../components/Agent/TokenActions';
 import { agentService } from '../services/agentService';
 import { TokenData, AgentData } from '../types/agent';
-import { Bubbles } from '@/components/Bubbles/Bubbles';
+
 
 
 
@@ -145,17 +145,16 @@ const AgentDashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 relative overflow-hidden">
-      <Bubbles count={15} opacity={0.03} maxSize={80} minDuration={25} maxDuration={45} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-white relative z-10">
-      {/* Search Bar */}
-      <div className="flex justify-center items-center gap-3 mb-8 pt-6 max-w-5xl mx-auto">
+        {/* Search Bar */}
+        <div className="flex justify-center items-center gap-3 mb-8 pt-6 max-w-5xl mx-auto">
         <div className="relative w-full">
           <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
           <input
             type="text"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+
             placeholder="Enter token name or address..."
             className="w-full bg-[#0D1117] text-white placeholder-gray-400 rounded-lg h-12 px-4 pl-12 pr-12 border-none focus:outline-none focus:ring-1 focus:ring-purple-500/50 transition-colors text-base"
           />
@@ -201,9 +200,12 @@ const AgentDashboard: React.FC = () => {
               </div>
             </div>
             <div className="text-right">
-              <div className="bg-purple-500 hover:bg-purple-600 px-4 py-2 rounded-lg cursor-pointer transition-colors">
-                Score
-              </div>
+              <button
+                onClick={handleSearch}
+                className="bg-purple-500 hover:bg-purple-600 px-4 py-2 rounded-lg cursor-pointer transition-colors"
+              >
+                Analyze
+              </button>
             </div>
           </div>
           <div className="text-gray-300">
@@ -235,8 +237,11 @@ const AgentDashboard: React.FC = () => {
           </div>
         </>
       )}
+      </div>
     </div>
   );
 };
 
 export default AgentDashboard;
+
+

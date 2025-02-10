@@ -17,7 +17,7 @@ export const useAccount = (id?: string) => {
   const fetchAccount = async (accountId: string) => {
     setState(prev => ({ ...prev, loading: true, error: null }));
     try {
-      const data = await accountService.findById(accountId);
+      const data = await accountService.findOrCreateAccount(accountId);
       setState({ data, loading: false, error: null });
     } catch (error) {
       setState(prev => ({ 
@@ -31,7 +31,7 @@ export const useAccount = (id?: string) => {
   const createAccount = async (data: CreateAccountRequest) => {
     setState(prev => ({ ...prev, loading: true, error: null }));
     try {
-      const response = await accountService.create(data);
+      const response = await accountService.findOrCreateAccount(data.id);
       setState({ data: response, loading: false, error: null });
       return response;
     } catch (error) {
@@ -44,21 +44,7 @@ export const useAccount = (id?: string) => {
     }
   };
 
-  const updateAccount = async (accountId: string, data: Partial<CreateAccountRequest>) => {
-    setState(prev => ({ ...prev, loading: true, error: null }));
-    try {
-      const response = await accountService.update(accountId, data);
-      setState({ data: response, loading: false, error: null });
-      return response;
-    } catch (error) {
-      setState(prev => ({ 
-        ...prev, 
-        loading: false, 
-        error: error as Error 
-      }));
-      throw error;
-    }
-  };
+
 
   useEffect(() => {
     if (id) {
@@ -69,7 +55,6 @@ export const useAccount = (id?: string) => {
   return {
     ...state,
     createAccount,
-    updateAccount,
     refetch: id ? () => fetchAccount(id) : undefined,
   };
 };

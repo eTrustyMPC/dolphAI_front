@@ -18,7 +18,7 @@ interface Props {
   setLeaderboardSearch: (search: string) => void;
   tokens: Token[];
   handleTokenSelect: (token: Token) => void;
-  watchlist: string[];
+  watchlist: Token[];
   onToggleWatchlist: (address: string) => void;
   copiedAddress: string;
   handleCopyAddress: (address: string) => void;
@@ -33,15 +33,18 @@ interface Props {
   filteredTokens: Token[];
   setSelectedToken: (token: Token | null) => void;
   wallet: { isInitialized: boolean; address: string | undefined | null };
+  isAnalyzed: boolean;
 }
 
 const defaultToken: Token = {
+  id: 'default',
   name: 'Example Token',
   symbol: 'ETK',
   address: '0x1234...5678',
   price: '0.00',
   marketCapChange: '0%',
   volumeChange24h: '0%',
+  queryCount: 0,
   links: {
     website: undefined,
     whitepaper: undefined,
@@ -76,6 +79,7 @@ export const TokenTableSection: React.FC<Props> = ({
   handleAnalyzeToken,
   filteredTokens,
   setSelectedToken,
+  isAnalyzed,
 }) => {
   // Sort tokens by volume
   const sortedTokens = useMemo(
@@ -125,7 +129,7 @@ export const TokenTableSection: React.FC<Props> = ({
   const displayedTokensWithWatchlist = useMemo(() => {
     console.log('Getting tokens for tab:', { activeTab, tokens: tokens.length, watchlist }); // Debug log
     return activeTab === 'watchlist' 
-      ? tokens.filter(token => watchlist.includes(token.address))
+      ? tokens.filter(token => watchlist.some(w => w.address === token.address))
       : displayedTokens;
   }, [activeTab, tokens, watchlist, displayedTokens]);
 
@@ -204,7 +208,7 @@ export const TokenTableSection: React.FC<Props> = ({
           </div>
 
           {/* News */}
-          <div className={`${!searchQuery || !selectedToken ? 'opacity-50 pointer-events-none' : ''} transition-opacity duration-200`}>
+          <div className={`${!isAnalyzed ? 'opacity-50 pointer-events-none' : ''} transition-opacity duration-200`}>
             <div className="bg-gray-900/40 border border-blue-500/30 rounded-2xl p-4">
               <NewsSection 
                 token={selectedToken || defaultToken}
@@ -269,7 +273,7 @@ export const TokenTableSection: React.FC<Props> = ({
 
           {/* Main Content */}
           <div className="relative mt-4">
-            <div className={`${!searchQuery || !selectedToken ? 'blur-sm pointer-events-none' : ''}`}>
+            <div className={`${!isAnalyzed ? 'blur-sm pointer-events-none' : ''}`}>
               {/* Token Info & Agent Cards */}
               <div className="grid grid-cols-2 gap-4 mb-6">
                 {/* Token Info - Left Side */}
@@ -281,6 +285,7 @@ export const TokenTableSection: React.FC<Props> = ({
                     onToggleWatchlist={onToggleWatchlist}
                     handleCopyAddress={handleCopyAddress}
                     isWalletConnected={isWalletConnected}
+                    walletAddress={walletAddress || ''}
                   />
                 </div>
 

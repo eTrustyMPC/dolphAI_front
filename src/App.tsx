@@ -1,23 +1,25 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import AgentDashboard from './pages/agent-dashboard';
+import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
+
+const AgentDashboard = dynamic(
+  () => import('./pages/agent-dashboard').then(mod => mod.AgentDashboard),
+  { ssr: false }
+);
 
 const App: React.FC = () => {
+  const router = useRouter();
+
+  React.useEffect(() => {
+    if (router.pathname === '/') {
+      router.push('/agent');
+    }
+  }, [router]);
+
   return (
-    <Router>
-      <div className="min-h-screen bg-[#0A0C10]">
-        <Routes>
-          {/* Redirect root to agent dashboard */}
-          <Route path="/" element={<Navigate to="/agent" replace />} />
-          
-          {/* Main Agent Dashboard */}
-          <Route path="/agent" element={<AgentDashboard />} />
-          
-          {/* Catch all other routes and redirect to agent dashboard */}
-          <Route path="*" element={<Navigate to="/agent" replace />} />
-        </Routes>
-      </div>
-    </Router>
+    <div className="min-h-screen bg-[#0A0C10]">
+      {router.pathname === '/agent' && <AgentDashboard />}
+    </div>
   );
 };
 

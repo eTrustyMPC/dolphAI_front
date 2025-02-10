@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { TrendingUp, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import { Bubbles } from '@/components/Bubbles/Bubbles';
+
 
 const TokenPage = () => {
   const router = useRouter();
@@ -10,7 +10,7 @@ const TokenPage = () => {
 
   return (
     <div className="min-h-screen bg-black text-white p-6 relative overflow-hidden">
-      <Bubbles count={12} opacity={0.04} maxSize={70} minDuration={22} maxDuration={42} />
+
       <div className="max-w-6xl mx-auto">
         {/* Header with back button */}
         <div className="flex justify-between items-center mb-8">

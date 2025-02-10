@@ -20,6 +20,7 @@ const generateScores = (activity: number, liquidity: number, whales: number): To
 export const mockTokens: TokenCardData[] = [
   // Mock data with all required fields
   {
+    id: 'bluefin',
     name: 'Bluefin',
     symbol: 'BFN',
     address: '0x1::bluefin::BFN',
@@ -49,6 +50,7 @@ export const mockTokens: TokenCardData[] = [
     }
   },
   {
+    id: 'sui',
     name: 'Sui',
     symbol: 'SUI',
     address: '0x2::sui::SUI',
@@ -78,6 +80,7 @@ export const mockTokens: TokenCardData[] = [
     }
   },
   {
+    id: 'scallop',
     name: 'Scallop',
     symbol: 'SCA',
     address: '0x5::scallop::SCA',
@@ -107,6 +110,7 @@ export const mockTokens: TokenCardData[] = [
     }
   },
   {
+    id: 'aftermath',
     name: 'Aftermath',
     symbol: 'AFT',
     address: '0x6::aftermath::AFT',
@@ -136,6 +140,7 @@ export const mockTokens: TokenCardData[] = [
     }
   },
   {
+    id: 'turbos',
     name: 'Turbos',
     symbol: 'TURBOS',
     address: '0x7::turbos::TURBOS',
@@ -165,6 +170,7 @@ export const mockTokens: TokenCardData[] = [
     }
   },
   {
+    id: 'bucket',
     name: 'Bucket',
     symbol: 'BKT',
     address: '0x8::bucket::BKT',
@@ -194,6 +200,7 @@ export const mockTokens: TokenCardData[] = [
     }
   },
   {
+    id: 'navi',
     name: 'Navi Protocol',
     symbol: 'NAVI',
     address: '0x9::navi::NAVI',
@@ -223,6 +230,7 @@ export const mockTokens: TokenCardData[] = [
     }
   },
   {
+    id: 'kriya',
     name: 'Kriya',
     symbol: 'KRI',
     address: '0x10::kriya::KRI',
@@ -252,6 +260,7 @@ export const mockTokens: TokenCardData[] = [
     }
   },
   {
+    id: 'suia',
     name: 'Suia',
     symbol: 'SUIA',
     address: '0x11::suia::SUIA',
@@ -281,6 +290,7 @@ export const mockTokens: TokenCardData[] = [
     }
   },
   {
+    id: 'movex',
     name: 'MovEX',
     symbol: 'MOV',
     address: '0x12::movex::MOV',

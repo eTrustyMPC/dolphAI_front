@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Star } from 'lucide-react';
+import { accountService } from '@/services/api/account';
 import { Token } from '@/components/TokenPreview/types';
 
 interface TokenWatchlistProps {

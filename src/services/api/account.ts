@@ -108,10 +108,10 @@ export class AccountService {
           message: request.message
         }
       );
-      if (response.data.token) {
-        localStorage.setItem('authToken', response.data.token);
+      if (response.token) {
+        localStorage.setItem('authToken', response.token);
       }
-      return response.data;
+      return response;
     } catch (error) {
       console.error('Error in connect:', error);
       throw error;
@@ -124,7 +124,7 @@ export class AccountService {
         `${API_CONFIG.ENDPOINTS.ACCOUNT.BASE}/${id}/connect`,
         { id }
       );
-      return response.data;
+      return response;
     } catch (error) {
       console.error('Error in findOrCreateAccount:', error);
       throw error;

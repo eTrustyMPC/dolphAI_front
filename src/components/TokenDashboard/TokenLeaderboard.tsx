@@ -61,15 +61,19 @@ export const TokenLeaderboard: React.FC<TokenLeaderboardProps> = ({
                   <th className="pb-4 font-medium">Token</th>
                   <th className="pb-4 font-medium">Address</th>
                   <th className="pb-4 font-medium text-right">Analysis Calls</th>
-                  {variant === 'preview' && (
-                    <th className="pb-4 font-medium text-center">Links</th>
-                  )}
                   <th className="pb-4 font-medium text-right">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredTokens.map((token) => (
-                  <tr key={token.address} className="border-b border-gray-800 hover:bg-gray-800/50 transition-colors">
+                  <tr 
+                    key={token.address} 
+                    className="border-b border-gray-800 hover:bg-gray-800/50 transition-colors cursor-pointer"
+                    onClick={() => {
+                      navigator.clipboard.writeText(token.address);
+                      // Show a toast or some feedback that address was copied
+                    }}
+                >
                     <td className="py-4">
                       <div className="flex items-center gap-3">
                         {token.icon && (
@@ -84,32 +88,17 @@ export const TokenLeaderboard: React.FC<TokenLeaderboardProps> = ({
                     <td className="py-4">
                       <div className="flex items-center gap-2">
                         <code className="text-sm text-gray-400">{token.address}</code>
-                        <button className="p-1 hover:bg-gray-700 rounded-md transition-colors" title="Copy address">
-                          <ExternalLink className="h-4 w-4 text-gray-400" />
-                        </button>
                       </div>
                     </td>
                     <td className="py-4 text-right">
                       <div className="font-medium">100,000</div>
                     </td>
-                    {variant === 'preview' && (
-                      <td className="py-4">
-                        <div className="flex items-center justify-center gap-2">
-                          <button className="p-2 hover:bg-gray-700 rounded-lg transition-colors">
-                            <Globe className="h-5 w-5 text-gray-400 hover:text-purple-400" />
-                          </button>
-                          <button className="p-2 hover:bg-gray-700 rounded-lg transition-colors">
-                            <Twitter className="h-5 w-5 text-gray-400 hover:text-purple-400" />
-                          </button>
-                          <button className="p-2 hover:bg-gray-700 rounded-lg transition-colors">
-                            <ExternalLink className="h-5 w-5 text-gray-400 hover:text-purple-400" />
-                          </button>
-                        </div>
-                      </td>
-                    )}
                     <td className="py-4 text-right">
                       <button 
-                        onClick={() => onAnalyze?.(token.address)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onAnalyze?.(token.address);
+                        }}
                         className="px-4 py-2 bg-purple-500 hover:bg-purple-600 rounded-lg transition-colors text-white font-medium"
                       >
                         Analyze

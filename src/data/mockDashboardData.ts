@@ -1,6 +1,7 @@
 import { TokenDashboardData } from '@/components/TokenDashboard/types';
 
 export const mockDashboardData: TokenDashboardData = {
+  id: 'sui',
   name: 'Sui',
   symbol: 'SUI',
   address: '0x2::sui::SUI',

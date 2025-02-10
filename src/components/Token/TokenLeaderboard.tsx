@@ -14,6 +14,8 @@ interface TokenLeaderboardProps {
   getGradientClass: (index: number) => string;
   copiedAddress: string;
   handleCopyAddress: (address: string) => void;
+  watchlist: Token[];
+  onToggleWatchlist: (address: string) => void;
   walletAddress: string;
   isWalletConnected: boolean;
   activeTab: 'leaderboard' | 'watchlist';
@@ -162,7 +164,7 @@ export const TokenLeaderboard: React.FC<TokenLeaderboardProps> = ({
                 className="group relative w-full text-left cursor-pointer hover:bg-[#252A34] rounded-lg transition-colors"
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleTokenSelect(token);
+                  handleCopyAddress(token.id);
                 }}
               >
                 <div className="relative flex items-center gap-3 p-3 rounded-lg border border-gray-700/50 hover:border-purple-500/30 hover:bg-[#252A34]">

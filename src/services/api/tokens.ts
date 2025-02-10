@@ -24,7 +24,7 @@ export const tokenService = {
     console.log('API Response:', response); // Debug log
 
     // Map API response to Token interface
-    const tokens = response.map((item: any) => ({
+    const tokens = (response as any[]).map((item: any) => ({
       id: item.id,
       name: item.name,
       address: item.address,

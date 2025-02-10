@@ -31,9 +31,9 @@ export const TokenSearch: React.FC<TokenSearchProps> = ({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === 'Enter' && searchQuery && filteredTokens.length > 0) {
-                setSelectedToken(filteredTokens[0]);
-                handleAnalyzeToken(filteredTokens[0]);
+              // Prevent Enter key from triggering analysis
+              if (e.key === 'Enter') {
+                e.preventDefault();
               }
             }}
             placeholder="Enter token name or address to start analysis"
@@ -54,12 +54,21 @@ export const TokenSearch: React.FC<TokenSearchProps> = ({
         <button
           className="flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium rounded-xl shadow-lg shadow-purple-500/20 transition-all whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
           onClick={() => {
-            if (searchQuery && filteredTokens.length > 0) {
-              setSelectedToken(filteredTokens[0]);
-              handleAnalyzeToken(filteredTokens[0]);
+            if (searchQuery) {
+              // Find matching token
+              const matchingToken = filteredTokens.find(token => 
+                token.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                token.symbol.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                token.address.toLowerCase().includes(searchQuery.toLowerCase())
+              );
+              
+              if (matchingToken) {
+                setSelectedToken(matchingToken);
+                handleAnalyzeToken(matchingToken);
+              }
             }
           }}
-          disabled={!searchQuery || filteredTokens.length === 0}
+          disabled={!searchQuery}
         >
           <TrendingUp className="h-5 w-5" />
           Analyze token

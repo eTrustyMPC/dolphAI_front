@@ -5,11 +5,12 @@ import { formatNumber } from '@/utils/formatNumber';
 
 interface TokenInfoProps {
   token: Token;
-  watchlist: string[];
+  watchlist: Token[];
   copiedAddress: string;
   onToggleWatchlist: (address: string) => void;
   handleCopyAddress: (address: string) => void;
   isWalletConnected: boolean;
+  walletAddress: string;
 }
 
 import { useWatchlist } from '@/hooks/useWatchlist';
@@ -29,9 +30,9 @@ export const TokenInfo: React.FC<TokenInfoProps> = ({
     if (!isWalletConnected || !walletAddress) return;
     
     if (isWatched) {
-      await removeFromWatchlist(token.address);
+      await removeFromWatchlist(walletAddress, token.address);
     } else {
-      await addToWatchlist(token.address);
+      await addToWatchlist(walletAddress, token.address);
     }
   };
   return (
@@ -111,10 +112,10 @@ export const TokenInfo: React.FC<TokenInfoProps> = ({
             </a>
           )}
           <button
-            onClick={() => onToggleWatchlist(token.address)}
+            onClick={handleToggleWatchlist}
             className="text-gray-400 hover:text-yellow-400 transition-colors"
           >
-            {watchlist.includes(token.address) ? (
+            {watchlist.some(t => t.address === token.address) ? (
               <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
             ) : (
               <Star className="w-4 h-4" />
