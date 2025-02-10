@@ -273,7 +273,7 @@ export const TokenTableSection: React.FC<Props> = ({
 
           {/* Main Content */}
           <div className="relative mt-4">
-            <div className={`${!isAnalyzed ? 'blur-sm pointer-events-none' : ''}`}>
+            <div className={`${!isAnalyzed ? 'opacity-50 pointer-events-none' : ''} transition-opacity duration-200`}>
               {/* Token Info & Agent Cards */}
               <div className="grid grid-cols-2 gap-4 mb-6">
                 {/* Token Info - Left Side */}
