@@ -7,6 +7,7 @@ import { NewsSection } from '../components/Agent/NewsSection';
 import { TokenActions } from '../components/Agent/TokenActions';
 import { agentService } from '../services/agentService';
 import { TokenData, AgentData } from '../types/agent';
+import { Bubbles } from '@/components/Bubbles/Bubbles';
 
 
 
@@ -143,7 +144,9 @@ const AgentDashboard: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-white">
+    <div className="min-h-screen bg-gray-900 relative overflow-hidden">
+      <Bubbles count={15} opacity={0.03} maxSize={80} minDuration={25} maxDuration={45} />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-white relative z-10">
       {/* Search Bar */}
       <div className="flex justify-center items-center gap-3 mb-8 pt-6 max-w-5xl mx-auto">
         <div className="relative w-full">

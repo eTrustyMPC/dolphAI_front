@@ -5,6 +5,9 @@ import { useWalletInit } from '@/hooks/useWalletInit';
 export interface CustomWalletContextType {
   isInitialized: boolean;
   isLoading: boolean;
+  error: Error | null;
+  address?: string | null;
+  isConnected: boolean;
   connect: () => Promise<void>;
   disconnect: () => Promise<void>;
 }
@@ -12,19 +15,35 @@ export interface CustomWalletContextType {
 const CustomWalletContext = createContext<CustomWalletContextType>({
   isInitialized: false,
   isLoading: false,
+  error: null,
+  address: undefined,
+  isConnected: false,
   connect: async () => {},
   disconnect: async () => {},
 });
 
 export const CustomWalletProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
-  const { wallet, isInitialized, isLoading, setIsLoading, setIsInitialized } = useWalletInit();
+  const { wallet, isInitialized, isLoading, error, setIsLoading, setIsInitialized } = useWalletInit();
+
+  console.log('WalletContext: State', {
+    isInitialized,
+    isLoading,
+    error,
+    walletConnected: wallet.connected,
+    walletAddress: wallet.address
+  });
 
   const connect = async () => {
-    if (isLoading || !wallet.select) return;
+    console.log('WalletContext: Connecting wallet...');
+    if (isLoading || !wallet.select) {
+      console.log('WalletContext: Cannot connect - loading or no wallet.select');
+      return;
+    }
     try {
       setIsLoading(true);
       await wallet.select('Suiet');
+      console.log('WalletContext: Wallet selected successfully');
     } catch (error) {
       console.error('Error connecting wallet:', error);
       localStorage.removeItem('walletConnected');
@@ -34,12 +53,17 @@ export const CustomWalletProvider = ({ children }: { children: React.ReactNode }
   };
 
   const disconnect = async () => {
-    if (isLoading) return;
+    console.log('WalletContext: Disconnecting wallet...');
+    if (isLoading) {
+      console.log('WalletContext: Cannot disconnect - loading');
+      return;
+    }
     try {
       setIsLoading(true);
       await wallet.disconnect();
       localStorage.removeItem('walletConnected');
       setIsInitialized(false);
+      console.log('WalletContext: Wallet disconnected successfully');
     } catch (error) {
       console.error('Error disconnecting wallet:', error);
     } finally {
@@ -52,6 +76,9 @@ export const CustomWalletProvider = ({ children }: { children: React.ReactNode }
       value={{
         isInitialized,
         isLoading,
+        error,
+        address: wallet.address,
+        isConnected: wallet.connected,
         connect,
         disconnect,
       }}
