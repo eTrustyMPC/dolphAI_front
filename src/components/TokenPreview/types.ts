@@ -13,6 +13,7 @@ export interface TokenUpdate {
 }
 
 export interface Token {
+  id: string;
   name: string;
   address: string;
   symbol: string;
@@ -45,6 +46,7 @@ export interface Token {
     telegram?: string;
   };
   holders?: number;
+  queryCount?: number;
 }
 
 export interface TokenMetrics {

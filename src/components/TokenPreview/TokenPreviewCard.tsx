@@ -29,11 +29,11 @@ const UpdateIcon = ({ type }: { type: TokenUpdate['type'] }) => {
 
 const MarketInfoCard = ({ title, value, change }: { title: string; value: string; change: string }) => {
   return (
-    <div className="bg-gray-800 p-3 rounded-lg">
-      <p className="text-sm text-gray-400">{title}</p>
-      <p className="text-lg font-semibold">{value}</p>
-      <div className="flex items-center gap-1 text-green-400">
-        <TrendingUp size={16} />
+    <div className="bg-gray-800 p-3 rounded-lg hover-glow transition-all duration-300 hover:bg-gray-700">
+      <p className="text-sm text-gray-400 animate-slide-in">{title}</p>
+      <p className="text-lg font-semibold animate-slide-in" style={{animationDelay: '0.1s'}}>{value}</p>
+      <div className="flex items-center gap-1 text-green-400 animate-slide-in" style={{animationDelay: '0.2s'}}>
+        <TrendingUp size={16} className="animate-float" />
         <span className="text-sm">{change}</span>
       </div>
     </div>
@@ -74,7 +74,7 @@ export const TokenPreviewCard: React.FC<TokenPreviewCardProps> = ({
   };
 
   return (
-    <div className="bg-gray-900 border border-gray-800 rounded-lg p-6 space-y-6">
+    <div className="bg-gray-900 border border-gray-800 rounded-lg p-6 space-y-6 animate-slide-in hover-glow">
       {/* Header Section with Collapse/Close Controls */}
       <div className="flex items-center justify-between gap-4 mb-3">
         <div className="flex items-center gap-4">
@@ -91,11 +91,11 @@ export const TokenPreviewCard: React.FC<TokenPreviewCardProps> = ({
           </button>
 
           <div className="flex items-center gap-3">
-            <img src={token.icon} alt={token.name} className="w-10 h-10 rounded-full" />
+            <img src={token.icon} alt={token.name} className="w-10 h-10 rounded-full animate-float" />
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-xl font-bold">{token.name}</h2>
-                <span className="text-sm font-medium text-gray-400">{token.symbol}</span>
+                <h2 className="text-xl font-bold hover-scale">{token.name}</h2>
+                <span className="text-sm font-medium text-gray-400 animate-pulse-fast">{token.symbol}</span>
                 {onToggleWatch && (
                   <button
                     onClick={(e) => {
@@ -105,7 +105,7 @@ export const TokenPreviewCard: React.FC<TokenPreviewCardProps> = ({
                     className="p-1 hover:bg-gray-800 rounded-lg transition-colors"
                     title={isWatched ? 'Remove from watchlist' : 'Add to watchlist'}
                   >
-                    <Star className={`h-4 w-4 ${isWatched ? 'text-yellow-500 fill-yellow-500' : 'text-gray-400'}`} />
+                    <Star className={`h-4 w-4 ${isWatched ? 'text-yellow-500 fill-yellow-500 animate-scale' : 'text-gray-400 hover-scale'}`} />
                   </button>
                 )}
               </div>
@@ -118,7 +118,7 @@ export const TokenPreviewCard: React.FC<TokenPreviewCardProps> = ({
           {onAnalyze && !disableAnalyze && (
             <button
               onClick={onAnalyze}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-500 hover:bg-purple-600 text-white rounded-lg text-sm font-medium transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-500 hover:bg-purple-600 text-white rounded-lg text-sm font-medium transition-colors hover-glow animate-pulse-fast"
             >
               <TrendingUp className="w-4 h-4" />
               Analyze

@@ -12,14 +12,28 @@ interface TokenInfoProps {
   isWalletConnected: boolean;
 }
 
+import { useWatchlist } from '@/hooks/useWatchlist';
+
 export const TokenInfo: React.FC<TokenInfoProps> = ({ 
   token,
-  watchlist,
+  walletAddress,
   copiedAddress,
-  onToggleWatchlist,
   handleCopyAddress,
   isWalletConnected
 }) => {
+  const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlist(walletAddress);
+  
+  const isWatched = watchlist.some(t => t.address === token.address);
+  
+  const handleToggleWatchlist = async () => {
+    if (!isWalletConnected || !walletAddress) return;
+    
+    if (isWatched) {
+      await removeFromWatchlist(token.address);
+    } else {
+      await addToWatchlist(token.address);
+    }
+  };
   return (
     <div>
       {/* Token Header */}

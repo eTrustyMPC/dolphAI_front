@@ -1,14 +1,14 @@
 import React, { useRef, useEffect } from 'react';
 import { Star, Globe, MessageSquare, FileText, ExternalLink, Copy, Check, X } from 'lucide-react';
-import { TokenCardData } from '../TokenCard/types';
+import { Token } from '@/components/TokenPreview/types';
 import Image from 'next/image';
 
 interface WatchlistPanelProps {
   isOpen: boolean;
   onToggle: () => void;
-  watchedTokens?: TokenCardData[];
-  onTokenSelect?: (token: TokenCardData) => void;
-  onRemoveToken?: (token: TokenCardData) => void;
+  watchedTokens?: Token[];
+  onTokenSelect?: (token: Token) => void;
+  onRemoveToken?: (token: Token) => void;
   isWalletConnected?: boolean;
 }
 
@@ -141,6 +141,26 @@ export const WatchlistPanel: React.FC<WatchlistPanelProps> = ({
                         <div className="flex items-center space-x-2">
                           <span className="font-medium text-white">{token.name}</span>
                           <span className="text-sm text-gray-400">{token.symbol}</span>
+                        </div>
+                      </div>
+
+                      {/* Price and Market Cap */}
+                      <div className="flex items-center justify-between">
+                        <div className="text-sm text-gray-400">
+                          ${parseFloat(token.price).toLocaleString()}
+                        </div>
+                        <div className="text-sm text-gray-400">
+                          {token.marketCap ? `$${(token.marketCap / 1e6).toFixed(1)}M mcap` : 'No mcap'}
+                        </div>
+                      </div>
+
+                      {/* Volume and Holders */}
+                      <div className="flex items-center justify-between text-xs text-gray-500">
+                        <div>
+                          {token.volume24h ? `${(token.volume24h / 1e3).toFixed(1)}k vol` : 'No volume'}
+                        </div>
+                        <div>
+                          {token.holders ? `${token.holders.toLocaleString()} holders` : 'No holders'}
                         </div>
                       </div>
 

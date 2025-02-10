@@ -32,7 +32,7 @@ interface Props {
   handleAnalyzeToken: (token: Token) => void;
   filteredTokens: Token[];
   setSelectedToken: (token: Token | null) => void;
-  wallet: { isInitialized: boolean };
+  wallet: { isInitialized: boolean; address: string | undefined | null };
 }
 
 const defaultToken: Token = {
@@ -55,6 +55,7 @@ const defaultToken: Token = {
 };
 
 export const TokenTableSection: React.FC<Props> = ({
+  wallet: { address: walletAddress },
   showLeaderboard,
   setShowLeaderboard,
   leaderboardSearch,
@@ -76,18 +77,27 @@ export const TokenTableSection: React.FC<Props> = ({
   filteredTokens,
   setSelectedToken,
 }) => {
+  // Sort tokens by volume
   const sortedTokens = useMemo(
-    () => tokens.sort((a, b) => (b.volume24h ?? 0) - (a.volume24h ?? 0)),
+    () => {
+      console.log('Sorting tokens:', tokens.length); // Debug log
+      return tokens.sort((a, b) => (b.volume24h ?? 0) - (a.volume24h ?? 0));
+    },
     [tokens]
   );
 
+  // Filter tokens by search and limit
   const displayedTokens = useMemo(
     () => {
+      console.log('Filtering tokens:', { sortedTokens, leaderboardSearch, showLeaderboard }); // Debug log
       const filtered = sortedTokens.filter(token => 
+        !leaderboardSearch || 
         token.name.toLowerCase().includes(leaderboardSearch.toLowerCase()) ||
         token.symbol.toLowerCase().includes(leaderboardSearch.toLowerCase())
       );
-      return showLeaderboard ? filtered : filtered.slice(0, 5);
+      const result = showLeaderboard ? filtered : filtered.slice(0, 5);
+      console.log('Filtered result:', result.length); // Debug log
+      return result;
     },
     [sortedTokens, leaderboardSearch, showLeaderboard]
   );
@@ -111,9 +121,13 @@ export const TokenTableSection: React.FC<Props> = ({
   const [activeTab, setActiveTab] = React.useState<'leaderboard' | 'watchlist'>('leaderboard');
   const [showWatchlist, setShowWatchlist] = React.useState(false);
 
-  const displayedTokensWithWatchlist = activeTab === 'watchlist' 
-    ? tokens.filter(token => watchlist.includes(token.address))
-    : displayedTokens;
+  // Get tokens for current tab
+  const displayedTokensWithWatchlist = useMemo(() => {
+    console.log('Getting tokens for tab:', { activeTab, tokens: tokens.length, watchlist }); // Debug log
+    return activeTab === 'watchlist' 
+      ? tokens.filter(token => watchlist.includes(token.address))
+      : displayedTokens;
+  }, [activeTab, tokens, watchlist, displayedTokens]);
 
   return (
     <div className="flex gap-8 h-full min-h-[32rem] mt-8 relative">
@@ -183,6 +197,8 @@ export const TokenTableSection: React.FC<Props> = ({
                 watchlist={watchlist}
                 onToggleWatchlist={onToggleWatchlist}
                 activeTab={activeTab}
+                walletAddress={walletAddress || ''}
+                isWalletConnected={isWalletConnected}
               />
             )}
           </div>

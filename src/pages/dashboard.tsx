@@ -5,12 +5,15 @@ import { mockDashboardData } from '@/data/mockDashboardData';
 import { mockTokens } from '@/data/mockTokens';
 import Navbar from '@/components/Navbar';
 import { useCustomWallet } from '@/contexts/WalletContext';
+import { tokenService } from '@/services/api/tokens';
 import { useRouter } from 'next/router';
 import { Token } from '@/components/TokenPreview/types';
 import { TokenCardData, TokenScores } from '@/components/TokenCard/types';
 import { TokenPreviewCard } from '@/components/TokenPreview/TokenPreviewCard';
 import { WatchlistPanel } from '@/components/Watchlist/WatchlistPanel';
 import { TokenTableSection } from '@/components/Dashboard/TokenTableSection';
+import { useWatchlist } from '@/hooks/useWatchlist';
+import { accountService } from '@/services/api/account';
 
 const TokenDashboard = dynamic<any>(
   () => import('@/components/TokenDashboard/TokenDashboard').then(mod => mod.TokenDashboard),
@@ -29,16 +32,26 @@ export default function DashboardPage() {
   const customWallet = useCustomWallet();
 
   // Initialize all state
-  const [tokens, setTokens] = useState(() => mockTokens);
+  const [tokens, setTokens] = useState<Token[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [selectedToken, setSelectedToken] = useState<Token | null>(null);
+  const [isLoadingTokens, setIsLoadingTokens] = useState(false);
   const [isWatchlistOpen, setIsWatchlistOpen] = useState(false);
-  const [watchedTokens, setWatchedTokens] = useState<TokenCardData[]>([]);
   const [leaderboardSearch, setLeaderboardSearch] = useState('');
   const [showLeaderboard, setShowLeaderboard] = useState(false);
-  const [watchlist, setWatchlist] = useState<string[]>([]);
+
+  // Use the useWatchlist hook
+  const { watchlist: watchedTokens, loadWatchlist } = useWatchlist(customWallet.isInitialized ? customWallet.address : null);
+  const watchlistAddresses = useMemo(() => watchedTokens.map(t => t.address), [watchedTokens]);
+
+  // Load watchlist when wallet connects
+  useEffect(() => {
+    if (customWallet.isInitialized && customWallet.address) {
+      loadWatchlist();
+    }
+  }, [customWallet.isInitialized, customWallet.address, loadWatchlist]);
 
   // Header content
   const headerContent = (
@@ -54,65 +67,28 @@ export default function DashboardPage() {
     </div>
   );
 
-  const handleToggleWatchlist = useCallback((address: string) => {
+  const handleToggleWatchlist = useCallback(async (address: string) => {
     // Only allow watchlist functionality if wallet is connected
-    if (!customWallet.isInitialized) return;
+    if (!customWallet.isInitialized || !customWallet.address) return;
 
     const token = tokens.find(t => t.address === address);
     if (!token) return;
 
-    const tokenWithScores: TokenCardData = {
-      ...token,
-      scores: {
-        onChainActivity: { value: 75, explanation: 'Moderate transaction volume and user engagement' },
-        liquidityAndTrading: { value: 70, explanation: 'Adequate liquidity with moderate trading volume' },
-        whalesAndHolders: { value: 65, explanation: 'Fair token distribution with moderate holder activity' }
+    const isWatched = watchedTokens.some(t => t.id === token.id);
+    try {
+      if (isWatched) {
+        await accountService.removeFromWatchlist(customWallet.address, token.id);
+      } else {
+        await accountService.addToWatchlist(customWallet.address, token.id);
       }
-    };
-
-    setWatchlist(prev => {
-      const isWatched = prev.includes(address);
-      const newList = isWatched ? prev.filter(a => a !== address) : [...prev, address];
-      
-      setWatchedTokens(current => {
-        const updated = isWatched
-          ? current.filter(t => t.address !== address)
-          : [...current, tokenWithScores];
-        localStorage.setItem('watchedTokens', JSON.stringify(updated));
-        localStorage.setItem('watchlist', JSON.stringify(newList));
-        return updated;
-      });
-
-      return newList;
-    });
-  }, [tokens, customWallet.isInitialized]);
+      // Reload watchlist after change
+      loadWatchlist();
+    } catch (error) {
+      console.error('Error toggling watchlist:', error);
+      setError('Failed to update watchlist');
+    }
+  }, [tokens, customWallet.isInitialized, customWallet.address, watchedTokens, loadWatchlist]);
   const [copiedAddress, setCopiedAddress] = useState('');
-
-  // Load watched tokens from localStorage only if wallet is connected
-  useEffect(() => {
-    if (!customWallet.isInitialized) {
-      setWatchedTokens([]);
-      setWatchlist([]);
-      return;
-    }
-
-    const savedTokens = localStorage.getItem('watchedTokens');
-    const savedWatchlist = localStorage.getItem('watchlist');
-    if (savedTokens && savedWatchlist) {
-      const tokens = JSON.parse(savedTokens);
-      const list = JSON.parse(savedWatchlist);
-      setWatchedTokens(tokens);
-      setWatchlist(list);
-    } else {
-      // Set some default watched tokens
-      const defaultWatched = mockTokens.slice(0, 3);
-      const defaultList = defaultWatched.map(t => t.address);
-      setWatchedTokens(defaultWatched);
-      setWatchlist(defaultList);
-      localStorage.setItem('watchedTokens', JSON.stringify(defaultWatched));
-      localStorage.setItem('watchlist', JSON.stringify(defaultList));
-    }
-  }, [customWallet.isInitialized]);
 
   const handleRemoveFromWatchlist = (tokenToRemove: Token) => {
     handleToggleWatchlist(tokenToRemove.address);
@@ -124,13 +100,14 @@ export default function DashboardPage() {
 
   // Memoize filtered tokens
   const filteredTokens = useMemo(() => {
-    if (!searchQuery) return [];
+    if (isLoadingTokens) return [];
+    if (!searchQuery) return tokens;
     return tokens.filter(token => 
       token.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       token.symbol.toLowerCase().includes(searchQuery.toLowerCase()) ||
       token.address.toLowerCase().includes(searchQuery.toLowerCase())
     );
-  }, [searchQuery, tokens]);
+  }, [searchQuery, tokens, isLoadingTokens]);
 
   const handleSearchClear = () => {
     setSearchQuery('');
@@ -145,8 +122,46 @@ export default function DashboardPage() {
   };
 
   const handleTokenSelect = (token: Token) => {
-    setSelectedToken(token);
+    if (Array.isArray(token)) {
+      setTokens(token);
+      if (token.length > 0) {
+        setSelectedToken(token[0]);
+      }
+    } else {
+      setSelectedToken(token);
+    }
   };
+
+  // Load tokens on mount
+  useEffect(() => {
+    const loadTokens = async () => {
+      setIsLoadingTokens(true);
+      try {
+        console.log('Loading tokens...'); // Debug log
+        const response = await tokenService.getTokens();
+        console.log('Tokens loaded:', response); // Debug log
+        if (response && response.tokens) {
+          console.log('Setting tokens:', response.tokens.length); // Debug log
+          setTokens(response.tokens);
+          // Only set selected token if none is selected
+          if (response.tokens.length > 0 && !selectedToken) {
+            setSelectedToken(response.tokens[0]);
+          }
+        } else {
+          console.log('No tokens in response'); // Debug log
+          setTokens([]);
+        }
+      } catch (err) {
+        console.error('Error loading tokens:', err);
+        setError('Failed to load tokens');
+        setTokens([]);
+      } finally {
+        setIsLoadingTokens(false);
+      }
+    };
+
+    loadTokens();
+  }, []); // Load on mount
 
   const handleCopyAddress = async (address: string) => {
     try {
@@ -180,10 +195,10 @@ export default function DashboardPage() {
                 handleTokenSelect={handleTokenSelect}
                 copiedAddress={copiedAddress}
                 handleCopyAddress={handleCopyAddress}
-                watchlist={watchlist}
+                watchlist={watchlistAddresses}
                 onToggleWatchlist={handleToggleWatchlist}
                 selectedToken={selectedToken}
-                isWalletConnected={customWallet.isInitialized}
+                isWalletConnected={customWallet.isConnected}
                 onConnectSuccess={() => {}}
                 onConnectError={(error) => setError(error.message)}
                 searchQuery={searchQuery}
@@ -192,7 +207,10 @@ export default function DashboardPage() {
                 handleAnalyzeToken={handleAnalyzeToken}
                 filteredTokens={filteredTokens}
                 setSelectedToken={setSelectedToken}
-                wallet={customWallet}
+                wallet={{
+                  isInitialized: customWallet.isInitialized,
+                  address: customWallet.address
+                }}
               />
             </div> 
           </div>
@@ -209,7 +227,7 @@ export default function DashboardPage() {
           handleAnalyzeToken(token);
         }}
         onRemoveToken={handleRemoveFromWatchlist}
-        isWalletConnected={customWallet.isInitialized}
+        isWalletConnected={customWallet.isConnected}
       />
     </div>
   );
