@@ -67,16 +67,6 @@ npm run dev
 Visit `http://localhost:3000` to start exploring!
 
 
-## 🚢 Deployment
-
-```bash
-# Build for production
-npm run build
-
-# Start production server
-npm start
-```
-
 
 ## 🙏 Acknowledgments
 
