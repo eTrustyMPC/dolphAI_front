@@ -42,13 +42,13 @@ export const AgentCard: React.FC<AgentCardProps> = ({ agent, isComingSoon }) => 
           <div>
             <h4 className="text-sm font-medium text-gray-400 mb-2">Indicators Used</h4>
             <div className="flex flex-wrap gap-2">
-              <div className="bg-blue-500/10 text-blue-400 text-xs px-2 py-1 rounded-lg">
+              <div className="bg-primary-500/10 text-primary-400 text-xs px-2 py-1 rounded-lg">
                 Tokenomics
               </div>
-              <div className="bg-blue-500/10 text-blue-400 text-xs px-2 py-1 rounded-lg">
+              <div className="bg-primary-500/10 text-primary-400 text-xs px-2 py-1 rounded-lg">
                 Utility Score
               </div>
-              <div className="bg-blue-500/10 text-blue-400 text-xs px-2 py-1 rounded-lg">
+              <div className="bg-primary-500/10 text-primary-400 text-xs px-2 py-1 rounded-lg">
                 Ecosystem Growth
               </div>
             </div>
@@ -144,24 +144,24 @@ export const AgentCard: React.FC<AgentCardProps> = ({ agent, isComingSoon }) => 
         </div>
 
         <div className="space-y-4">
-          <div className="bg-blue-500/10 rounded-lg p-2">
-            <h4 className="text-[14px] font-medium text-blue-400 mb-1">Indicators Used</h4>
+          <div className="bg-primary-500/10 rounded-lg p-2">
+            <h4 className="text-[14px] font-medium text-primary-400 mb-1">Indicators Used</h4>
             <div className="flex flex-wrap gap-x-1 gap-y-0.5">
               {agent.indicators.map((indicator, index) => (
                 <div
                   key={index}
                   className="relative group inline-flex items-center"
                 >
-                  <div className={`px-1 py-0.5 rounded-sm bg-blue-500/20 flex items-center gap-0.5`}>
-                    <span className="text-[11px] text-blue-200 leading-none">{indicator.name}</span>
-                    <InfoIcon className="w-2.5 h-2.5 text-blue-300/60 group-hover:text-blue-300 cursor-help transition-colors" />
+                  <div className={`px-1 py-0.5 rounded-sm bg-primary-500/20 flex items-center gap-0.5`}>
+                    <span className="text-[11px] text-primary-200 leading-none">{indicator.name}</span>
+                    <InfoIcon className="w-2.5 h-2.5 text-primary-300/60 group-hover:text-primary-300 cursor-help transition-colors" />
                   </div>
                   
                   {/* Tooltip with score */}
                   <div className="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 absolute bottom-full left-0 mb-2 w-48 p-2 bg-[#252A34] rounded-lg shadow-xl z-10">
                     <div className="flex justify-between items-center mb-1">
-                      <span className="text-xs font-medium text-blue-300">{indicator.name}</span>
-                      <span className="text-xs text-blue-200">Score: {indicator.value}</span>
+                      <span className="text-xs font-medium text-primary-300">{indicator.name}</span>
+                      <span className="text-xs text-primary-200">Score: {indicator.value}</span>
                     </div>
                     <p className="text-[10px] text-gray-300">{indicator.tooltip}</p>
                     {/* Arrow */}

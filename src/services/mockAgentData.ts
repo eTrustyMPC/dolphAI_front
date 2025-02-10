@@ -19,18 +19,18 @@ export const mockScoringAgents: ScoringAgent[] = [
   {
     id: 'flipper-agent',
     type: 'scoring',
-    name: 'FLIPPER',
-    imageUrl: '/images/dolphin-circuit.png',
+    name: 'NAUTI',
+    imageUrl: '/images/nauti.png',
     lastUpdated: '2025-02-06T13:00:00Z',
-    score: 8.5,
-    confidence: 0.92,
+    score: 9.8,
+    confidence: 0.99,
     calculationLogic: 'Score = (FA Score × 0.3) + (On-chain Score × 0.25) + (Market Score × 0.25) + (Social Score × 0.2). Higher weight given to fundamental analysis and on-chain metrics as key indicators of project health.',
     indicators: [
       { name: 'On-chain Agent', value: 8.8, tooltip: 'Based on tokenomics, utility, and ecosystem growth metrics' },
       { name: 'Defi Agent', value: 8.5, tooltip: 'Analysis of transaction patterns, wallet behaviors, and smart contract usage' },
       { name: 'Sentimental Analysis Agent', value: 8.2, tooltip: 'DeFi metrics including TVL growth, yield opportunities, and protocol revenue' },
     ],
-    aiSummary: 'SUI ecosystem shows strong growth with TVL increasing by 45% this quarter across DeFi protocols. Integration with major platforms like Scallop and Navi Protocol demonstrates growing institutional adoption. The ecosystem maintains robust development activity with over 200 active monthly developers.',
+    aiSummary: 'SUI liquidity remains deep with high trading volumes and growing participation across leading DEXs. DeFi adoption surges with expanding integrations on platforms like Cetus and Bluefin Navi. The network strengthens decentralization with an increasing validator set and widespread token distribution',
     bgColor: 'bg-indigo-900/20',
     links: [
     ]
@@ -38,8 +38,8 @@ export const mockScoringAgents: ScoringAgent[] = [
   {
     id: 'fa-agent',
     type: 'scoring',
-    name: 'On-chain Analysis Agent',
-    imageUrl: '/images/dolphin-chart.png',
+    name: 'Seahorse',
+    imageUrl: '/images/seahorrse.png',
     lastUpdated: '2025-02-06T13:00:00Z',
     score: 8.8,
     confidence: 0.90,
@@ -49,7 +49,7 @@ export const mockScoringAgents: ScoringAgent[] = [
       { name: 'Utility Score', value: 8.5, tooltip: 'Real-world applications and integration with SUI ecosystem' },
       { name: 'Ecosystem Growth', value: 9.0, tooltip: 'Developer adoption, protocol integrations, and TVL growth' }
     ],
-    aiSummary: 'SUI demonstrates strong utility with Move language enabling secure smart contract development and efficient resource management. The tokenomics model shows balanced distribution with effective staking mechanisms and validator incentives.',
+    aiSummary: 'SUI maintains deep liquidity with consistently high trading volumes across major DEXs, ensuring efficient market participation. The network’s decentralization is reinforced by a growing validator set and widespread token distribution, supporting sustained ecosystem adoption.',
     bgColor: 'bg-purple-900/20',
     links: [
       { text: 'Latest: SUI Network Upgrade', url: 'https://suiexplorer.com/news/upgrade' },

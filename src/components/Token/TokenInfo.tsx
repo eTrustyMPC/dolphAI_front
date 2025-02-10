@@ -46,7 +46,7 @@ export const TokenInfo: React.FC<TokenInfoProps> = ({
       {/* Token Header */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center overflow-hidden">
+          <div className="w-12 h-12 bg-primary-500/20 rounded-lg flex items-center justify-center overflow-hidden">
             {token.icon ? (
               <>
                 <img 
@@ -59,10 +59,10 @@ export const TokenInfo: React.FC<TokenInfoProps> = ({
                     e.currentTarget.nextElementSibling?.classList.remove('hidden');
                   }}
                 />
-                <div className="text-2xl font-bold text-blue-400 hidden">{token.symbol?.[0]}</div>
+                <div className="text-2xl font-bold text-primary-400 hidden">{token.symbol?.[0]}</div>
               </>
             ) : (
-              <div className="text-2xl font-bold text-blue-400">{token.symbol?.[0]}</div>
+              <div className="text-2xl font-bold text-primary-400">{token.symbol?.[0]}</div>
             )}
           </div>
           <div>
@@ -75,13 +75,13 @@ export const TokenInfo: React.FC<TokenInfoProps> = ({
                   href={`https://etherscan.io/token/${token.id}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-400 hover:text-blue-300 transition-colors"
+                  className="text-primary-400 hover:text-primary-300 transition-colors"
                 >
                   <ExternalLink className="w-3.5 h-3.5" />
                 </a>
                 <button
                   onClick={() => handleCopyAddress(token.id)}
-                  className="text-blue-400 hover:text-blue-300 transition-colors"
+                  className="text-primary-400 hover:text-primary-300 transition-colors"
                 >
                   {copiedAddress === token.id ? (
                     <Check className="w-3.5 h-3.5" />
@@ -93,7 +93,7 @@ export const TokenInfo: React.FC<TokenInfoProps> = ({
                   href={`https://twitter.com/search?q=${token.symbol}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-400 hover:text-blue-300 transition-colors"
+                  className="text-primary-400 hover:text-primary-300 transition-colors"
                 >
                   <Twitter className="w-3.5 h-3.5" />
                 </a>
@@ -101,7 +101,7 @@ export const TokenInfo: React.FC<TokenInfoProps> = ({
                   href={`https://t.me/s/${token.symbol.toLowerCase()}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-400 hover:text-blue-300 transition-colors"
+                  className="text-primary-400 hover:text-primary-300 transition-colors"
                 >
                   <MessageCircle className="w-3.5 h-3.5" />
                 </a>
@@ -190,7 +190,7 @@ export const TokenInfo: React.FC<TokenInfoProps> = ({
           <div className="text-gray-400 text-xs">Circulating supply</div>
           <div className="text-sm font-semibold flex items-center gap-1.5">
             {token.circulatingSupply || '0'}M {token.symbol}
-            <span className="text-blue-400">✓</span>
+            <span className="text-primary-400">✓</span>
           </div>
         </div>
       </div>

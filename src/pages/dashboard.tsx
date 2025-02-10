@@ -53,19 +53,7 @@ export default function DashboardPage() {
     }
   }, [customWallet.isInitialized, customWallet.address, loadWatchlist]);
 
-  // Header content
-  const headerContent = (
-    <div className="text-center space-y-6 mb-6">
-      <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-transparent bg-clip-text animate-gradient">
-        DolphAI Project
-      </h1>
-      <div className="space-y-3">
-        <p className="text-xl text-gray-300">
-          Discover, analyze and track tokens with AI-powered insights
-        </p>
-      </div>
-    </div>
-  );
+  
 
   const handleToggleWatchlist = useCallback(async (id: string) => {
     // Only allow watchlist functionality if wallet is connected
@@ -195,9 +183,9 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-gray-950 text-white relative">
       <Navbar />
-      <main className="min-h-screen relative pt-20">
+      <h1 className="text-5xl font-bold text-center pt-28 pb-12 bg-gradient-to-r from-primary-400 via-primary-300 to-crypto-400 text-transparent bg-clip-text">Navigate Sui with confidence</h1>
+      <main className="min-h-screen relative">
         <div className="max-w-[90rem] mx-auto px-0">
-          {headerContent}
 
           <div className="space-y-8">
             <div className="flex gap-8">

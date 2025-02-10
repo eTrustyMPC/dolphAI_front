@@ -11,7 +11,7 @@ interface Platform {
   url: string;
 }
 
-interface LendingPlatformsProps {
+interface StakingPlatformsProps {
   onPlatformClick: (url: string) => void;
 }
 
@@ -21,31 +21,40 @@ const platforms: Platform[] = [
     name: 'SuiLend',
     icon: '/images/projects/suilend.png',
     network: 'SUI',
-    type: 'LENDING',
-    description: 'Decentralised Sui lending protocol',
+    type: 'STAKING',
+    description: 'Decentralised Sui staking protocol',
     url: 'https://suilend.fi/',
   },
   {
     id: 2,
-    name: 'NAVI',
-    icon: '/images/projects/navi.jpg',
+    name: 'Cetus',
+    icon: '/images/projects/cetus.png',
     network: 'SUI',
-    type: 'LENDING',
-    description: 'Simplified and secure participation in lending',
-    url: 'https://app.naviprotocol.io/market',
+    type: 'STAKING',
+    description: 'Sui liquidity staking and yield farming',
+    url: 'https://www.cetus.zone/',
   },
   {
     id: 3,
+    name: 'Bluefin',
+    icon: '/images/projects/bluefin.png',
+    network: 'SUI',
+    type: 'STAKING',
+    description: 'Decentralized staking platform on Sui Network',
+    url: 'https://trade.bluefin.io',
+  },
+  {
+    id: 4,
     name: 'Scallop',
     icon: '/images/projects/scallop.png',
     network: 'SUI',
-    type: 'LENDING',
+    type: 'STAKING',
     description: 'An #FHE Lending Layer for PoS and #AI Networks',
     url: 'https://app.scallop.io/',
   },
 ];
 
-export const LendingPlatforms: React.FC<LendingPlatformsProps> = ({ onPlatformClick }) => {
+export const StakingPlatforms: React.FC<StakingPlatformsProps> = ({ onPlatformClick }) => {
   return (
     <div className="flex justify-center items-center min-h-[520px] p-6">
       <div className="grid grid-cols-2 gap-6 w-full max-w-3xl">

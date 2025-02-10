@@ -108,11 +108,11 @@ export const TokenTableSection: React.FC<Props> = ({
 
   const getGradientClass = (index: number) => {
     const gradients = [
-      'from-purple-500 to-purple-400',
-      'from-purple-400 to-purple-300',
-      'from-purple-300 to-purple-200',
-      'from-purple-200 to-purple-100',
-      'from-purple-100 to-purple-50',
+      'from-crypto-500 to-crypto-400',
+      'from-crypto-400 to-crypto-300',
+      'from-crypto-300 to-crypto-200',
+      'from-crypto-200 to-crypto-100',
+      'from-crypto-100 to-primary-50',
     ];
     return gradients[Math.min(index, gradients.length - 1)];
   };
@@ -139,17 +139,17 @@ export const TokenTableSection: React.FC<Props> = ({
         {/* Left Side - Leaderboard, News & Connect Wallet */}
         <div className="flex flex-col gap-4 w-[400px]">
           {/* Leaderboard & Watchlist */}
-          <div className="border border-blue-500/30 rounded-2xl overflow-hidden bg-[#151820]">
+          <div className="border border-primary-500/30 rounded-2xl overflow-hidden bg-primary-900/80">
             <div className="flex border-b border-gray-800">
               <button
                 onClick={() => setActiveTab('leaderboard')}
-                className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${activeTab === 'leaderboard' ? 'text-white bg-purple-500/10' : 'text-gray-400 hover:text-white hover:bg-purple-500/5'}`}
+                className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${activeTab === 'leaderboard' ? 'text-white bg-crypto-500/10' : 'text-gray-400 hover:text-white hover:bg-crypto-500/5'}`}
               >
                 Leaderboard
               </button>
               <button
                 onClick={() => setActiveTab('watchlist')}
-                className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${activeTab === 'watchlist' ? 'text-white bg-purple-500/10' : 'text-gray-400 hover:text-white hover:bg-purple-500/5'}`}
+                className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${activeTab === 'watchlist' ? 'text-white bg-crypto-500/10' : 'text-gray-400 hover:text-white hover:bg-crypto-500/5'}`}
               >
                 Watchlist
               </button>
@@ -159,7 +159,7 @@ export const TokenTableSection: React.FC<Props> = ({
                 <div>
                   <h4 className="text-sm font-medium text-white mb-1">Get More Insights</h4>
                   <p className="text-xs text-gray-400 mb-2">
-                    Connect wallet to access <span className="text-purple-400 font-medium">detailed analytics</span> and <span className="text-purple-400 font-medium">DeFi features</span>
+                    Connect wallet to access <span className="text-crypto-400 font-medium">detailed analytics</span> and <span className="text-crypto-400 font-medium">DeFi features</span>
                   </p>
                   <div className="flex items-center justify-center gap-2">
                     <a 
@@ -168,10 +168,10 @@ export const TokenTableSection: React.FC<Props> = ({
                       rel="noopener noreferrer"
                       className="flex items-center gap-1 px-1.5 py-0.5 bg-gray-800/50 rounded hover:bg-gray-700/50 transition-colors group"
                     >
-                      <div className="p-0.5 bg-blue-500/10 rounded">
-                        <TrendingUp className="h-2.5 w-2.5 text-blue-400" />
+                      <div className="p-0.5 bg-primary-500/10 rounded">
+                        <TrendingUp className="h-2.5 w-2.5 text-primary-400" />
                       </div>
-                      <span className="text-[10px] font-medium group-hover:text-blue-400 transition-colors">Bluefin</span>
+                      <span className="text-[10px] font-medium group-hover:text-primary-400 transition-colors">Bluefin</span>
                     </a>
                     <a 
                       href="https://suilend.fi" 
@@ -209,7 +209,7 @@ export const TokenTableSection: React.FC<Props> = ({
 
           {/* News */}
           <div className={`transition-all duration-200 ${(!isWalletConnected && !isAnalyzed) ? 'blur-sm opacity-50' : ''}`}>
-            <div className="bg-gray-900/40 border border-blue-500/30 rounded-2xl p-4">
+            <div className="bg-primary-900/40 border border-primary-500/30 rounded-2xl p-4">
               <NewsSection 
                 token={selectedToken || defaultToken}
                 news={[
@@ -277,7 +277,7 @@ export const TokenTableSection: React.FC<Props> = ({
               {/* Token Info & Agent Cards */}
               <div className="grid grid-cols-2 gap-4 mb-6">
                 {/* Token Info - Left Side */}
-                <div className="bg-gray-900/40 border border-blue-500/30 rounded-2xl p-4">
+                <div className="bg-primary-900/40 border border-primary-500/30 rounded-2xl p-4">
                   <TokenInfo
                     token={selectedToken || defaultToken}
                     watchlist={watchlist}
@@ -290,14 +290,14 @@ export const TokenTableSection: React.FC<Props> = ({
                 </div>
 
                 {/* Agents - Right Side */}
-                <div className="bg-blue-500/10 border border-blue-500/30 rounded-2xl p-4">
+                <div className="bg-primary-500/10 border border-primary-500/30 rounded-2xl p-4">
                   <AgentCard agent={mockScoringAgents[0]} />
                 </div>
               </div>
 
               {/* Connect Wallet Promo */}
               {selectedToken && !isWalletConnected && (
-                <div className="bg-gray-900/40 border border-blue-500/30 rounded-2xl p-3 mb-6">
+                <div className="bg-primary-900/40 border border-primary-500/30 rounded-2xl p-3 mb-6">
                   <ConnectWalletPromo
                     tokenName={selectedToken.name}
                     isWalletConnected={isWalletConnected}
@@ -310,7 +310,7 @@ export const TokenTableSection: React.FC<Props> = ({
               {/* Agents Grid */}
               <div className={`grid grid-cols-3 gap-4 mb-6 ${!isWalletConnected ? 'blur-sm opacity-50' : ''}`}>
                 {/* FA Agent */}
-                <div className="bg-blue-500/10 border border-blue-500/30 rounded-2xl p-2">
+                <div className="bg-primary-500/10 border border-primary-500/30 rounded-2xl p-2">
                   <AgentCard 
                     agent={{
                       ...mockScoringAgents[1],
@@ -356,7 +356,7 @@ export const TokenTableSection: React.FC<Props> = ({
 
               {/* DeFi Section */}
               <div className="relative mb-8">
-              <div className={`bg-[#0B1018] border border-blue-500/30 rounded-2xl ${!isWalletConnected ? 'blur-sm opacity-50' : ''}`}>
+              <div className={`bg-primary-900 border border-primary-500/30 rounded-2xl ${!isWalletConnected ? 'blur-sm opacity-50' : ''}`}>
                   <DeFiGrid isWalletConnected={isWalletConnected} />
                 </div>
               </div>
@@ -366,9 +366,9 @@ export const TokenTableSection: React.FC<Props> = ({
             {(!searchQuery || !selectedToken) && (
               <div className="absolute inset-0 flex items-center justify-center bg-gray-900/40 backdrop-blur-sm rounded-2xl">
                 <div className="text-center px-12 py-8 bg-gray-800/30 rounded-2xl border border-gray-700/30 w-[600px] mx-auto shadow-2xl">
-                  <Search className="w-12 h-12 text-blue-400 mx-auto mb-4" />
+                  <Search className="w-12 h-12 text-primary-400 mx-auto mb-4" />
                   <h3 className="text-lg font-medium text-white mb-2">Enter token address in the search bar above</h3>
-                  <p className="text-base text-gray-400">Press <span className="text-blue-400 font-semibold">Analyze</span> button to start exploration</p>
+                  <p className="text-base text-gray-400">Press <span className="text-primary-400 font-semibold">Analyze</span> button to start exploration</p>
                 </div>
               </div>
             )}

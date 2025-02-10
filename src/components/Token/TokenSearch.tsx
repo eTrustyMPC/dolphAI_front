@@ -24,7 +24,7 @@ export const TokenSearch: React.FC<TokenSearchProps> = ({
       <div className="flex gap-3 w-[900px]">
         <div className="relative flex-1">
           <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
-            <Search className="h-5 w-5 text-blue-400" />
+            <Search className="h-5 w-5 text-primary-400" />
           </div>
           <input
             type="text"
@@ -47,12 +47,12 @@ export const TokenSearch: React.FC<TokenSearchProps> = ({
               }}
               className="absolute inset-y-0 right-4 flex items-center cursor-pointer"
             >
-              <X className="h-5 w-5 text-gray-400 hover:text-blue-400 transition-colors" />
+              <X className="h-5 w-5 text-gray-400 hover:text-primary-400 transition-colors" />
             </button>
           )}
         </div>
         <button
-          className="flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium rounded-xl shadow-lg shadow-purple-500/20 transition-all whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
+          className="flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-primary-500 to-crypto-500 hover:from-primary-600 hover:to-crypto-600 text-white font-medium rounded-xl shadow-lg shadow-crypto-500/20 transition-all whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
           onClick={() => {
             console.log('Analyze button clicked');
             console.log('Search query:', searchQuery);

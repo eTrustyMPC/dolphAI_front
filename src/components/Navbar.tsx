@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { XIcon } from './icons/XIcon';
 import Link from 'next/link';
+import Image from 'next/image';
 import { CustomConnectButton } from './CustomConnectButton';
 
 export default function Navbar() {
@@ -20,10 +21,19 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 bg-[#0A0A0A] z-50">
       <div className="max-w-[98%] mx-auto px-4">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-20">
           {/* Logo/Brand */}
-          <div className="flex items-center">
-            <span className="text-lg font-bold text-white">DolphAI</span>
+          <div className="flex items-center gap-2">
+            <div className="w-12 h-12">
+              <Image 
+                src="/images/dolphai-logo.png"
+                alt="DolphAI Logo"
+                width={48}
+                height={48}
+                className="rounded-full"
+              />
+            </div>
+            <span className="text-2xl font-bold text-[#40A9FF]">DolphAI</span>
           </div>
 
           {/* Wallet Connection and Social Icons */}
@@ -31,7 +41,7 @@ export default function Navbar() {
             {/* Social Icons */}
             <div className="flex items-center gap-4 mr-8">
               <a
-                href="https://twitter.com/DolphAI_ETH"
+                href="https://x.com/DolphAI_SUI"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white/80 hover:text-white transition-colors"
@@ -39,15 +49,7 @@ export default function Navbar() {
                 <XIcon size={20} />
               </a>
               <a
-                href="https://twitter.com/DolphAI_Agent"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-white/80 hover:text-white transition-colors"
-              >
-                <XIcon size={20} />
-              </a>
-              <a
-                href="https://dolphai.io"
+                href="https://www.dolphai.xyz/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white/80 hover:text-white transition-colors"
@@ -64,7 +66,7 @@ export default function Navbar() {
                 </span>
                 <button
                   onClick={() => customWallet.disconnect()}
-                  className="flex items-center gap-2 px-4 py-2 bg-[#8B5CF6] hover:bg-[#7C3AED] rounded-xl transition-colors text-white font-medium"
+                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary-500 to-crypto-500 hover:from-primary-600 hover:to-crypto-600 rounded-xl transition-colors text-white font-medium"
                 >
                   Disconnect
                 </button>

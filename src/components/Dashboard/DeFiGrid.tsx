@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Repeat, Coins, PiggyBank, TrendingUp } from 'lucide-react';
 import { useWallet } from '@suiet/wallet-kit';
 import { CetusTerminal } from '@/components/Swap/CetusTerminal';
-import { StakingPools } from '@/components/Stake/StakingPools';
+import { StakingPlatforms } from '@/components/Staking/StakingPlatforms';
 import { LendingPlatforms } from '@/components/Lending/LendingPlatforms';
 import { PerpsPlatform } from '@/components/Perps/PerpsPlatform';
 import { mockStakingPools } from '@/services/mockStakingData';
@@ -53,12 +53,11 @@ export const DeFiGrid: React.FC<DeFiGridProps> = ({ isWalletConnected }) => {
         );
       case 'stake':
         return (
-          <div className="h-[520px] overflow-hidden">
-            <StakingPools
-              pools={mockStakingPools}
-              onProjectClick={(projectName) => {
-                // Handle project click
-                console.log('Project clicked:', projectName);
+          <div className="h-[520px]">
+            <StakingPlatforms
+              onPlatformClick={(url) => {
+                // Open platform URL in new tab
+                window.open(url, '_blank');
               }}
             />
           </div>

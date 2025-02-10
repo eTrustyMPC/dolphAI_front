@@ -23,31 +23,31 @@ export const PerpsPlatform: React.FC<PerpsPlatformProps> = ({ onPlatformClick })
         className="flex flex-col gap-3 p-5 bg-[#0B1018] rounded-2xl hover:bg-gray-800/30 transition-colors text-left group border border-gray-800/50 w-full max-w-md"
       >
         <div className="flex items-center gap-2">
-          <div className="relative w-8 h-8">
+          <div className="relative w-12 h-12 bg-gray-800/50 rounded-xl overflow-hidden">
             <Image
               src={platform.icon}
               alt={platform.name}
               fill
-              className="object-contain rounded-lg"
+              className="object-contain p-2.5 hover:scale-105 transition-transform"
             />
           </div>
-          <div className="flex items-center gap-2 text-xs text-gray-400 uppercase tracking-wide">
-            <span>{platform.network}</span>
-            <div className="h-3 border-l border-gray-700" />
-            <span>{platform.type}</span>
-          </div>
-          <div className="ml-auto text-xs text-gray-500">
-            #{platform.id}
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-2 text-xs text-gray-400 uppercase tracking-wide">
+              <span>{platform.network}</span>
+              <div className="h-3 border-l border-gray-700" />
+              <span>{platform.type}</span>
+              <div className="ml-2 text-xs text-gray-500">
+                #{platform.id}
+              </div>
+            </div>
+            <h3 className="text-lg font-semibold text-gray-100 group-hover:text-primary-400 transition-colors">
+              {platform.name}
+            </h3>
           </div>
         </div>
-        <div>
-          <h3 className="text-lg font-semibold text-gray-100 mb-2 group-hover:text-blue-400 transition-colors">
-            {platform.name}
-          </h3>
-          <p className="text-sm text-gray-400 line-clamp-2 leading-relaxed">
-            {platform.description}
-          </p>
-        </div>
+        <p className="text-sm text-gray-400 line-clamp-2 leading-relaxed">
+          {platform.description}
+        </p>
       </button>
     </div>
   );
